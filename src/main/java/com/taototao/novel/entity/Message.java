@@ -24,12 +24,17 @@ public class Message {
     private String title;
     /**内容*/
     private String content;
-
+    /**类别*/
     private int category;
+    /**是否已读*/
     private boolean isread;
+    /**发送日期*/
     private Date postdate;
+    /**删除状态*/
     private boolean deleteflag;
+    /**修改人编号*/
     private int modifyuserno;
+    /**修改时间*/
     private Date modifytime;
 
 
