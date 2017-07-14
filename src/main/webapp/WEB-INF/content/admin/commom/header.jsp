@@ -1,17 +1,17 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="Content-Style-type" content="text/css" />
-<title>易读小说管理后台</title>
-<meta name="keywords" content="易读小说系统管理后台" />
-<meta name="description" content="易读小说系统是开源的JAVA项目，可以帮你快速搭建自己的小说系统!" />
-<link rel="stylesheet" type="text/css" href="<s:property value="contextPath" />/css/common.css">
-<link rel="stylesheet" type="text/css" href="<s:property value="contextPath" />/css/styles.css">
-<script type="text/javascript" src="<s:property value="contextPath" />/js/lib/jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="<s:property value="contextPath" />/js/yidu.js"></script>
-<script type="text/javascript" src="<s:property value="contextPath" />/js/pagination.js"></script>
+<title>淘TO淘小说管理后台</title>
+<meta name="keywords" content="淘TO淘小说管理后台" />
+<meta name="description" content="淘TO淘小说管理后台" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/common.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/styles.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/lib/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/yidu.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/pagination.js"></script>
 </head>
 <body>
 <div id="wrapper">
@@ -19,14 +19,13 @@
   <header id="global-head" style="height:45px;">
     <div>
       <nav class="site-navigation cf">
-      <a class="home" href="<s:property value="contextPath" />/"><s:text name="label.admin.navi.home" /></a>
-      <a href="<s:property value="contextPath" />/admin/index"><s:text name="label.admin.navi.adminHome" /></a>
-      <a href="http://www.51yd.org/" target="_blank"><s:text name="label.admin.navi.forum" /></a>
+      <a class="home" href="/">网站首页</a>
+      <a href="${pageContext.request.contextPath}/admin/index">管理首页</a>
       </nav>
       <div class="hd-follow" style="width:300px;align:right" >
       <span id="checklogin">
-        <s:text name="label.admin.navi.welcomeMeg" />
-        <a href="<s:property value="contextPath" />/logout" style="color: rgb(240, 240, 240);" class="out"><s:text name="label.admin.navi.logout" /></a>
+        欢迎您回来管理员同志，辛苦啦！
+        <a href="${pageContext.request.contextPath}/logout" style="color: rgb(240, 240, 240);" class="out">退出</a>
       </span>
     </div>
   </header>
@@ -34,13 +33,13 @@
       <div class="channel-header-wrapper">
         <nav class="channel-nav">
           <ul class="channel-nav-list">
-            <li><a href="<s:property value="contextPath" />/admin/configEdit" title="<s:text name="label.admin.navi.configEdit" />"><s:text name="label.admin.navi.configEdit" /></a></li>
-            <li><a href="<s:property value="contextPath" />/admin/languageEdit" title="<s:text name="label.admin.navi.languageEdit" />"><s:text name="label.admin.navi.languageEdit" /></a></li>
-            <li><a href="<s:property value="contextPath" />/admin/blockList" title="<s:text name="label.admin.navi.blockList" />"><s:text name="label.admin.navi.blockList" /></a></li>
-            <li><a href="<s:property value="contextPath" />/admin/articleList" title="<s:text name="label.admin.navi.articleList" />"><s:text name="label.admin.navi.articleList" /></a></li>
-            <li><a href="<s:property value="contextPath" />/admin/userList" title="<s:text name="label.admin.navi.userList" />"><s:text name="label.admin.navi.userList" /></a></li>
-            <li><a href="<s:property value="contextPath" />/admin/messageList" title="<s:text name="label.admin.navi.messageList" />"><s:text name="label.admin.navi.messageList" /></a></li>
-            <li><a href="<s:property value="contextPath" />/admin/reviewList" title="<s:text name="label.admin.navi.reviewList" />"><s:text name="label.admin.navi.reviewList" /></a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/configEdit" title="系统参数设置">系统参数设置</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/languageEdit" title="语言包设置">语言包设置</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/blockList" title="区块管理>">区块管理</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/articleList" title="小说管理">小说管理</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/userList" title="用户管理">用户管理</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/messageList" title="消息管理">消息管理</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/reviewList" title="评论管理">评论管理</a></li>
         </ul>
       </nav>
     </div>
