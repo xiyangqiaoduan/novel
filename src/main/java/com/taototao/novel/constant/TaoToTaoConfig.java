@@ -151,11 +151,11 @@ public class TaoToTaoConfig {
     /**
      * QQ登录的APPID
      */
-    public static final String APP_ID = "app_ID";
+    public static final String APP_ID = "qqAppId";
     /**
      * QQ登录的APPKEY
      */
-    public static final String APP_KEY = "app_KEY";
+    public static final String APP_KEY = "qqAppKey";
     /**
      * QQ登录用重定向URI
      */
@@ -180,13 +180,13 @@ public class TaoToTaoConfig {
      * 是否启用邮箱验证
      */
     public static final String ENABLE_MAIL_AUTH = "enableMailAuth";
-    public static final String MAIL_SMTP_AUTH = "mail.smtp.auth";
-    public static final String MAIL_SMTP_STARTTLS_ENABLE = "mail.smtp.starttls.enable";
-    public static final String MAIL_SMTP_HOST = "mail.smtp.host";
-    public static final String MAIL_SMTP_PORT = "mail.smtp.port";
-    public static final String MAIL_SMTP_USERNAME = "mail.smtp.username";
-    public static final String MAIL_SMTP_PASSWORD = "mail.smtp.password";
-    public static final String MAIL_SMTP_FROM = "mail.smtp.from";
+    public static final String MAIL_SMTP_AUTH = "mailSmtpAuth";
+    public static final String MAIL_SMTP_STARTTLS_ENABLE = "mailSmtpStarttlsEnable";
+    public static final String MAIL_SMTP_HOST = "mailSmtpHost";
+    public static final String MAIL_SMTP_PORT = "mailSmtpPort";
+    public static final String MAIL_SMTP_USERNAME = "mailSmtpUsername";
+    public static final String MAIL_SMTP_PASSWORD = "mailSmtpPassword";
+    public static final String MAIL_SMTP_FROM = "mailSmtpFrom";
 
     /**
      * 最大订阅数
@@ -292,6 +292,10 @@ public class TaoToTaoConfig {
      * 小说分类
      */
     public static final String CATEGORY = "collectionProperties.article.category";
+
+
+
+    public static final String MSG="msg";
 
 
 }

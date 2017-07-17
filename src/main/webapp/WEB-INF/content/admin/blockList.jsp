@@ -1,9 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <jsp:include page="/WEB-INF/content/admin/commom/header.jsp" />
-    <jsp:include page="/WEB-INF/content/commom/common_form.jsp" />
     <br>
     <table class="yidu-table" align="center">
         <colgroup>
@@ -15,17 +14,17 @@
         </colgroup>
         <tr>
             <th class="sortable <s:if test="pagination.sortColumn.equals('blockno')">sorted <s:property value="pagination.sortClass"/> </s:if>">
-            <a href="#" onclick="fnPagination(6,'blockno');"><s:text name="label.admin.block.list.blockno" /></a></th>
+            <a href="#" onclick="fnPagination(6,'blockno');">区块编号</a></th>
             
             <th class="sortable <s:if test="pagination.sortColumn.equals('blockid')">sorted <s:property value="pagination.sortClass"/> </s:if>">
-            <a href="#" onclick="fnPagination(6,'blockid');"><s:text name="label.admin.block.list.blockid" /></a></th>
+            <a href="#" onclick="fnPagination(6,'blockid');">区块ID</a></th>
             
             <th class="sortable <s:if test="pagination.sortColumn.equals('blockname')">sorted <s:property value="pagination.sortClass"/> </s:if>">
-            <a href="#" onclick="fnPagination(6,'blockname');"><s:text name="label.admin.block.list.blockname" /></a></th>
+            <a href="#" onclick="fnPagination(6,'blockname');">名称</a></th>
             
             <th class="sortable <s:if test="pagination.sortColumn.equals('type')">sorted <s:property value="pagination.sortClass"/> </s:if>">
-            <a href="#" onclick="fnPagination(6,'type');"><s:text name="label.admin.block.list.type" /></a></th>
-            <th class="sortable"><s:text name="label.admin.list.operate" /></th>
+            <a href="#" onclick="fnPagination(6,'type');">类型</a></th>
+            <th class="sortable">操作</th>
         </tr>
         <s:iterator value="blockList" id="block" status="rowstatus">
         <s:if test="#rowstatus.even == true">

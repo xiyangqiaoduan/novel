@@ -40,17 +40,17 @@ public class InitializationProcessor implements ApplicationListener<ContextRefre
             TaoToTaoConstants.pseudoConf.setReloadingStrategy(reloadStrategy);
 
             // 初始化缓存
-            CacheManager.initCacheManager();
+//            CacheManager.initCacheManager();
 
 
-            if (TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_CACHE_ARTICLE_COUNT)) {
-                // 初始化小说件数MAP
-                ArticleCountManager.initArticleCountManager();
-            }
-            if (TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_SINGLE_BOOK, false)) {
-                // 初始化小说拼音和编号映射件数MAP
-                SingleBookManager.initSingleBookManager();
-            }
+//            if (TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_CACHE_ARTICLE_COUNT)) {
+//                // 初始化小说件数MAP
+//                ArticleCountManager.initArticleCountManager();
+//            }
+//            if (TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_SINGLE_BOOK, false)) {
+//                // 初始化小说拼音和编号映射件数MAP
+//                SingleBookManager.initSingleBookManager();
+//            }
 
             // 初始化分类信息MAP
             // CategoryCacheManager.initCategoryCacheManager();

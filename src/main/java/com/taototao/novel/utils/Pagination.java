@@ -8,10 +8,6 @@ import java.util.List;
  * <p>
  * 翻页管理工具类
  * </p>
- * Copyright(c) 2014 YiDu-Novel. All rights reserved.
- * 
- * @version 1.1.9
- * @author shinpa.you
  */
 public class Pagination {
     /**
