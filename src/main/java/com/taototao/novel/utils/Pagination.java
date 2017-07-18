@@ -116,7 +116,9 @@ public class Pagination {
         this.pageNumber = pageNumber;
         this.pageSize = pageSize;
     }
+    public Pagination() {
 
+    }
     /**
      * 获得每页记录数
      * 

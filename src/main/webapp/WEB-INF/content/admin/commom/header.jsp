@@ -35,7 +35,7 @@
           <ul class="channel-nav-list">
             <li><a href="${pageContext.request.contextPath}/admin/configEdit" title="系统参数设置">系统参数设置</a></li>
             <li><a href="${pageContext.request.contextPath}/admin/languageEdit" title="语言包设置">语言包设置</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin/blockList" title="区块管理>">区块管理</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/systemblock/blockList" title="区块管理>">区块管理</a></li>
             <li><a href="${pageContext.request.contextPath}/admin/articleList" title="小说管理">小说管理</a></li>
             <li><a href="${pageContext.request.contextPath}/admin/userList" title="用户管理">用户管理</a></li>
             <li><a href="${pageContext.request.contextPath}/admin/messageList" title="消息管理">消息管理</a></li>

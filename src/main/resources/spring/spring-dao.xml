@@ -87,7 +87,7 @@
     <bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
         <property name="patterns">
             <list>
-                <value>com.yangcb.seckill.service.*</value>
+                <value>com.taototao.novel.service.*</value>
             </list>
         </property>
     </bean>
