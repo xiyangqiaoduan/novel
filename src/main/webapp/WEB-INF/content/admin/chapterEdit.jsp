@@ -1,10 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <jsp:include page="/WEB-INF/content/admin/commom/header.jsp" />
-    <s:form namespace="/admin" action="chapterEdit" method="post" validate="true">
-        <jsp:include page="/WEB-INF/content/commom/common_form.jsp" />
+    <form  action="${pageContext.request.contextPath}/admin/chapter/save" method="post" validate="true">
         <br>
         <table class="yidu-table" align="center">
             <colgroup>
@@ -13,70 +14,71 @@
             </colgroup>
             <tbody>
                 <tr>
-                    <th colspan="2"><s:text name="label.admin.chapter.edit.title" /></th>
+                    <th colspan="2">章节添加编辑</th>
                 </tr>
                 <tr>
-                    <td><s:text name="label.admin.chapter.edit.articlename" /></td>
+                    <td>小说名</td>
                     <td>
-                        <s:property value="articlename" />
+                        ${article.articlename}
                     </td>
                 </tr>
-                <s:if test="chapterno!=0">
+                <c:if test="chapter!=null">
                 <tr>
-                    <td><s:text name="label.admin.chapter.edit.chapterno" /></td>
+                    <td>章节编号</td>
                     <td>
-                        <s:property value="chapterno" />
+                        ${chapter.chapterno}
                     </td>
                 </tr>
-                </s:if>
+                </c:if>
                 <tr>
-                    <td><s:text name="label.admin.chapter.edit.chaptername" /></td>
+                    <td>章节名</td>
                     <td>
-                        <s:textfield name="chaptername" id="chaptername" maxlength="32" cssClass="tb-rounded" />
-                    </td>
-                </tr>
-                <tr>
-                    <td><s:text name="label.admin.chapter.edit.isvip" /></td>
-                    <td>
-                        <s:radio
-                            id="vip"
-                            name="vip"
-                            list="collections['collectionProperties.chapter.isvip']"
-                            />
+                        <input name="chaptername" id="chaptername" value="${chapter.chaptername}" class="tb-rounded" maxlength="32">
                     </td>
                 </tr>
                 <tr>
-                    <td><s:text name="label.admin.chapter.edit.content" /></td>
+                    <td>类型</td>
                     <td>
-                        <s:textarea id="content" name="content" cssClass="tb-rounded" cols="30" rows="20"/> 
+                        <input type="radio" name="vip" value="0"  <c:if test="${chapter.vip !=true}">checked</c:if>>普通
+                        <input type="radio" name="vip" value="1"  <c:if test="${chapter.vip ==true}">checked</c:if>>VIP
                     </td>
                 </tr>
-                <s:if test="chapterno!=0">
                 <tr>
-                    <td><s:text name="label.admin.chapter.edit.postdate" /></td>
+                    <td>内容</td>
                     <td>
-                        <s:date name="postdate" format="yyyy-MM-dd HH:mm" />
+                        <textarea rows="30" cols="20" id="content" name="content" class="tb-rounded">${chapter.content}</textarea>
                     </td>
                 </tr>
-                </s:if>
+                <c:if test="chapter!=null">
+                <tr>
+                    <td>发布时间</td>
+                    <td>
+                        <input name="postdate" value=" <fmt:formatDate value="${chapter.postdate}" dateStyle="yyyy-MM-dd HH:mm" />"/>
+                    </td>
+                </tr>
+                </c:if>
 
                 <tr>
                     <td colspan="2" style="text-align: center; padding: 2px">
-                        <s:submit name="submit" value="%{getText('label.admin.edit.back')}" method="back" cssClass="submitButton" theme = "simple" onclick="goback()"/>
-                        <s:if test="articleno==0">
-                            <s:submit name="submit" value="%{getText('label.admin.edit.add')}" method="save" cssClass="submitButton" theme = "simple"/>
-                        </s:if>
-                        <s:else>
-                            <s:submit name="submit" value="%{getText('label.admin.edit.modify')}" method="save" cssClass="submitButton" theme = "simple"/>
-                        </s:else>
+                        <input name="submit" type="button" value="返回" method="back" class="submitButton" theme = "simple" onclick="history.back()"/>
+
+                        <c:choose>
+                            <c:when test="${chapter==null}">
+                                <input name="submit" type="submit" value="保存" method="save" class="submitButton" theme = "simple"/>
+                            </c:when>
+                            <c:otherwise>
+                                <input name="submit" type="submit" value="更新" method="save" class="submitButton" theme = "simple"/>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
                 </tr>
             </tbody>
         </table>
-        <s:hidden  name="articlename" />
-        <s:hidden  name="articleno" />
-        <s:hidden name="chapterno" />
-    </s:form>
+
+        <input type="hidden" name="articlename" value="${article.articlename}"/>
+        <input type="hidden" name="articleno" value="${article.articleno}"/>
+        <input type="hidden" name="chapterno" value="${chapter.chapterno}"/>
+    </form>
     </div>
     <jsp:include page="/WEB-INF/content/admin/commom/footer.jsp" />
 </body>

@@ -13,7 +13,7 @@
             <c:choose>
                 <c:when test="${pagination.previousFlag}">
                     <a href="#" onclick="fnPagination(4,${pagination.totalPages});">
-                        <img src="${pageContext.request.contextPath}${pageContext.request.contextPath}/images/admin/left_end.gif" alt="Go to first page" width="15" height="19"/>
+                        <img src="${pageContext.request.contextPath}/images/admin/left_end.gif" alt="Go to first page" width="15" height="19"/>
                     </a>
                 </c:when>
                 <c:otherwise>

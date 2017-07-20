@@ -20,9 +20,44 @@
     </resultMap>
 
     <sql id="tbname">t_system_block</sql>
+    <!-- 修改区块 -->
+    <update id="update" parameterType="SystemBlock">
 
+        UPDATE
+          <include refid="tbname"/>
+        SET
+          blockid=#{blockid},
+          blockname=#{blockname},
+          type=#{type},
+          category=#{category},
+          sortcol=#{sortcol},
+          isasc=#{isasc},
+          isfinish=#{isfinish},
+          limitnum=#{limitnum},
+          content=#{content},
+          target=#{target},
+          deleteflag=#{deleteflag},
+          modifyuserno=#{modifyuserno},
+          modifytime=#{modifytime}
+        WHERE
+          blockno=#{blockno}
 
-    <select id="getByNo"  resultMap="resultMap">
+    </update>
+
+    <!-- 保存区块-->
+    <insert id="save" parameterType="SystemBlock">
+
+        INSERT INTO
+        <include refid="tbname"/>
+        (blockid,blockname,type,category,sortcol,isasc,isfinish,limitnum,content,target,deleteflag,modifyuserno,modifytime)
+        VALUES (
+        #{blockid},#{blockname},#{type},#{category},#{sortcol},#{isasc},#{isfinish},#{limitnum},#{content},#{target},#{deleteflag},#{modifyuserno},#{modifytime}
+        )
+
+    </insert>
+
+    <!-- 根据编号获取区块详情 -->
+    <select id="getByNo" resultMap="resultMap">
         SELECT
         blockno,blockid,blockname,type,category,sortcol,isasc,isfinish,limitnum,content,target,deleteflag,modifyuserno,modifytime
         FROM
@@ -85,6 +120,9 @@
         <if test="pagination.sortColumn !=null and pagination.sortColumn !=''">
             ORDER BY ${pagination.sortColumn} ${pagination.sortOrder}
         </if>
+
+        LIMIT  #{pagination.start},#{pagination.pageSize}
+
     </select>
 
 

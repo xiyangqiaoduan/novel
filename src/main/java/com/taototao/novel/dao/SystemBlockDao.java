@@ -34,4 +34,16 @@ public interface SystemBlockDao {
      * @return 区块详细
      */
     SystemBlock getByNo(int blockNo);
+
+    /**
+     * 新增区块
+     * @param systemBlock
+     */
+    void save(SystemBlock systemBlock);
+
+    /**
+     * 更新区块
+     * @param systemBlock
+     */
+    void update(SystemBlock systemBlock);
 }

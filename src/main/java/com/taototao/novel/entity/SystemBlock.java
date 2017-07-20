@@ -150,4 +150,24 @@ public class SystemBlock implements Serializable {
     public void setModifytime(Date modifytime) {
         this.modifytime = modifytime;
     }
+
+    @Override
+    public String toString() {
+        return "SystemBlock{" +
+                "blockno=" + blockno +
+                ", blockid='" + blockid + '\'' +
+                ", blockname='" + blockname + '\'' +
+                ", type=" + type +
+                ", category=" + category +
+                ", sortcol='" + sortcol + '\'' +
+                ", isasc=" + isasc +
+                ", isfinish=" + isfinish +
+                ", limitnum=" + limitnum +
+                ", content='" + content + '\'' +
+                ", target=" + target +
+                ", deleteflag=" + deleteflag +
+                ", modifyuserno=" + modifyuserno +
+                ", modifytime=" + modifytime +
+                '}';
+    }
 }

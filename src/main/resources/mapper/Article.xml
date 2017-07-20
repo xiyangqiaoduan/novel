@@ -2,7 +2,383 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taototao.novel.dao.ArticleDao">
 
+    <resultMap id="resultMap" type="com.taototao.novel.entity.Article">
+        <id column="articleno" property="articleno"></id>
+        <result column="articlename" property="articlename"></result>
+        <result column="pinyin" property="pinyin"></result>
+        <result column="pinyinheadchar" property="pinyinheadchar"></result>
+        <result column="initial" property="initial"></result>
+        <result column="keywords" property="keywords"></result>
+        <result column="authorid" property="authorid"></result>
+        <result column="author" property="author"></result>
+        <result column="category" property="category"></result>
+        <result column="subcategory" property="subcategory"></result>
+        <result column="intro" property="intro"></result>
+        <result column="lastchapterno" property="lastchapterno"></result>
+        <result column="lastchapter" property="lastchapter"></result>
+        <result column="chapters" property="chapters"></result>
+        <result column="size" property="size"></result>
+        <result column="fullflag" property="fullflag"></result>
+        <result column="imgflag" property="imgflag"></result>
+        <result column="agent" property="agent"></result>
+        <result column="firstflag" property="firstflag"></result>
+        <result column="permission" property="permission"></result>
+        <result column="authorflag" property="authorflag"></result>
+        <result column="postdate" property="postdate"></result>
+        <result column="lastupdate" property="lastupdate"></result>
+        <result column="dayvisit" property="dayvisit"></result>
+        <result column="weekvisit" property="weekvisit"></result>
+        <result column="monthvisit" property="monthvisit"></result>
+        <result column="allvisit" property="allvisit"></result>
+        <result column="dayvote" property="dayvote"></result>
+        <result column="weekvote" property="weekvote"></result>
+        <result column="monthvote" property="monthvote"></result>
+        <result column="allvote" property="allvote"></result>
+        <result column="deleteflag" property="deleteflag"></result>
+        <result column="publicflag" property="publicflag"></result>
+        <result column="createuserno" property="createuserno"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="modifyuserno" property="modifyuserno"></result>
+        <result column="modifytime" property="modifytime"></result>
+        <result column="usecustomizeinfotitle" property="usecustomizeinfotitle"></result>
+        <result column="infotitle" property="infotitle"></result>
+        <result column="infokeywords" property="infokeywords"></result>
+        <result column="infodescription" property="infodescription"></result>
+        <result column="usecustomizelisttitle" property="usecustomizelisttitle"></result>
+        <result column="listtitle" property="listtitle"></result>
+        <result column="listkeywords" property="listkeywords"></result>
+        <result column="listdescription" property="listdescription"></result>
+    </resultMap>
+
     <sql id="tbname">t_article</sql>
+
+
+    <!-- 根据条件取得小说件数 -->
+    <select id="getCount" parameterType="com.taototao.novel.bean.ArticleSearchBean" resultType="java.lang.Integer">
+        SELECT count(*) FROM
+        <include refid="tbname"/>
+        where deleteflag = false
+    </select>
+
+
+    <select id="find" parameterType="com.taototao.novel.bean.ArticleSearchBean" resultMap="resultMap">
+
+        SELECT * FROM
+        <include refid="tbname"/>
+
+        <where>
+            deleteflag = false
+
+            <if test="articleno!=0">
+                AND articleno=#{articleno}
+            </if>
+
+            <if test="articlename!=null and articlename!=''">
+                AND articlename=#{articlename}
+            </if>
+            <if test="pinyin!=null and pinyin!=''">
+                AND pinyin=#{pinyin}
+            </if>
+            <if test="fromArticleno!=0">
+                AND articleno <![CDATA[>]]> #{fromArticleno}
+            </if>
+            <if test="author!=null and author!=''">
+                AND author=#{author}
+            </if>
+
+            <if test="category!=0">
+                AND category=#{category}
+            </if>
+
+            <if test="fullflag ==true">
+                AND fullflag=#{fullflag}
+            </if>
+            <if test="articlenos!=null and articlenos!=''">
+                AND articleno in (${articlenos})
+            </if>
+            <if test="key!=null">
+                AND (LOWER(articlename) LIKE CONCAT ('%',#{key},'%') OR LOWER(author) LIKE CONCAT('%',#{key},'%'))
+            </if>
+
+            <if test="authorid >0">
+                AND authorid=#{authorid}
+            </if>
+
+            <if test="tag!=null">
+                AND articlename LIKE CONCAT('%',#{tag},'%')
+            </if>
+            <if test="pageType==1">
+                AND lastupdate is not null
+                AND lastchapterno is not null
+            </if>
+        </where>
+
+        <choose>
+            <when test="pagination!=null and pagination.sortColumn!=null">
+                ORDER BY ${pagination.sortColumn} ${pagination.sortOrder}
+            </when>
+            <otherwise>
+                ORDER BY articleno
+            </otherwise>
+        </choose>
+        LIMIT #{pagination.start},#{pagination.pageSize}
+    </select>
+
+
+    <!-- 根据拼音正则匹配 -->
+    <select id="findByPinyinRegularRxpressions" resultMap="resultMap">
+
+        SELECT * FROM
+        <include refid="tbname"/>
+        WHERE pinyin REGEXP CONCAT('^',#{pinyin},'[0-9]*$')
+        ORDER BY pinyin DESC LIMIT 1
+
+    </select>
+
+    <!-- 根据编号获取小说 -->
+    <select id="getByNo"  resultMap="resultMap">
+        SELECT * FROM
+        <include refid="tbname"/>
+        WHERE articleno=#{articleno} LIMIT 1
+    </select>
+
+    <!-- 新增小说 -->
+    <insert id="save" useGeneratedKeys="true" keyProperty="articleno" parameterType="Article">
+
+        INSERT INTO
+        <include refid="tbname"/>
+        (
+        articlename,
+        pinyin,
+        pinyinheadchar,
+        initial,
+        keywords,
+        authorid,
+        author,
+        category,
+        subcategory,
+        intro,
+        lastchapterno,
+        lastchapter,
+        chapters,
+        size,
+        fullflag,
+        imgflag,
+        agent,
+        firstflag,
+        permission,
+        authorflag,
+        postdate,
+        lastupdate,
+        dayvisit,
+        weekvisit,
+        monthvisit,
+        allvisit,
+        dayvote,
+        weekvote,
+        monthvote,
+        allvote,
+        deleteflag,
+        publicflag,
+        createuserno,
+        createtime,
+        modifyuserno,
+        modifytime,
+        usecustomizeinfotitle,
+        infotitle,
+        infokeywords,
+        infodescription,
+        usecustomizelisttitle,
+        listtitle,
+        listkeywords,
+        listdescription
+        )
+        VALUES (
+
+        #{articlename},
+        #{pinyin},
+        #{pinyinheadchar},
+        #{initial},
+        #{keywords},
+        #{authorid},
+        #{author},
+        #{category},
+        #{subcategory},
+        #{intro},
+        #{lastchapterno},
+        #{lastchapter},
+        #{chapters},
+        #{size},
+        #{fullflag},
+        #{imgflag},
+        #{agent},
+        #{firstflag},
+        #{permission},
+        #{authorflag},
+        #{postdate},
+        #{lastupdate},
+        #{dayvisit},
+        #{weekvisit},
+        #{monthvisit},
+        #{allvisit},
+        #{dayvote},
+        #{weekvote},
+        #{monthvote},
+        #{allvote},
+        #{deleteflag},
+        #{publicflag},
+        #{createuserno},
+        #{createtime},
+        #{modifyuserno},
+        #{modifytime},
+        #{usecustomizeinfotitle},
+        #{infotitle},
+        #{infokeywords},
+        #{infodescription},
+        #{usecustomizelisttitle},
+        #{listtitle},
+        #{listkeywords},
+        #{listdescription}
+        )
+
+    </insert>
+
+    <!-- 修改小说 -->
+    <update id="update" parameterType="Article">
+        UPDATE  <include refid="tbname" />
+        <set>
+            articlename=#{articlename},
+            pinyin=#{pinyin},
+            <if test="pinyinheadchar!=null and pinyinheadchar !=''">
+                pinyinheadchar=#{pinyinheadchar},
+            </if>
+            <if test="initial!=null and initial!=''">
+                initial= #{initial},
+            </if>
+            <if test="keywords!=null and keywords=''">
+                keywords=#{keywords},
+            </if>
+            <if test="authorid !=0">
+                authorid=#{authorid},
+            </if>
+            <if test="author !=null and author!=''">
+                author=#{author},
+            </if>
+            <if test="category!=0">
+                category=#{category},
+            </if>
+            <if test="subcategory!=0">
+                subcategory=#{subcategory},
+            </if>
+            <if test="intro!=null and intro !=''">
+                intro=#{intro},
+            </if>
+            <if test="lastchapterno!=0">
+                lastchapterno=#{lastchapterno},
+            </if>
+            <if test="lastchapterno!=0">
+                lastchapterno=#{lastchapterno},
+            </if>
+
+            <if test="lastchapter!=null and lastchapter!=''">
+                lastchapter=#{lastchapter},
+            </if>
+            <if test="chapters!=0">
+                chapters=#{chapters},
+            </if>
+            <if test="size!=0">
+                size=#{size},
+            </if>
+            fullflag=#{fullflag},
+            <if test="imgflag!=0">
+                imgflag=#{imgflag},
+            </if>
+            <if test="agent!=null">
+                agent=#{agent},
+            </if>
+            firstflag=#{firstflag},
+            permission=#{permission},
+            authorflag=#{authorflag},
+            <if test="postdate!=null">
+                postdate=#{postdate},
+            </if>
+            <if test="lastupdate!=null">
+                lastupdate=#{lastupdate},
+            </if>
+
+            <if test="dayvisit!=0">
+                dayvisit=#{dayvisit},
+            </if>
+            <if test="weekvisit!=0">
+                weekvisit=#{weekvisit},
+            </if>
+            <if test="monthvisit!=0">
+                monthvisit=#{monthvisit},
+            </if>
+            <if test="allvisit!=0">
+                allvisit=#{allvisit},
+            </if>
+            <if test="dayvote!=0">
+                dayvote=#{dayvote},
+            </if>
+            <if test="weekvote!=0">
+                weekvote=#{weekvote},
+            </if>
+            <if test="monthvote!=0">
+                monthvote=#{monthvote},
+            </if>
+            <if test="allvote!=0">
+                allvote=#{allvote},
+            </if>
+            deleteflag=#{deleteflag},
+            publicflag=#{publicflag},
+            <if test="createuserno!=0">
+                createuserno=#{createuserno},
+            </if>
+
+           <if test="createtime!=null">
+               createtime= #{createtime},
+           </if>
+            modifyuserno=#{modifyuserno},
+            modifytime=#{modifytime},
+            usecustomizeinfotitle=#{usecustomizeinfotitle},
+            <if test="infotitle!=null">
+                infotitle=#{infotitle},
+            </if>
+            <if test="infokeywords!=null">
+                infokeywords=#{infokeywords},
+            </if>
+            <if test="infodescription!=null">
+                infodescription=#{infodescription},
+            </if>
+            <if test="usecustomizelisttitle!=null">
+                usecustomizelisttitle=#{usecustomizelisttitle},
+            </if>
+            usecustomizelisttitle=#{usecustomizelisttitle},
+            <if test="listtitle!=null">
+                listtitle=#{listtitle},
+            </if>
+            <if test="listkeywords!=null">
+                listkeywords=#{listkeywords},
+            </if>
+            <if test="listdescription!=null">
+                listdescription=#{listdescription},
+            </if>
+        </set>
+        <where>
+            articleno=#{articleno}
+        </where>
+    </update>
+
+    <update id="delByNo" parameterType="Article">
+
+        UPDATE <include refid="tbname" />
+
+        SET  deleteflag=#{deleteflag} ,modifyuserno=#{modifyuserno},modifytime=#{modifytime}
+
+        WHERE  articleno=#{articleno}
+    </update>
+
 
 
 </mapper>

@@ -35,4 +35,16 @@ public interface SystemBlockService {
      * @return 区块详细
      */
     SystemBlock getByNo(int blockNo);
+
+    /**
+     * 新增区块
+     * @param systemBlock
+     */
+    void save(SystemBlock systemBlock);
+
+    /**
+     * 修改区块
+     * @param systemBlock
+     */
+    void update(SystemBlock systemBlock);
 }

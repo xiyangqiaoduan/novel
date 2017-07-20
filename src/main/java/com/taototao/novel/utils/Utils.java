@@ -1,5 +1,7 @@
 package com.taototao.novel.utils;
 
+import com.taototao.novel.constant.TaoToTaoConfig;
+import com.taototao.novel.constant.TaoToTaoConstants;
 import com.taototao.novel.entity.Chapter;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
@@ -21,21 +23,21 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
+import org.wltea.analyzer.IKSegmentation;
+import org.wltea.analyzer.Lexeme;
 
 
+import javax.servlet.ServletContext;
 import java.io.*;
 import java.security.MessageDigest;
 import java.util.*;
 
 /**
- * 
  * <p>
- * 易读工具类
+ * 工具类
  * </p>
- * Copyright(c) 2014 YiDu-Novel. All rights reserved.
- * 
- * @version 1.1.9
- * @author shinpa.you
  */
 public class Utils {
     /**
@@ -45,13 +47,12 @@ public class Utils {
 
     /**
      * 把字符串转成MD5字符串
-     * 
-     * @param input
-     *            需要转换的字符串
+     *
+     * @param input 需要转换的字符串
      * @return 转换后的MD5字符串
      */
     public static String convert2MD5(final String input) {
-        char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+        char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         try {
             byte[] btInput = input.getBytes();
             // 获得MD5摘要算法的 MessageDigest 对象
@@ -78,7 +79,7 @@ public class Utils {
 
     /**
      * 取得章节信息
-     * 
+     *
      * @param chapter
      *            章节信息
      * @param escape
@@ -91,7 +92,7 @@ public class Utils {
 
     /**
      * 取得章节信息
-     * 
+     *
      * @param chapter
      *            章节信息
      * @param escape
@@ -100,113 +101,114 @@ public class Utils {
      *            是否进行伪原创
      * @return 章节内容
      */
-//    public static String getContext(Chapter chapter, boolean escape, boolean pseudo) {
-//
-//        String result = null;
-//
-//        StringBuilder sb = new StringBuilder();
-//        String path = getTextFilePathByChapterno(chapter.getArticleno(), chapter.getChapterno());
-//
-//        File file = new File(path);
-//        try {
-//            if (file.isFile() && file.exists()) {
-//                // 判断文件是否存在
-//                InputStreamReader read = new InputStreamReader(new FileInputStream(file),
-//                        YiDuConstants.yiduConf.getString(YiDuConfig.TXT_ENCODING));
-//                BufferedReader bufferedReader = new BufferedReader(read);
-//                String lineTxt = null;
-//                while ((lineTxt = bufferedReader.readLine()) != null) {
-//                    if (escape) {
-//                        // 替换到标签的开始结束
-//                        sb.append(StringEscapeUtils.escapeHtml4(lineTxt));
-//                        sb.append("<br/>");
-//                    } else {
-//                        sb.append(lineTxt);
-//                        sb.append("\n");
-//                    }
-//                }
-//                bufferedReader.close();
-//                read.close();
-//
-//                if (escape) {
-//                    result = sb.toString().replaceAll("\\s", "&nbsp;");
-//                } else {
-//                    result = sb.toString();
-//                }
-//                // 根据配置决定是否采用伪原创
-//                if (pseudo) {
-//                    if (YiDuConstants.pseudoConf.getBoolean("replace_keywords")) {
-//                        result = PseudoUtils.replaceKeywords(result);
-//                    }
-//                    if (YiDuConstants.pseudoConf.getBoolean("is_top_append")) {
-//                        result = PseudoUtils.topAppend(result);
-//                    }
-//                    if (YiDuConstants.pseudoConf.getBoolean("is_bottom_append")) {
-//                        result = PseudoUtils.bottomAppend(chapter, result);
-//                    }
-//                    if (YiDuConstants.pseudoConf.getBoolean("fetch_keywords_from_chapter")) {
-//                        result = PseudoUtils.fetchKeywords(result);
-//                    }
-//                }
-//            } else {
-//                logger.info("can not find chapter. articleno:" + chapter.getArticleno() + " chapterno:"
-//                        + chapter.getChapterno());
-//            }
-//        } catch (Exception e) {
-//            logger.error(e.getMessage(), e);
-//        }
-//        return result;
-//    }
+    public static String getContext(Chapter chapter, boolean escape, boolean pseudo) {
+
+        String result = null;
+
+        StringBuilder sb = new StringBuilder();
+        String path = getTextFilePathByChapterno(chapter.getArticleno(), chapter.getChapterno());
+
+        File file = new File(path);
+        try {
+            if (file.isFile() && file.exists()) {
+                // 判断文件是否存在
+                InputStreamReader read = new InputStreamReader(new FileInputStream(file),
+                        TaoToTaoConstants.taoToTaoConf.getString(TaoToTaoConfig.TXT_ENCODING));
+                BufferedReader bufferedReader = new BufferedReader(read);
+                String lineTxt = null;
+                while ((lineTxt = bufferedReader.readLine()) != null) {
+                    if (escape) {
+                        // 替换到标签的开始结束
+                        sb.append(StringEscapeUtils.escapeHtml4(lineTxt));
+                        sb.append("<br/>");
+                    } else {
+                        sb.append(lineTxt);
+                        sb.append("\n");
+                    }
+                }
+                bufferedReader.close();
+                read.close();
+
+                if (escape) {
+                    result = sb.toString().replaceAll("\\s", "&nbsp;");
+                } else {
+                    result = sb.toString();
+                }
+                // 根据配置决定是否采用伪原创
+                if (pseudo) {
+                    if (TaoToTaoConstants.pseudoConf.getBoolean("replace_keywords")) {
+                        result = PseudoUtils.replaceKeywords(result);
+                    }
+                    if (TaoToTaoConstants.pseudoConf.getBoolean("is_top_append")) {
+                        result = PseudoUtils.topAppend(result);
+                    }
+                    if (TaoToTaoConstants.pseudoConf.getBoolean("is_bottom_append")) {
+                        result = PseudoUtils.bottomAppend(chapter, result);
+                    }
+                    if (TaoToTaoConstants.pseudoConf.getBoolean("fetch_keywords_from_chapter")) {
+                        result = PseudoUtils.fetchKeywords(result);
+                    }
+                }
+            } else {
+                logger.info("can not find chapter. articleno:" + chapter.getArticleno() + " chapterno:"
+                        + chapter.getChapterno());
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return result;
+    }
 
     /**
      * 根据小说编号和章节编号获得章节TXT文件路径
-     * 
+     *
      * @param articleno
      *            小说编号
      * @param chapterno
      *            章节编号
      * @return 章节TXT文件路径
      */
-//    public static String getTextFilePathByChapterno(int articleno, int chapterno) {
-//        String path = YiDuConstants.yiduConf.getString(YiDuConfig.FILE_PATH);
-//
-//        path = path + "/" + articleno / YiDuConstants.SUB_DIR_ARTICLES + "/" + articleno + "/" + chapterno + ".txt";
-//        return path;
-//    }
+    public static String getTextFilePathByChapterno(int articleno, int chapterno) {
+        String path = TaoToTaoConstants.taoToTaoConf.getString(TaoToTaoConfig.FILE_PATH);
+
+        path = path + "/" + articleno / TaoToTaoConstants.SUB_DIR_ARTICLES + "/" + articleno + "/" + chapterno + ".txt";
+        return path;
+    }
 
     /**
      * 根据小说编号获得小说的txt目录
-     * 
+     *
      * @param articleno
      *            小说编号
      * @return 小说的txt目录
      */
-//    public static String getTextDirectoryPathByArticleno(int articleno) {
-//        String path = YiDuConstants.yiduConf.getString(YiDuConfig.FILE_PATH);
-//        // path = ServletActionContext.getServletContext().getRealPath("/") +
-//        // "/" + path + "/" + articleno / YiDuConstants.SUB_DIR_ARTICLES + "/"
-//        // + articleno + "/" + chapterno + ".txt";
-//        path = path + "/" + articleno / YiDuConstants.SUB_DIR_ARTICLES + "/" + articleno + "/";
-//        return path;
-//    }
+    public static String getTextDirectoryPathByArticleno(int articleno) {
+        String path = TaoToTaoConstants.taoToTaoConf.getString(TaoToTaoConfig.FILE_PATH);
+        // path = ServletActionContext.getServletContext().getRealPath("/") +
+        // "/" + path + "/" + articleno / YiDuConstants.SUB_DIR_ARTICLES + "/"
+        // + articleno + "/" + chapterno + ".txt";
+        path = path + "/" + articleno / TaoToTaoConstants.SUB_DIR_ARTICLES + "/" + articleno + "/";
+        return path;
+    }
 
     /**
      * 根据小说编号获得小说的图片目录
-     * 
+     *
      * @param articleno
      *            小说编号
      * @return 小说的图片目录
      */
-//    public static String getImgDirectoryPathByArticleno(int articleno) {
-//        String path = YiDuConstants.yiduConf.getString(YiDuConfig.RELATIVE_IAMGE_PATH);
-//        path = ServletActionContext.getServletContext().getRealPath("/") + "/" + path + "/" + articleno
-//                / YiDuConstants.SUB_DIR_ARTICLES + "/" + articleno + "/";
-//        return path;
-//    }
+    public static String getImgDirectoryPathByArticleno(int articleno) {
+        String path = TaoToTaoConstants.taoToTaoConf.getString(TaoToTaoConfig.RELATIVE_IAMGE_PATH);
+        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+        ServletContext servletContext = webApplicationContext.getServletContext();
+        path = servletContext.getRealPath("/") + "/" + path + "/" + articleno / TaoToTaoConstants.SUB_DIR_ARTICLES + "/" + articleno + "/";
+        return path;
+    }
 
     /**
      * 保存文件
-     * 
+     *
      * @param articleno
      *            小说编号
      * @param chapterno
@@ -216,31 +218,30 @@ public class Utils {
      * @throws IOException
      *             IO异常
      */
-//    public static void saveContext(int articleno, int chapterno, String content) throws IOException {
-//        String path = getTextFilePathByChapterno(articleno, chapterno);
-//        File file = new File(path);
-//
-//        File parentPath = file.getParentFile();
-//        if (!parentPath.exists()) {
-//            parentPath.mkdirs();
-//        }
-//        try {
-//            OutputStreamWriter outputStream = new OutputStreamWriter(new FileOutputStream(file),
-//                    YiDuConstants.yiduConf.getString(YiDuConfig.TXT_ENCODING));
-//            outputStream.write(content);
-//            outputStream.flush();
-//            outputStream.close();
-//
-//        } catch (IOException e) {
-//            logger.error(e.getMessage(), e);
-//        }
-//    }
+    public static void saveContext(int articleno, int chapterno, String content) throws IOException {
+        String path = getTextFilePathByChapterno(articleno, chapterno);
+        File file = new File(path);
+
+        File parentPath = file.getParentFile();
+        if (!parentPath.exists()) {
+            parentPath.mkdirs();
+        }
+        try {
+            OutputStreamWriter outputStream = new OutputStreamWriter(new FileOutputStream(file),
+                    TaoToTaoConstants.taoToTaoConf.getString(TaoToTaoConfig.TXT_ENCODING));
+            outputStream.write(content);
+            outputStream.flush();
+            outputStream.close();
+
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
 
     /**
      * 取得指定URI内容
-     * 
-     * @param uri
-     *            文件URI
+     *
+     * @param uri 文件URI
      * @return 页面内容
      */
     public static String getContentFromUri(String uri) {
@@ -273,9 +274,8 @@ public class Utils {
 
     /**
      * 删除目录（文件夹）以及目录下的文件
-     * 
-     * @param sPath
-     *            被删除目录的文件路径
+     *
+     * @param sPath 被删除目录的文件路径
      * @return 目录删除成功返回true，否则返回false
      */
     public static boolean deleteDirectory(String sPath) {
@@ -315,9 +315,8 @@ public class Utils {
 
     /**
      * 删除单个文件
-     * 
-     * @param sPath
-     *            被删除文件的文件名
+     *
+     * @param sPath 被删除文件的文件名
      * @return 单个文件删除成功返回true，否则返回false
      */
     public static boolean deleteFile(String sPath) {
@@ -333,47 +332,43 @@ public class Utils {
 
     /**
      * 保存小说图片
-     * 
-     * @param articleno
-     *            小说编号
-     * @param file
-     *            图片文件
-     * @param fileName
-     *            文件名
-     * @throws Exception
-     *             保存异常
+     *
+     * @param articleno 小说编号
+     * @param file      图片文件
+     * @param fileName  文件名
+     * @throws Exception 保存异常
      */
-//    public static void saveArticlespic(int articleno, File file, String fileName) throws Exception {
-//        String path = YiDuConstants.yiduConf.getString(YiDuConfig.RELATIVE_IAMGE_PATH);
-//        path = ServletActionContext.getServletContext().getRealPath("/") + "/" + path + "/" + articleno
-//                / YiDuConstants.SUB_DIR_ARTICLES + "/" + articleno + "/" + articleno + "s."
-//                + StringUtils.substringAfterLast(fileName, ".");
-//        File savefile = new File(path);
-//        if (!savefile.getParentFile().exists()) {
-//            savefile.getParentFile().mkdirs();
-//        }
-//        FileUtils.copyFile(file, savefile);
-//    }
+    public static void saveArticlespic(int articleno, File file, String fileName) throws Exception {
+        String path = TaoToTaoConstants.taoToTaoConf.getString(TaoToTaoConfig.RELATIVE_IAMGE_PATH);
+        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+        ServletContext servletContext = webApplicationContext.getServletContext();
+        path = servletContext.getRealPath("/") + "/" + path + "/" + articleno / TaoToTaoConstants.SUB_DIR_ARTICLES + "/" + articleno + "/" + articleno + "s."
+                + StringUtils.substringAfterLast(fileName, ".");
+        File savefile = new File(path);
+        if (!savefile.getParentFile().exists()) {
+            savefile.getParentFile().mkdirs();
+        }
+        org.apache.commons.io.FileUtils.copyFile(file, savefile);
+    }
 
     /**
      * 根据小说编号获得小说图片路径
-     * 
-     * @param articleno
-     *            小说编号
+     *
+     * @param articleno 小说编号
      * @return 小说图片路径
      */
-//    public static String getArticlePicPath(int articleno) {
-//        String path = YiDuConstants.yiduConf.getString(YiDuConfig.RELATIVE_IAMGE_PATH);
-//        path = ServletActionContext.getServletContext().getRealPath("/") + "/" + path + "/" + articleno
-//                / YiDuConstants.SUB_DIR_ARTICLES + "/" + articleno + "/";
-//        return path;
-//    }
+    public static String getArticlePicPath(int articleno) {
+        String path = TaoToTaoConstants.taoToTaoConf.getString(TaoToTaoConfig.RELATIVE_IAMGE_PATH);
+        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+        ServletContext servletContext = webApplicationContext.getServletContext();
+        path = servletContext.getRealPath("/") + "/" + path + "/" + articleno / TaoToTaoConstants.SUB_DIR_ARTICLES + "/" + articleno + "/";
+        return path;
+    }
 
     /**
      * 将汉字转换为全拼
-     * 
-     * @param src
-     *            需要转换的汉字
+     *
+     * @param src 需要转换的汉字
      * @return 拼音字符串
      */
     public static String getPinYin(String src) {
@@ -408,9 +403,8 @@ public class Utils {
 
     /**
      * 将汉字转换为全拼只取小写的首字母
-     * 
-     * @param src
-     *            需要转换的汉字
+     *
+     * @param src 需要转换的汉字
      * @return 拼音字符串
      */
     public static String getPinYinHeadChar(String src) {
@@ -452,9 +446,8 @@ public class Utils {
      * List的话，不为NULL和空<br>
      * 字符串的的话，不为NULL或空<br>
      * Integer的话，不为NULL或0<br>
-     * 
-     * @param obj
-     *            要判断的对象
+     *
+     * @param obj 要判断的对象
      * @return 是否定义了
      */
     public static boolean isDefined(Object obj) {
@@ -479,9 +472,8 @@ public class Utils {
 
     /**
      * 生成随机字符串
-     * 
-     * @param length
-     *            字符串长度
+     *
+     * @param length 字符串长度
      * @return 随机字符串
      */
     public static final String getRandomString(int length) {
@@ -509,23 +501,23 @@ public class Utils {
         return StringUtils.replace(value, ",", "\\,");
     }
 
-//    /**
-//     * 从文字列中提取关键字，用于模糊匹配
-//     *
-//     * @param content
-//     * @return 关键字
-//     */
-//    public static final List<String> getKeyWords(String content) {
-//        IKSegmentation segmentation = new IKSegmentation(new StringReader(content), false);
-//        Lexeme lexeme = null;
-//        List<String> keywords = new ArrayList<String>();
-//        try {
-//            while (null != (lexeme = segmentation.next())) {
-//                keywords.add(lexeme.getLexemeText());
-//            }
-//        } catch (Exception e) {
-//        }
-//        return keywords;
-//    }
+    /**
+     * 从文字列中提取关键字，用于模糊匹配
+     *
+     * @param content
+     * @return 关键字
+     */
+    public static final List<String> getKeyWords(String content) {
+        IKSegmentation segmentation = new IKSegmentation(new StringReader(content), false);
+        Lexeme lexeme = null;
+        List<String> keywords = new ArrayList<String>();
+        try {
+            while (null != (lexeme = segmentation.next())) {
+                keywords.add(lexeme.getLexemeText());
+            }
+        } catch (Exception e) {
+        }
+        return keywords;
+    }
 
 }

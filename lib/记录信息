@@ -1,0 +1,2 @@
+1、本地建立仓库信息
+mvn install:install-file -Dfile=D:\dev_tool\jar\IKAnalyzer-3.2.8.jar  -DgroupId=org.wltea.analyzer -DartifactId=IKAnalyzer  -Dversion=3.2.8 -Dpackaging=jar

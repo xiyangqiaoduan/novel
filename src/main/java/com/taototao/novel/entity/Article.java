@@ -47,7 +47,7 @@ public class Article implements Serializable{
     private int imgflag;
     /**代理*/
     private String agent;
-    /**是否置顶*/
+    /**1-本站首发 0-他站首发*/
     private boolean firstflag;
     /**允许*/
     private int permission;

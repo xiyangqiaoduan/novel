@@ -1,5 +1,6 @@
 package com.taototao.novel.controller.admin;
 
+import java.util.Date;
 import java.util.List;
 
 import com.taototao.novel.bean.SystemBlockSearchBean;
@@ -29,7 +30,12 @@ public class SystemBlockController extends AbstractAdminBaseController {
     @Autowired
     private SystemBlockService systemBlockService;
 
-
+    /**
+     * 列表
+     * @param pagination
+     * @param map
+     * @return
+     */
     @RequestMapping("systemblock/blockList")
     public String list( Pagination pagination, ModelMap map) {
         logger.debug("block start");
@@ -38,6 +44,9 @@ public class SystemBlockController extends AbstractAdminBaseController {
         }
         if(pagination.getPageNumber()==0){
             pagination.setPageNumber(1);
+            pagination.setStart(0);
+        }else{
+            pagination.setStart(pagination.getPageSize()*(pagination.getPageNumber()-1));
         }
         if (StringUtils.isEmpty(pagination.getSortColumn())) {
             pagination.setSortColumn("blockno");
@@ -53,7 +62,12 @@ public class SystemBlockController extends AbstractAdminBaseController {
         return "admin/blockList";
     }
 
-
+    /**
+     * 修改页面
+     * @param blockno
+     * @param map
+     * @return
+     */
     @RequestMapping("systemblock/edit/{blockno}")
     public String editPage(@PathVariable("blockno") int blockno,ModelMap map){
         SystemBlock systemBlock=systemBlockService.getByNo(blockno);
@@ -61,7 +75,54 @@ public class SystemBlockController extends AbstractAdminBaseController {
         return "admin/blockEdit";
     }
 
+    /**
+     * 新增页面
+     * @return
+     */
+    @RequestMapping("systemblock/addPage")
+    public String addPage(){
+        return "admin/blockEdit";
+    }
 
+    /**
+     * 保存
+     * @param systemBlock
+     * @return
+     */
+    @RequestMapping("systemblock/save")
+    public String save(SystemBlock systemBlock){
+        logger.debug("save block -----> systemBlock={}",systemBlock.toString());
+        systemBlockService.save(systemBlock);
+        return "redirect:/admin/systemblock/blockList";
+    }
+
+    /**
+     * 修改
+     * @param systemBlock
+     * @return
+     */
+    @RequestMapping("systemblock/update")
+    public String edit(SystemBlock systemBlock){
+        logger.debug("update block -----> systemBlock={}",systemBlock.toString());
+        systemBlockService.update(systemBlock);
+        return "redirect:/admin/systemblock/blockList";
+    }
+
+    /**
+     * 删除
+     * @param blockno
+     * @return
+     */
+    @RequestMapping("systemblock/del/{blockno}")
+    public String delete(@PathVariable int blockno){
+        SystemBlock systemBlock=systemBlockService.getByNo(blockno);
+        if(systemBlock!=null){
+            systemBlock.setDeleteflag(true);
+            systemBlock.setModifytime(new Date());
+            systemBlockService.update(systemBlock);
+        }
+        return "redirect:/admin/systemblock/blockList";
+    }
 
 
 

@@ -1,10 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <jsp:include page="/WEB-INF/content/admin/commom/header.jsp" />
-    <jsp:include page="/WEB-INF/content/commom/common_form.jsp" />
-    <s:hidden name="articleno"/>
+   <input type="hidden" name="articleno" value="${article.articleno}"/>
     <br>
     <table class="yidu-table" align="center">
         <colgroup>
@@ -14,29 +13,32 @@
             <col width="240px">
         </colgroup>
         <tr>
-            <td class="ac_odd" colspan="4">《<s:property value= "article.articlename"/>》-<s:property value= "article.author"/> 
-            &nbsp;&nbsp;&nbsp;[新建分卷] [<a href="<s:property value="contextPath" />/admin/chapterEdit?articleno=<s:property value="article.articleno" />">增加章节</a>]
-             [<a href="<s:property value="contextPath" />/admin/chapterList!deleteAll?articleno=<s:property value="article.articleno" />">清空文章</a>] 
+            <td class="ac_odd" colspan="4">《${article.articlename}》-${article.author}
+            &nbsp;&nbsp;&nbsp;[新建分卷] [<a href="${pageContext.request.contextPath}/admin/chapter/addPage?articleno=${article.articleno}">增加章节</a>]
+             [<a href="${pageContext.request.contextPath}/admin/chapter/deleteAll?articleno=${article.articleno}">清空文章</a>]
 		   <input type="hidden" name="articleid" id="articleid" value="45911">
         </td>
         </tr>
-        <s:iterator value="chapterList" id="chapter" status="rowstatus">
-        <s:if test="#rowstatus.index % 4 ==0 ">
-        <s:if test="#rowstatus.index / 4 % 2 == 1">
-        <tr class="ac_odd">
-        </s:if>
-        <s:else>
-        <tr>
-        </s:else>
-        </s:if>
-        <td>
-        <a href="<s:property value="contextPath" />/admin/chapterEdit?chapterno=<s:property value='#chapter.chapterno' />"><s:property  value="#chapter.chaptername" /></a>
-        <a href="javascript:confirmDelete('<s:property value="contextPath" />/admin/chapterList!delete?chapterno=<s:property value='#chapter.chapterno' />')" style="color:red"><s:text name="label.admin.list.delete" /></a>
-        </td>
-        <s:if test="#rowstatus.index % 4 ==3 ">
-        </tr>
-        </s:if>
-        </s:iterator>
+
+        <c:forEach var="chapter" items="${chapterList}" varStatus="status">
+            <c:if test="${status.index % 4 ==0} ">
+                <c:choose>
+                <c:when test="${status.index/ 4 % 2 == 1}">
+                    <tr class="ac_odd">
+                </c:when>
+                <c:otherwise>
+                    <tr>
+                </c:otherwise>
+                </c:choose>
+            </c:if>
+            <td>
+                <a href="${pageContext.request.contextPath}/admin/chapterEdit?chapterno=${chapter.chapterno}">${chapter.chaptername}</a>
+                <a href="javascript:confirmDelete('${pageContext.request.contextPath}/admin/chapte/delete?chapterno=${chapter.chapterno}')" style="color:red">删除</a>
+            </td>
+            <c:if test="${status.index % 4 ==3}">
+                </tr>
+            </c:if>
+        </c:forEach>
     </table>
     </div>
     <jsp:include page="/WEB-INF/content/admin/commom/footer.jsp" />

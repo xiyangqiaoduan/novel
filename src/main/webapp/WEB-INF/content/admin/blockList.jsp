@@ -67,7 +67,7 @@
         </td>
         <td>
             <a href="${pageContext.request.contextPath}/admin/systemblock/edit/${block.blockno}">编辑</a>
-            <a href="javascript:confirmDelete('${pageContext.request.contextPath}/admin/block/delete/${block.blockno}')">删除</a>
+            <a href="javascript:confirmDelete('${pageContext.request.contextPath}/admin/systemblock/del/${block.blockno}')">删除</a>
         </td>
         </tr>
     </c:forEach>
@@ -82,7 +82,7 @@
     </tr>
     <tr>
         <td class="pagination-label" width="100%" nowrap="nowrap">
-            <a href="${pageContext.request.contextPath}/admin/blockEdit">追加</a>
+            <a href="${pageContext.request.contextPath}/admin/systemblock/addPage">追加</a>
         </td>
     </tr>
 </table>

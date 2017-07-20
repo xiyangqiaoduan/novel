@@ -1,3 +1,5 @@
+var path='/novel';
+
 function form_submit(methodStr) {
 	var form = $("form");
 	var method = $("#method");
@@ -98,6 +100,6 @@ function operApply() {
 		$(arrChk).each(function() {
 			params = params + this.value + ",";
 		});
-		document.location = '/admin/articleList!delete?articleNoList=' + params;
+		document.location = path+'/admin/article/del?articleNoList=' + params;
 	}
 }

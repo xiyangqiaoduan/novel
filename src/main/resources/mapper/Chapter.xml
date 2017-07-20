@@ -5,4 +5,55 @@
     <sql id="tbname">t_chapter</sql>
 
 
+    <select id="find" parameterType="com.taototao.novel.bean.ChapterSearchBean" resultType="Chapter">
+
+        SELECT * FROM
+        <include refid="tbname"/>
+        <where>
+            deleteflag=0
+            <if test="articleno!=0">
+                AND articleno = #{articleno}
+            </if>
+            <if test="articlenoList!=null">
+                AND articleno in
+                <foreach collection="articlenoList" close=")" open="(" item="item" index="index" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+
+            <if test="chapternoList!=null">
+                AND chapterno in
+                <foreach collection="chapternoList" close=")" open="(" item="item" index="index" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+
+        </where>
+
+        ORDER BY articleno asc ,chapterno ASC
+
+    </select>
+
+    <!--  根据小说编号获取总字节数 -->
+    <select id="getChapterCount" resultType="java.lang.Integer">
+        SELECT sum(size) FROM
+        <include refid="tbname"/>
+        WHERE
+        deleteflag=0
+        and
+        chaptertype = 0
+        AND
+        articleno=#{articleno}
+    </select>
+
+
+    <insert id="save"  parameterType="Chapter">
+
+        INSERT  INTO  <include refid="tbname"/> (articleno,articlename,chaptertype,chaptername,size,isvip,postdate,publishtime,ispublish,lastchecktime,deleteflag,modifyuserno,modifytime) VALUES (
+        #{articleno},#{articlename},#{chaptertype},#{chaptername},#{size},#{isvip},#{postdate},#{publishtime},#{ispublish},#{lastchecktime},#{deleteflag},#{modifyuserno},#{modifytime}
+        )
+
+    </insert>
+
+
 </mapper>

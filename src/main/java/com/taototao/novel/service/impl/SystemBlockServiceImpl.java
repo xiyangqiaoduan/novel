@@ -7,6 +7,7 @@ import com.taototao.novel.service.SystemBlockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,5 +34,15 @@ public class SystemBlockServiceImpl implements SystemBlockService {
 
     public SystemBlock getByNo(int blockNo) {
         return systemBlockDao.getByNo(blockNo);
+    }
+
+    public void save(SystemBlock systemBlock) {
+        systemBlock.setModifytime(new Date());
+        systemBlockDao.save(systemBlock);
+    }
+
+    public void update(SystemBlock systemBlock) {
+        systemBlock.setModifytime(new Date());
+        systemBlockDao.update(systemBlock);
     }
 }

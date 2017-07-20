@@ -1,4 +1,4 @@
-package com.taototao.novel.dao;
+package com.taototao.novel.service;
 
 import com.taototao.novel.bean.ArticleSearchBean;
 import com.taototao.novel.entity.Article;
@@ -9,9 +9,9 @@ import java.util.List;
  * ${DESCRIPTION}
  *
  * @author yangcb
- * @create 2017-07-13 15:33
+ * @create 2017-07-19 11:45
  **/
-public interface ArticleDao {
+public interface ArticleService {
     /**
      * 根据条件取得小说件数
      * @param searchBean
@@ -21,15 +21,15 @@ public interface ArticleDao {
     int getCount(ArticleSearchBean searchBean);
 
     /**
-     * 根据条件获取小说列表
+     * 根据条件取得小说列表
      * @param searchBean
      *          检索条件
-     * @return 小说件数
+     * @return 小说列表
      */
     List<Article> find(ArticleSearchBean searchBean);
 
     /**
-     * 根据拼音查询小说
+     * 通过拼音查找小说
      * @param pinyin
      *          拼音
      * @return 小说
@@ -39,14 +39,12 @@ public interface ArticleDao {
     /**
      * 新增小说
      * @param article
-     * @return
      */
     int save(Article article);
 
     /**
      * 根据编号获取小说
      * @param articleno
-     *          小说编号
      * @return 小说
      */
     Article getByNo(int articleno);
@@ -58,7 +56,7 @@ public interface ArticleDao {
     void update(Article article);
 
     /**
-     * 根据编号删除
+     * 删除
      * @param article
      */
     void delByNo(Article article);
