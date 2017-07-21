@@ -5,4 +5,40 @@
     <sql id="tbname">t_message</sql>
 
 
+    <!-- 获取信息总数 -->
+    <select id="getCount"  resultType="java.lang.Integer" parameterType="com.taototao.novel.bean.MessageSearchBean">
+        SELECT count(*) FROM <include refid="tbname" /> where  deleteflag=false
+    </select>
+
+
+    <select id="find" resultType="Message" parameterType="com.taototao.novel.bean.MessageSearchBean">
+
+        SELECT  * FROM <include refid="tbname" /> WHERE  deleteflag=0
+
+        <if test="userno!=null and userno!=0">
+            AND (userno = #{userno} OR touserno = #{userno} )
+        </if>
+
+        <choose>
+            <when test="pagination==null">
+                ORDER BY messageno
+            </when>
+            <otherwise>
+                ORDER BY ${pagination.sortColumn} ${pagination.sortOrder}  LIMIT #{pagination.start},#{pagination.pageSize}
+            </otherwise>
+        </choose>
+
+
+    </select>
+
+
+    <update id="deleteByNo" parameterType="Message">
+
+        UPDATE <include refid="tbname" /> SET deleteflag=1 ,modifyuserno=#{modifyuserno},modifytime=#{modifytime} WHERE messageno=#{messageno}
+
+    </update>
+
+
+
+
 </mapper>

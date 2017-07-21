@@ -1,4 +1,4 @@
-package com.taototao.novel.dao;
+package com.taototao.novel.service;
 
 import com.taototao.novel.bean.MessageSearchBean;
 import com.taototao.novel.entity.Message;
@@ -9,9 +9,9 @@ import java.util.List;
  * ${DESCRIPTION}
  *
  * @author yangcb
- * @create 2017-07-13 17:45
+ * @create 2017-07-21 15:46
  **/
-public interface MessageDao {
+public interface MessageService {
     /**
      * 根据条件取得消息件数
      *
@@ -31,7 +31,7 @@ public interface MessageDao {
     List<Message> find(MessageSearchBean searchBean);
 
     /**
-     * 根据消息编号删除消息
+     * 根据消息编号删除
      * @param message
      */
     void deleteByNo(Message message);

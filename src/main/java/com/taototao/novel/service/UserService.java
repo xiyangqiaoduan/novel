@@ -1,4 +1,4 @@
-package com.taototao.novel.dao;
+package com.taototao.novel.service;
 
 import com.taototao.novel.bean.UserSearchBean;
 import com.taototao.novel.entity.User;
@@ -9,9 +9,11 @@ import java.util.List;
  * ${DESCRIPTION}
  *
  * @author yangcb
- * @create 2017-07-14 9:47
+ * @create 2017-07-21 13:06
  **/
-public interface UserDao {
+public interface UserService {
+
+
     /**
      * 取得条件用户件数
      *
@@ -32,7 +34,7 @@ public interface UserDao {
     List<User> find(UserSearchBean searchBean);
 
     /**
-     * 新增用户
+     *
      * @param user
      */
     void save(User user);
@@ -51,7 +53,7 @@ public interface UserDao {
     void update(User user);
 
     /**
-     * 根据用户编号删除用户
+     * 删除用户信息
      * @param user
      */
     void delByNo(User user);

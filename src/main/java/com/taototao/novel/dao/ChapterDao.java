@@ -35,4 +35,32 @@ public interface ChapterDao {
      * @param chapter
      */
     void save(Chapter chapter);
+
+    Chapter getByNo(int chapterno);
+
+    /**
+     * 根据小说编号获取小数总字数
+     * @param articleno
+     * @return
+     */
+    int getChapterCountSize(int articleno);
+
+    /**
+     * 更新章节信息
+     * @param chapter
+     */
+    void update(Chapter chapter);
+
+    /**
+     * 获取最新章节信息
+     * @param articleno
+     * @return
+     */
+    Chapter getLastChapter(int articleno);
+
+    /**
+     * 根据小说编号删除所有章节
+     * @param articleno
+     */
+    void deleteAllByArticleno(int articleno);
 }

@@ -65,4 +65,8 @@ public class ArticleServiceImpl implements ArticleService {
     public void delByNo(Article article) {
         articleDao.delByNo(article);
     }
+
+    public void updateNewChapter(Article article) {
+        articleDao.updateNewChapter(article);
+    }
 }

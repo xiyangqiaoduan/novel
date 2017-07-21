@@ -1,4 +1,4 @@
-package com.taototao.novel.dao;
+package com.taototao.novel.service;
 
 import com.taototao.novel.bean.ReviewSearchBean;
 import com.taototao.novel.entity.Review;
@@ -9,9 +9,9 @@ import java.util.List;
  * ${DESCRIPTION}
  *
  * @author yangcb
- * @create 2017-07-14 9:45
+ * @create 2017-07-21 16:37
  **/
-public interface ReviewDao {
+public interface ReviewService {
     /**
      * 根据条件取得评论件数
      *
@@ -20,7 +20,6 @@ public interface ReviewDao {
      * @return 评论件数
      */
     int getCount(ReviewSearchBean searchBean);
-
     /**
      * 根据条件取得评论列表
      *

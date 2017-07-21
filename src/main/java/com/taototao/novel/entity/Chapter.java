@@ -34,6 +34,10 @@ public class Chapter implements Serializable {
     private int modifyuserno;
     /**修改时间*/
     private Date modifytime;
+    /**是否发表*/
+    private boolean ispublish;
+    /**最后校验时间*/
+    private Date lastchecktime;
 
 
     public int getChapterno() {
@@ -84,7 +88,7 @@ public class Chapter implements Serializable {
         this.size = size;
     }
 
-    public boolean isvip() {
+    public boolean isIsvip() {
         return isvip;
     }
 
@@ -132,6 +136,21 @@ public class Chapter implements Serializable {
         this.modifytime = modifytime;
     }
 
+    public boolean isIspublish() {
+        return ispublish;
+    }
+
+    public void setIspublish(boolean ispublish) {
+        this.ispublish = ispublish;
+    }
+
+    public Date getLastchecktime() {
+        return lastchecktime;
+    }
+
+    public void setLastchecktime(Date lastchecktime) {
+        this.lastchecktime = lastchecktime;
+    }
 
     @Override
     public String toString() {
@@ -148,6 +167,8 @@ public class Chapter implements Serializable {
                 ", publishtime=" + publishtime +
                 ", modifyuserno=" + modifyuserno +
                 ", modifytime=" + modifytime +
+                ", ispublish=" + ispublish +
+                ", lastchecktime=" + lastchecktime +
                 '}';
     }
 }

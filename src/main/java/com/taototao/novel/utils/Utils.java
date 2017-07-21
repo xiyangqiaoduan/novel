@@ -86,9 +86,9 @@ public class Utils {
      *            是否进行HTML过滤
      * @return 章节内容
      */
-//    public static String getContext(Chapter chapter, boolean escape) {
-//        return getContext(chapter, escape, false);
-//    }
+    public static String getContext(Chapter chapter, boolean escape) {
+        return getContext(chapter, escape, false);
+    }
 
     /**
      * 取得章节信息

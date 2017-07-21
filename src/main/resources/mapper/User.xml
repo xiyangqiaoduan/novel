@@ -2,7 +2,152 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.taototao.novel.dao.UserDao">
 
-    <sql id="tbname">t_article</sql>
+    <sql id="tbname">t_user</sql>
+
+    <!-- 获取用户总数 -->
+    <select id="getCount" resultType="java.lang.Integer" parameterType="com.taototao.novel.bean.UserSearchBean">
+        SELECT count(*) FROM
+        <include refid="tbname"/>
+        WHERE
+          deleteflag=0
+
+        <if test="userno!=0">
+            AND userno=#{userno}
+        </if>
+
+        <if test="loginid!=null">
+            AND loginid = #{loginid}
+        </if>
+
+        <if test="password!=null">
+            AND password = #{password}
+        </if>
+
+        <if test="username!=null">
+            AND username = #{username}
+        </if>
+
+        <if test="email!=null">
+            AND email = #{email}
+        </if>
+    </select>
+
+    <select id="find" parameterType="com.taototao.novel.bean.UserSearchBean" resultType="User">
+
+        SELECT * FROM
+        <include refid="tbname"/>
+        WHERE
+        deleteflag=0
+
+        <if test="userno!=0">
+            AND userno=#{userno}
+        </if>
+
+        <if test="loginid!=null">
+            AND loginid = #{loginid}
+        </if>
+
+        <if test="password!=null">
+            AND password = #{password}
+        </if>
+
+        <if test="username!=null">
+            AND username = #{username}
+        </if>
+
+        <if test="email!=null">
+            AND email = #{email}
+        </if>
+
+        <choose>
+            <when test="pagination==null">
+                ORDER BY userno
+            </when>
+            <otherwise>
+                ORDER BY ${pagination.sortColumn} ${pagination.sortOrder}  LIMIT #{pagination.start},#{pagination.pageSize}
+            </otherwise>
+        </choose>
+
+    </select>
+
+
+    <insert id="save" parameterType="User">
+
+        INSERT INTO <include refid="tbname" /> (
+          loginid,password,username,email,regdate,sex,qq,lastlogin,lineno,type,votecount,realname,id,mobileno,branch,bankno,alipayacount,category,subcategory,openid,activedflag,mailtoken,deleteflag,modifyuserno,modifytime
+        ) VALUES (
+        #{loginid},#{password},#{username},#{email},#{regdate},#{sex},#{qq},#{lastlogin},#{lineno},#{type},#{votecount},#{realname},#{id},#{mobileno},#{branch},#{bankno},#{alipayacount},#{category},#{subcategory},#{openid},#{activedflag},#{mailtoken},#{deleteflag},#{modifyuserno},#{modifytime}
+        )
+
+    </insert>
+
+    <update id="update" parameterType="User">
+
+       UPDATE  <include refid="tbname" /> SET
+        loginid=#{loginid},
+        <if test="password!=null">
+            password=#{password},
+        </if>
+        username=#{username},
+        email=#{email},
+        <if test="regdate!=null">
+            regdate=#{regdate},
+        </if>
+        sex=#{sex},
+        qq=#{qq},
+        <if test="lastlogin!=null">
+            lastlogin=#{lastlogin},
+        </if>
+        lineno=#{lineno},
+        <if test="type!=0">
+            type=#{type},
+        </if>
+
+        <if test="votecount!=0">
+            votecount=#{votecount},
+        </if>
+        realname=#{realname},
+        id=#{id},
+        mobileno=#{mobileno},
+        branch=#{branch},
+        bankno=#{bankno},
+        alipayacount=#{alipayacount},
+        <if test="category!=0">
+            category=#{category},
+        </if>
+        <if test="subcategory!=0">
+            subcategory=#{subcategory},
+        </if>
+
+        <if test="openid!=null">
+            openid=#{openid}
+        </if>
+        activedflag=#{activedflag},
+        <if test="mailtoken!=null">
+            mailtoken=#{mailtoken},
+        </if>
+
+        deleteflag=#{deleteflag},
+        modifyuserno=#{modifyuserno},
+        modifytime=#{modifytime}
+        WHERE
+          userno=#{userno}
+
+
+    </update>
+
+
+    <!-- 根据编号获取用户信息 -->
+    <select id="getByNo" resultType="User">
+        SELECT  * FROM <include refid="tbname" /> WHERE  userno=#{userno}
+    </select>
+
+
+    <update id="delByNo" parameterType="User">
+
+        UPDATE  <include refid="tbname" /> SET deleteflag=1 WHERE  userno=#{userno}
+
+    </update>
 
 
 </mapper>

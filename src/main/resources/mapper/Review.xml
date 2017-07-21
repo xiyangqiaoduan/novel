@@ -5,4 +5,59 @@
     <sql id="tbname">t_review</sql>
 
 
+    <select id="getCount" parameterType="com.taototao.novel.bean.ReviewSearchBean" resultType="java.lang.Integer">
+        SELECT count(*) FROM <include refid="tbname"/> where  deleteflag=0
+
+        <if test="articleno!=0">
+            AND articleno = #{articleno}
+        </if>
+        <if test="articlename!=null">
+            AND articlename  LIKE  CONCAT('%',#{articlename},'%')
+        </if>
+        <if test="loginid!= null">
+           AND loginid  LIKE  CONCAT('%',#{loginid},'%')
+        </if>
+
+        <if test="chaptername!=null">
+            AND chaptername  LIKE  CONCAT('%',#{chaptername},'%')
+        </if>
+
+    </select>
+
+
+
+    <select id="find" parameterType="com.taototao.novel.bean.ReviewSearchBean" resultType="Review">
+        SELECT * FROM <include refid="tbname"/> where  deleteflag=0
+
+        <if test="articleno!=0">
+            AND articleno = #{articleno}
+        </if>
+        <if test="articlename!=null">
+            AND articlename  LIKE  CONCAT('%',#{articlename},'%')
+        </if>
+        <if test="loginid!= null">
+            AND loginid  LIKE  CONCAT('%',#{loginid},'%')
+        </if>
+
+        <if test="chaptername!=null">
+            AND chaptername  LIKE  CONCAT('%',#{chaptername},'%')
+        </if>
+
+        <choose>
+            <when test="pagination==null">
+                ORDER BY reviewno
+            </when>
+            <otherwise>
+                ORDER BY ${pagination.sortColumn} ${pagination.sortOrder}  LIMIT #{pagination.start},#{pagination.pageSize}
+            </otherwise>
+        </choose>
+
+    </select>
+
+
+    <update id="deleteByNo" >
+        UPDATE  <include refid="tbname"/> SET deleteflag=1 WHERE reviewno=#{reviewno}
+    </update>
+
+
 </mapper>

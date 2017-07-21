@@ -37,9 +37,9 @@
             <li><a href="${pageContext.request.contextPath}/admin/languageEdit" title="语言包设置">语言包设置</a></li>
             <li><a href="${pageContext.request.contextPath}/admin/systemblock/blockList" title="区块管理>">区块管理</a></li>
             <li><a href="${pageContext.request.contextPath}/admin/article/list" title="小说管理">小说管理</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin/userList" title="用户管理">用户管理</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin/messageList" title="消息管理">消息管理</a></li>
-            <li><a href="${pageContext.request.contextPath}/admin/reviewList" title="评论管理">评论管理</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/user/list" title="用户管理">用户管理</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/message/list" title="消息管理">消息管理</a></li>
+            <li><a href="${pageContext.request.contextPath}/admin/review/list" title="评论管理">评论管理</a></li>
         </ul>
       </nav>
     </div>

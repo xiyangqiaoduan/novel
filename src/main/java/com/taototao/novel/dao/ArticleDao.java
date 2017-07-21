@@ -62,4 +62,10 @@ public interface ArticleDao {
      * @param article
      */
     void delByNo(Article article);
+
+    /**
+     * 更新最新章节
+     * @param article
+     */
+    void updateNewChapter(Article article);
 }

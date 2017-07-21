@@ -36,7 +36,7 @@
 
     <!--  根据小说编号获取总字节数 -->
     <select id="getChapterCount" resultType="java.lang.Integer">
-        SELECT sum(size) FROM
+        SELECT COUNT(*) FROM
         <include refid="tbname"/>
         WHERE
         deleteflag=0
@@ -46,8 +46,21 @@
         articleno=#{articleno}
     </select>
 
+    <!--  根据小说编号获取总字节数 -->
+    <select id="getChapterCountSize" resultType="java.lang.Integer">
+        SELECT SUM(size) FROM
+        <include refid="tbname"/>
+        WHERE
+        deleteflag=0
+        AND
+        chaptertype = 0
+        AND
+        articleno=#{articleno}
+    </select>
 
-    <insert id="save"  parameterType="Chapter">
+
+
+    <insert id="save" keyProperty="chapterno" useGeneratedKeys="true"  parameterType="Chapter">
 
         INSERT  INTO  <include refid="tbname"/> (articleno,articlename,chaptertype,chaptername,size,isvip,postdate,publishtime,ispublish,lastchecktime,deleteflag,modifyuserno,modifytime) VALUES (
         #{articleno},#{articlename},#{chaptertype},#{chaptername},#{size},#{isvip},#{postdate},#{publishtime},#{ispublish},#{lastchecktime},#{deleteflag},#{modifyuserno},#{modifytime}
@@ -55,5 +68,32 @@
 
     </insert>
 
+
+    <!-- 根据编号获取章节信息 -->
+    <select id="getByNo"  resultType="Chapter">
+
+        SELECT  * FROM  <include refid="tbname"/> WHERE chapterno=#{chapterno}
+
+    </select>
+
+    <update id="update" parameterType="Chapter">
+
+        UPDATE  <include refid="tbname"/> SET
+        articleno=#{articleno},articlename=#{articlename},chaptertype=#{chaptertype},chaptername=#{chaptername},size=#{size},isvip=#{isvip},
+        postdate=#{postdate},publishtime=#{publishtime},lastchecktime=#{lastchecktime},deleteflag=#{deleteflag},modifyuserno=#{modifyuserno},modifytime=#{modifytime}
+        WHERE chapterno=#{chapterno}
+    </update>
+
+
+
+    <select id="getLastChapter"   resultType="Chapter" >
+        SELECT  * FROM  <include refid="tbname"/> WHERE deleteflag=0 AND articleno = #{articleno} ORDER BY  chapterno DESC  LIMIT 1
+    </select>
+
+<!--根据文章编号删除章节 -->
+    <delete id="deleteAllByArticleno" >
+        UPDATE  <include refid="tbname"/> SET deleteflag=1 WHERE  articleno=#{articleno}
+
+    </delete>
 
 </mapper>

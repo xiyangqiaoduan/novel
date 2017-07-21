@@ -35,4 +35,24 @@ public class ChapterServiceImpl implements ChapterService{
     public void save(Chapter chapter) {
          chapterDao.save(chapter);
     }
+
+    public Chapter getByNo(int chapterno) {
+        return chapterDao.getByNo(chapterno);
+    }
+
+    public int getChapterCountSize(int articleno) {
+        return chapterDao.getChapterCountSize(articleno);
+    }
+
+    public void update(Chapter chapter) {
+        chapterDao.update(chapter);
+    }
+
+    public Chapter getLastChapter(int articleno) {
+        return chapterDao.getLastChapter(articleno);
+    }
+
+    public void deleteAllByArticleno(int articleno) {
+         chapterDao.deleteAllByArticleno(articleno);
+    }
 }

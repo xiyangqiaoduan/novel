@@ -15,7 +15,7 @@
         <tr>
             <td class="ac_odd" colspan="4">《${article.articlename}》-${article.author}
             &nbsp;&nbsp;&nbsp;[新建分卷] [<a href="${pageContext.request.contextPath}/admin/chapter/addPage?articleno=${article.articleno}">增加章节</a>]
-             [<a href="${pageContext.request.contextPath}/admin/chapter/deleteAll?articleno=${article.articleno}">清空文章</a>]
+             [<a href="${pageContext.request.contextPath}/admin/chapter/delall/${article.articleno}">清空文章</a>]
 		   <input type="hidden" name="articleid" id="articleid" value="45911">
         </td>
         </tr>
@@ -32,8 +32,8 @@
                 </c:choose>
             </c:if>
             <td>
-                <a href="${pageContext.request.contextPath}/admin/chapterEdit?chapterno=${chapter.chapterno}">${chapter.chaptername}</a>
-                <a href="javascript:confirmDelete('${pageContext.request.contextPath}/admin/chapte/delete?chapterno=${chapter.chapterno}')" style="color:red">删除</a>
+                <a href="${pageContext.request.contextPath}/admin/chapter/editPage/${chapter.chapterno}">${chapter.chaptername}</a>
+                <a href="javascript:confirmDelete('${pageContext.request.contextPath}/admin/chapter/del/${chapter.chapterno}')" style="color:red">删除</a>
             </td>
             <c:if test="${status.index % 4 ==3}">
                 </tr>

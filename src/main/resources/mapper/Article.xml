@@ -136,7 +136,7 @@
     </select>
 
     <!-- 根据编号获取小说 -->
-    <select id="getByNo"  resultMap="resultMap">
+    <select id="getByNo" resultMap="resultMap">
         SELECT * FROM
         <include refid="tbname"/>
         WHERE articleno=#{articleno} LIMIT 1
@@ -245,7 +245,8 @@
 
     <!-- 修改小说 -->
     <update id="update" parameterType="Article">
-        UPDATE  <include refid="tbname" />
+        UPDATE
+        <include refid="tbname"/>
         <set>
             articlename=#{articlename},
             pinyin=#{pinyin},
@@ -336,9 +337,9 @@
                 createuserno=#{createuserno},
             </if>
 
-           <if test="createtime!=null">
-               createtime= #{createtime},
-           </if>
+            <if test="createtime!=null">
+                createtime= #{createtime},
+            </if>
             modifyuserno=#{modifyuserno},
             modifytime=#{modifytime},
             usecustomizeinfotitle=#{usecustomizeinfotitle},
@@ -372,13 +373,31 @@
 
     <update id="delByNo" parameterType="Article">
 
-        UPDATE <include refid="tbname" />
+        UPDATE
+        <include refid="tbname"/>
 
-        SET  deleteflag=#{deleteflag} ,modifyuserno=#{modifyuserno},modifytime=#{modifytime}
+        SET deleteflag=#{deleteflag} ,modifyuserno=#{modifyuserno},modifytime=#{modifytime}
 
-        WHERE  articleno=#{articleno}
+        WHERE articleno=#{articleno}
     </update>
 
+
+    <!-- 更新最新章节 -->
+    <update id="updateNewChapter" parameterType="Article">
+        UPDATE
+        <include refid="tbname"/>
+        SET
+            lastchapterno=#{lastchapterno},
+            chapters=#{chapters},
+            size=#{size},
+            lastchapter=#{lastchapter},
+            lastupdate=#{lastupdate},
+            modifyuserno=#{modifyuserno},
+            modifytime=#{modifytime}
+        WHERE
+            articleno=#{articleno}
+
+    </update>
 
 
 </mapper>

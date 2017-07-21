@@ -1,10 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <jsp:include page="/WEB-INF/content/admin/commom/header.jsp" />
-  <form namespace="/admin" action="messageList" method="post" name="paginationForm">
-    <jsp:include page="/WEB-INF/content/commom/common_form.jsp" />
+  <form  action="${pageContext.request.contextPath}/admin/message/list" method="post" name="paginationForm">
 
     <table class="yidu-table" align="center">
         <colgroup>
@@ -16,40 +17,50 @@
             <col width="100px">
         </colgroup>
         <tr>
-            <th class="sortable <s:if test="pagination.sortColumn.equals('loginid')">sorted <s:property value="pagination.sortClass"/> </s:if>">
-            <a href="#" onclick="fnPagination(6,'articleno');"><s:text name="label.admin.messagae.list.sender" /></a></th>
+            <th class="sortable <c:if test="${pagination.sortColumn eq 'loginid'}">sorted ${pagination.sortClass} </c:if>">
+            <a href="#" onclick="fnPagination(6,'loginid');">发件人</a></th>
             
-            <th class="sortable <s:if test="pagination.sortColumn.equals('title')">sorted <s:property value="pagination.sortClass"/> </s:if>">
-            <a href="#" onclick="fnPagination(6,'articlename');"><s:text name="label.admin.messagae.list.title" /></a></th>
+            <th class="sortable <c:if test="${ pagination.sortColumn eq 'title'}">sorted ${pagination.sortClass} </c:if>">
+            <a href="#" onclick="fnPagination(6,'title');">标题</a></th>
             
-            <th style="word-break:break-all; word-wrap:break-word;"><s:text name="label.admin.messagae.list.content" /></th>
+            <th style="word-break:break-all; word-wrap:break-word;">内容</th>
             
-            <th class="sortable <s:if test="pagination.sortColumn.equals('postdate')">sorted <s:property value="pagination.sortClass"/> </s:if>">
-            <a href="#" onclick="fnPagination(6,'category');"><s:text name="label.admin.messagae.list.date" /></a></th>
+            <th class="sortable <c:if test="${pagination.sortColumn eq 'postdate'}">sorted ${pagination.sortClass} </c:if>">
+            <a href="#" onclick="fnPagination(6,'postdate');">日期</a></th>
             
-            <th class="sortable <s:if test="pagination.sortColumn.equals('isread')">sorted <s:property value="pagination.sortClass"/> </s:if>">
-            <a href="#" onclick="fnPagination(6,'author');"><s:text name="label.admin.messagae.list.status" /></a></th>
+            <th class="sortable <c:if test="${pagination.sortColumn eq 'isread'}">sorted ${pagination.sortClass} </c:if>">
+            <a href="#" onclick="fnPagination(6,'isread');">状态</a></th>
             
-            <th class="sortable"><s:text name="label.admin.list.operate" /></th>
+            <th class="sortable">操作</th>
         </tr>
-        <s:iterator value="messageList" id="message" status="rowstatus">
-        <s:if test="#rowstatus.even == true">
-        <tr class="ac_odd">
-        </s:if>
-        <s:else>
-        <tr>
-        </s:else>
-            <td><s:property  value="#message.loginid" /></td>
-            <td><s:property  value="#message.title" /></td>
-            <td><s:property  value="#message.content" /></td>
-            <td><s:date name="#message.postdate" format="yyyy/MM/dd HH:mm" /></td>
-            <td><s:property  value="collections['collectionProperties.message.isread'][#message.isread]" /></td>
+
+        <c:forEach items="${messageList}" var="message" varStatus="status">
+
+        <c:choose>
+
+            <c:when test="${status.index%2>0}"> <tr class="ac_odd"></c:when>
+            <c:otherwise>  <tr></c:otherwise>
+        </c:choose>
+
+            <td>${message.loginid}</td>
+            <td>${message.title}</td>
+            <td>${message.content}</td>
             <td>
-                <a href="<s:property value="contextPath" />/admin/messageReply?messageno=<s:property value='#message.messageno' />"><s:text name="label.admin.list.reply" /></a>
-                <a href="javascript:confirmDelete('<s:property value="contextPath" />/admin/messageList!delete?messageno=<s:property value='#message.messageno' />')"><s:text name="label.admin.list.delete" /></a>
+                <fmt:formatDate value="${message.postdate}" pattern="yyyy-MM-dd HH:mm"></fmt:formatDate>
+            </td>
+            <td>
+                    <c:choose>
+                        <c:when test="${message.isread==true}">已读</c:when>
+                        <c:otherwise>未读</c:otherwise>
+                    </c:choose>
+
+            </td>
+            <td>
+                <a href="${pageContext.request.contextPath}/admin/message/reply?messageno=${message.messageno}">回复</a>
+                <a href="javascript:confirmDelete('${pageContext.request.contextPath}/admin/message/del/${message.messageno}')">删除</a>
             </td>
         </tr>
-        </s:iterator>
+        </c:forEach>
     </table>
     <table width="950px" align="center">
         <tr>

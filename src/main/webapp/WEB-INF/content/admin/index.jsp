@@ -7,6 +7,10 @@
     <p>2、系统参数设置</p>
     <p>3、区块管理</p>
     <p>4、小说管理</p>
+    <p>5、小说章节管理</p>
+    <p>6、用户管理</p>
+    <p>7、消息管理</p>
+    <p>8、评论管理</p>
 </div>
 <jsp:include page="/WEB-INF/content/admin/commom/footer.jsp"/>
 </body>
