@@ -59,10 +59,12 @@
     </select>
 
 
+    <insert id="save" keyProperty="chapterno" useGeneratedKeys="true" parameterType="Chapter">
 
-    <insert id="save" keyProperty="chapterno" useGeneratedKeys="true"  parameterType="Chapter">
-
-        INSERT  INTO  <include refid="tbname"/> (articleno,articlename,chaptertype,chaptername,size,isvip,postdate,publishtime,ispublish,lastchecktime,deleteflag,modifyuserno,modifytime) VALUES (
+        INSERT INTO
+        <include refid="tbname"/>
+        (articleno,articlename,chaptertype,chaptername,size,isvip,postdate,publishtime,ispublish,lastchecktime,deleteflag,modifyuserno,modifytime)
+        VALUES (
         #{articleno},#{articlename},#{chaptertype},#{chaptername},#{size},#{isvip},#{postdate},#{publishtime},#{ispublish},#{lastchecktime},#{deleteflag},#{modifyuserno},#{modifytime}
         )
 
@@ -70,30 +72,90 @@
 
 
     <!-- 根据编号获取章节信息 -->
-    <select id="getByNo"  resultType="Chapter">
+    <select id="getByNo" resultType="Chapter">
 
-        SELECT  * FROM  <include refid="tbname"/> WHERE chapterno=#{chapterno}
+        SELECT * FROM
+        <include refid="tbname"/>
+        WHERE chapterno=#{chapterno}
 
     </select>
 
     <update id="update" parameterType="Chapter">
 
-        UPDATE  <include refid="tbname"/> SET
+        UPDATE
+        <include refid="tbname"/>
+        SET
         articleno=#{articleno},articlename=#{articlename},chaptertype=#{chaptertype},chaptername=#{chaptername},size=#{size},isvip=#{isvip},
         postdate=#{postdate},publishtime=#{publishtime},lastchecktime=#{lastchecktime},deleteflag=#{deleteflag},modifyuserno=#{modifyuserno},modifytime=#{modifytime}
         WHERE chapterno=#{chapterno}
     </update>
 
 
-
-    <select id="getLastChapter"   resultType="Chapter" >
-        SELECT  * FROM  <include refid="tbname"/> WHERE deleteflag=0 AND articleno = #{articleno} ORDER BY  chapterno DESC  LIMIT 1
+    <select id="getLastChapter" resultType="Chapter">
+        SELECT * FROM
+        <include refid="tbname"/>
+        WHERE deleteflag=0 AND articleno = #{articleno} ORDER BY chapterno DESC LIMIT 1
     </select>
 
-<!--根据文章编号删除章节 -->
-    <delete id="deleteAllByArticleno" >
-        UPDATE  <include refid="tbname"/> SET deleteflag=1 WHERE  articleno=#{articleno}
+    <!--根据文章编号删除章节 -->
+    <delete id="deleteAllByArticleno">
+        UPDATE
+        <include refid="tbname"/>
+        SET deleteflag=1 WHERE articleno=#{articleno}
 
     </delete>
+
+
+    <select id="findWithPinyin" parameterType="com.taototao.novel.bean.ChapterSearchBean"
+            resultType="com.taototao.novel.dto.ChapterDTO">
+
+        SELECT tc.* ,ta.pinyin FROM t_chapter tc RIGHT JOIN t_article ta ON tc.articleno = ta.articleno
+
+        WHERE tc.deleteflag=0
+
+        <if test="articleno!=0">
+            AND tc.articleno = #{articleno}
+        </if>
+
+        <if test="chapternoList!=null and chapternoList!=''">
+            AND tc.chapterno in (${chapternoList})
+        </if>
+        <if test="articlenoList!=null and articlenoList!=''">
+            AND tc.articleno in (${articlenoList})
+        </if>
+
+        <if test="dateRange!=null">
+            <![CDATA[
+             AND  tc.postdate >= #{dateRange.minimum}
+             AND  tc.postdate  <  #{dateRange.maximum}
+         ]]>
+        </if>
+        ORDER BY tc.articleno asc ,tc.chapterno ASC
+    </select>
+
+
+    <select id="getChapterInSegement" resultType="Chapter">
+
+        SELECT * FROM
+        <include refid="tbname"/>
+        WHERE deleteflag=0 AND articleno =#{articleno} AND chapterno <![CDATA[  >= ]]> #{chapterno} AND chapterno
+        <![CDATA[ <=   ]]>#{toChapterno}
+
+    </select>
+
+
+    <select id="getNextChapter" resultType="Chapter">
+        SELECT * FROM
+        <include refid="tbname"/>
+        WHERE deleteflag=0 AND articleno=#{articleno}
+        <choose>
+            <when test="isNext==true">
+                AND chapterno > #{chapterno}  AND chaptertype = 0 ORDER BY  chapterno ASC LIMIT 1
+            </when>
+            <otherwise>
+                AND chapterno  <![CDATA[ < ]]> #{chapterno}  AND chaptertype = 0 ORDER BY  chapterno ASC LIMIT 1
+            </otherwise>
+        </choose>
+    </select>
 
 </mapper>

@@ -1,5 +1,9 @@
 package com.taototao.novel.entity;
 
+import com.taototao.novel.constant.TaoToTaoConstants;
+import com.taototao.novel.controller.ReaderController;
+import com.taototao.novel.controller.base.AbstractPublicBaseController;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -171,4 +175,35 @@ public class Chapter implements Serializable {
                 ", lastchecktime=" + lastchecktime +
                 '}';
     }
+
+
+    /**
+     * 获取章节URL
+     *
+     * @return 章节URL
+     */
+    public String getUrl() {
+        StringBuffer sb=new StringBuffer(AbstractPublicBaseController.READER_NAMES);
+        sb.append("/")
+                .append(ReaderController.CHAPTER_DETAIL)
+                .append("/")
+                .append(getSubdir())
+                .append("/")
+                .append( getArticleno())
+                .append("/")
+                .append(getChapterno());
+        return sb.toString();
+    }
+
+    /**
+     * 获得子目录 <br>
+     * 默认是小说号/1000
+     *
+     * @return 子目录
+     */
+    public Integer getSubdir() {
+        return getArticleno() / TaoToTaoConstants.SUB_DIR_ARTICLES;
+    }
+
+
 }

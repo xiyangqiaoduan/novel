@@ -4,6 +4,7 @@ import com.taototao.novel.bean.ArticleSearchBean;
 import com.taototao.novel.dao.ArticleDao;
 import com.taototao.novel.entity.Article;
 import com.taototao.novel.service.ArticleService;
+import com.taototao.novel.utils.Pagination;
 import com.taototao.novel.utils.Utils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * ${DESCRIPTION}
@@ -68,5 +70,47 @@ public class ArticleServiceImpl implements ArticleService {
 
     public void updateNewChapter(Article article) {
         articleDao.updateNewChapter(article);
+    }
+
+    public List<Article> findRandomRecommendArticleList(int count) {
+
+        ArticleSearchBean searchBean=new ArticleSearchBean();
+
+        Pagination pagination=new Pagination();
+        pagination.setStart(0);
+        pagination.setPageSize(count);
+        pagination.setSortOrder("DESC");
+        pagination.setSortColumn("allvisit");
+        searchBean.setPagination(pagination);
+
+
+        return articleDao.findRandomRecommendArticleList(searchBean);
+    }
+
+    public List<Article> findRecommendArticleList(int category, int articleno, int limitnum) {
+        return articleDao.findRecommendArticleList(category,articleno,limitnum);
+    }
+
+    public List<Article> findRelativeArticleList(List<String> keys, String sortCol, boolean isAsc, int limitnum) {
+
+        String cond = "";
+        boolean isFirst = true;
+        for (int i = 0; i < keys.size(); i++) {
+            if (isFirst) {
+                cond += " articlename LIKE   '%"+ keys.get(i)+"%'";
+                isFirst = false;
+            } else {
+                cond += (" OR  articlename LIKE   '%"+ keys.get(i)+"%'");
+            }
+        }
+        return articleDao.findRelativeArticleList(cond,sortCol,isAsc,limitnum);
+    }
+
+    public void updateVisitStatistic(int articleno) {
+        articleDao.updateVisitStatistic(articleno);
+    }
+
+    public void updateVoteStatistic(int articleno) {
+        articleDao.updateVoteStatistic(articleno);
     }
 }

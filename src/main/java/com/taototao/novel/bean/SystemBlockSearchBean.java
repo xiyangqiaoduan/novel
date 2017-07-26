@@ -87,7 +87,7 @@ public class SystemBlockSearchBean extends BaseSearchBean{
         return targets;
     }
 
-    public void setTargets(Short[] targets) {
+    public void setTargets(Short... targets) {
         this.targets = targets;
     }
 }

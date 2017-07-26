@@ -9,7 +9,7 @@
 
 <form action=
       <c:choose>
-            <c:when test="">
+            <c:when test="${chapter==null}">
               "${pageContext.request.contextPath}/admin/chapter/save"
             </c:when>
             <c:otherwise>"${pageContext.request.contextPath}/admin/chapter/edit"</c:otherwise>

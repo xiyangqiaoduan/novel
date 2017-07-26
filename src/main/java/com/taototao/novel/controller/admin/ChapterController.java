@@ -39,6 +39,7 @@ public class ChapterController extends AbstractAdminBaseController {
         Article article = articleService.getByNo(articleno);
         ChapterSearchBean searchBean = new ChapterSearchBean();
         searchBean.setPagination(null);
+        searchBean.setArticleno(article.getArticleno());
         List<Chapter> chapterList = chapterService.find(searchBean);
         map.put("article", article);
         map.put("chapterList", chapterList);

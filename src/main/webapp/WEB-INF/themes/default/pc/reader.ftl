@@ -1,8 +1,8 @@
-<#include "common.ftl"/>
+<#include "${themeName}/pc/common.ftl"/>
 <#macro titleContent>  
 <title>${chapter.articlename}-${chapter.chaptername}</title>
-<meta name="keywords" content="${chapter.chaptername},${chapter.articlename}最新章节,${chapter.articlename}TXT下载,${chapter.articlename}无广告,${getText("label.system.name")}" />
-<meta name="description" content="${getText("label.system.siteDescription")}" />
+<meta name="keywords" content="${chapter.chaptername},${chapter.articlename}最新章节,${chapter.articlename}TXT下载,${chapter.articlename}无广告,淘TO淘小说" />
+<meta name="description" content="淘TO淘小说网是国内最大的小说网站之一。提供玄幻小说\,言情小说\,网游小说\,修真小说\,都市小说\,武侠小说\,网络小说等在线阅读\,我们是更新最快\,免费最多\,页面简洁且无弹出广告的小说网站!" />
 </#macro>  
 <#macro customizeimport>  
 <link rel="stylesheet" type="text/css" href="${contextPath}/themes/${themeName}/pc/css/readtools.css" />
@@ -17,8 +17,8 @@
                     <button type="submit" >搜</button>
                 </form>
             </span>
-    位置：&nbsp; > &nbsp; <a href="${contextPath}/" class="c009900">${getText("label.system.name")}</a> > 
-    <a href="${article.url}" class="article_title">${chapter.articlename}</a>  > 
+    位置：&nbsp; > &nbsp; <a href="${contextPath}/" class="c009900">淘TO淘小说</a> >
+    <a href="${contextPath}/${article.url}" class="article_title">${chapter.articlename}</a>  >
     <#if enableChapterIndexPage><a href="${article.chapterListUrl}" class="article_title">${chapter.articlename}章节目录</a> > </#if>
     ${chapter.chaptername}</div>
     <section class="main b-detail" id="directs">
@@ -86,11 +86,11 @@
         </div>
         <div id="reader_ad_02"></div>
         <div class="backs">
-            <a href="${chapter.preChapterUrl}" class="pre">上一章</a>
-            <a href="<#if enableChapterIndexPage>${article.chapterListUrl}<#else>${article.url}</#if>" class="backfor">返回目录</a>
-            <a href="${chapter.nextChapterUrl}" class="next">下一章</a>
+            <a href="${contextPath}/${chapter.preChapterUrl}" class="pre">上一章</a>
+            <a href="<#if enableChapterIndexPage>${contextPath}/${article.chapterListUrl}<#else>${contextPath}/${article.url}</#if>" class="backfor">返回目录</a>
+            <a href="${contextPath}/${chapter.nextChapterUrl}" class="next">下一章</a>
             <p>小提示： 按←键返回上一页，按→键进入上一页,您还可以
-                 <a href="${encodeURL("/user/bookcase!add?articleno=${chapter.articleno?c}&chapterno=${chapter.chapterno?c}")}" title="加入书签"  target="_blank">加入书签</a>
+                 <a href="/user/bookcase!add?articleno=${chapter.articleno?c}&chapterno=${chapter.chapterno?c}" title="加入书签"  target="_blank">加入书签</a>
             </p></div>
         <div id="reader_ad_03"></div>
         </div>
@@ -113,26 +113,26 @@
         <#if blocks.reader_recommand_list ?? > 
         <ul id="content1">
             <#list blocks.reader_recommand_list as article>
-            <li><a href="${article.url}" title="${article.articlename}"><img src="${article.imgUrl}" width="111px;" height="146px;" alt="${article.articlename}"></a>
+            <li><a href="${contextPath}/${article.url}" title="${article.articlename}"><img src="${contextPath}/${article.imgUrl}" width="111px;" height="146px;" alt="${article.articlename}"></a>
             <#if article.fullflag>
                 <img src="${contextPath}/themes/${themeName}/pc/images/only.png" class="topss png_bg" alt="完本图标">
             <#else>
                 <img src="${contextPath}/themes/${themeName}/pc/images/only2.png" class="topss png_bg"  alt="连载中图标">
             </#if>
-            <a href="${article.url}">${article.articlename}</a></li>
+            <a href="${contextPath}/${article.url}">${article.articlename}</a></li>
             </#list>
         </ul>
         </#if>
         <#if blocks.reader_random_recommand_list ?? > 
         <ul id="content2" style="display:none;">
             <#list blocks.reader_random_recommand_list as article>
-           <li><a href="${article.url}" title="${article.articlename}"><img src="${article.imgUrl}" width="111px;" height="146px;" alt="${article.articlename}"></a>
+           <li><a href="${contextPath}/${article.url}" title="${article.articlename}"><img src="${contextPath}/${article.imgUrl}" width="111px;" height="146px;" alt="${article.articlename}"></a>
             <#if article.fullflag>
                 <img src="${contextPath}/themes/${themeName}/pc/images/only.png" class="topss png_bg" alt="完本图标">
             <#else>
                 <img src="${contextPath}/themes/${themeName}/pc/images/only2.png" class="topss png_bg"  alt="连载中图标">
             </#if>
-            <a href="${article.url}">${article.articlename}</a></li>
+            <a href="${contextPath}/${article.url}">${article.articlename}</a></li>
             </#list>
         </ul>
         </#if>

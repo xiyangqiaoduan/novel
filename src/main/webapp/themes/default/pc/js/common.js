@@ -1,7 +1,7 @@
 var failedMessage = "服务器暂时无法处理您的请求，请稍后再试！";
 var successCode = "0";
 var loginid ="";
-
+var host="/novel"
 jQuery.cookie = function (key, value, options) {
 
     // key and at least value given, set cookie...
@@ -137,7 +137,7 @@ function initUserMenu(){
         if(data!=null){
         var html = '你好   <a href="'+contextPath+'/user/useredit" style="color: rgb(240, 240, 240);"> '+ data.loginid +"</a>";
         if(typeof data.openid === "undefined"){
-                html = html + '&nbsp;&nbsp;&nbsp;<a href=\"'+contextPath+'/gotoQQLogin" \"><img src=\"'+contextPath+'/themes/default/pc/images/qq_bind_small.gif\" alt=\"QQ绑定\"></a>';
+                html = html + '&nbsp;&nbsp;&nbsp;<a href=\"'+contextPath+'/gotoQQLogin" \"><img src='+contextPath+'\"/themes/default/pc/images/qq_bind_small.gif\" alt=\"QQ绑定\"></a>';
         }
         if(data.type==30){
             html = html + '&nbsp;&nbsp;&nbsp;<a href="'+contextPath+'/admin/index" style="color: rgb(240, 240, 240);">管理后台</a>';
@@ -224,7 +224,7 @@ function loadReadHistory(){
 $(document).ready(function() {
 
 	// 初始化登录状态
-	initUserMenu();
+	//initUserMenu();
 
 	// 初始化按钮事件
 	initButtonEvent();
@@ -233,10 +233,10 @@ $(document).ready(function() {
 //	initRepalesRellEvent();
 
 	// 初始化阅读履历
-	loadReadHistory();
+	//loadReadHistory();
 
 	// 添加页面广告
-	addAd();
+	//addAd();
 	
 });
 
@@ -307,7 +307,7 @@ function onPostMessageButtonClick() {
 function postAjaxRequest(param){
 	$.ajax({
 		type : "post",
-		url : "/ajaxService",
+		url : host+"/ajaxService",
 		data : param,
 		async : false,
 		success : function(data) {
@@ -443,11 +443,11 @@ function addAd(){
 
 function addDownloadUrl(){
 	if($("#info_download").length>0){
-		$.post('/checklogin',function(data){
-	        if(data!=null){
+		// $.post('/checklogin',function(data){
+	     //    if(data!=null){
 			$("#info_download").html("<a href=\""+downloadUrl+"\" title=\""+downloadTitle+"txt全集下载\" rel=\"nofollow\">全文下载</a>");
-		} else {
-			$("#info_download").html("登陆后可下载"+downloadTitle+"全集电子书");
-		}});
+		// } else {
+		// 	$("#info_download").html("登陆后可下载"+downloadTitle+"全集电子书");
+		// }});
 	}
 }

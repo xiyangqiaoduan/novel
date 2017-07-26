@@ -18,18 +18,22 @@
   DD_belatedPNG.fix('.png_bg');
 </script>
 <![endif]-->
-<#assign categorymap = categoryData?eval>
+<#--<#assign categorymap = categoryData?eval>
 <#if assignContent?exists>  
       <@assignContent/>
 </#if>
 <#if titleContent?exists>  
       <@titleContent/>
-</#if>
-<meta name="author" content="www.51yd.org"/>
+</#if>-->
+<meta name="author" content="www.taototao.com"/>
 <link rel="stylesheet" type="text/css" href="${contextPath}/themes/${themeName}/pc/css/common.css">
 <#if customizeimport?exists>  
       <@customizeimport/>
 </#if>
+<#if titleContent?exists>
+    <@titleContent/>
+</#if>
+
 </head>
 <body>
 <div id="wrapper">
@@ -63,18 +67,18 @@
         <@customizeJs/>
 </#if>
 <script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
+//(function(){
+//    var bp = document.createElement('script');
+//    var curProtocol = window.location.protocol.split(':')[0];
+//    if (curProtocol === 'https') {
+//        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+//    }
+//    else {
+//        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+//    }
+//    var s = document.getElementsByTagName("script")[0];
+//    s.parentNode.insertBefore(bp, s);
+//})();
 </script>
 </body>  
 </html>

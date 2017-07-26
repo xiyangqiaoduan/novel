@@ -1,5 +1,6 @@
 package com.taototao.novel.controller;
 
+import com.taototao.novel.controller.base.AbstractPublicBaseController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -7,14 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * ${DESCRIPTION}
  *
  * @author yangcb
- * @create 2017-07-12 15:25
+ * @create 2017-07-26 14:53
  **/
 @Controller
-public class TestController {
+@RequestMapping("user")
+public class UserFrontController extends AbstractPublicBaseController{
 
-    @RequestMapping("index")
-    public String index(){
-        return "/default/index";
-    }
+
+
+
 
 }

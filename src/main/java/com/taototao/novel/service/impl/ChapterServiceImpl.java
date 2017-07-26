@@ -55,4 +55,16 @@ public class ChapterServiceImpl implements ChapterService{
     public void deleteAllByArticleno(int articleno) {
          chapterDao.deleteAllByArticleno(articleno);
     }
+
+    public List<Chapter> findWithPinyin(ChapterSearchBean searchBean) {
+        return chapterDao.findWithPinyin(searchBean);
+    }
+
+    public List<Chapter> getChapterInSegement(int articleno, int chapterno, int toChapterno) {
+        return chapterDao.getChapterInSegement(articleno,chapterno,toChapterno);
+    }
+
+    public Chapter getNextChapter(int articleno, int chapterno, boolean isNext) {
+        return chapterDao.getNextChapter(articleno,chapterno,isNext);
+    }
 }

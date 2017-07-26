@@ -1,6 +1,5 @@
 package com.taototao.novel.template;
 
-import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 

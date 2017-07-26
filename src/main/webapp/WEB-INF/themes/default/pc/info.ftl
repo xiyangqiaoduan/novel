@@ -1,4 +1,4 @@
-<#include "common.ftl"/>
+<#include "${themeName}/pc/common.ftl"/>
 
 <#macro titleContent>
 <#if article.usecustomizeinfotitle ?? && article.usecustomizeinfotitle >
@@ -7,8 +7,8 @@
 <meta name="description" content="${article.infodescription}" />
 <#else>
 <title>${article.articlename?html}|${article.articlename}最新章节|${article.articlename}TXT下载</title>
-<meta name="keywords" content="${article.articlename},${article.articlename}最新章节,${article.articlename}TXT下载,${article.articlename}无广告,${getText("label.system.name")}" />
-<meta name="description" content="《${article.articlename}》情节跌宕起伏、扣人心弦，是一本情节与文笔俱佳的<#if article.category!=0>${article.categoryStr}</#if>小说，${getText("label.system.name")}免费提供${article.articlename}最新的清爽干净的文字章节在线阅读!" />
+<meta name="keywords" content="${article.articlename},${article.articlename}最新章节,${article.articlename}TXT下载,${article.articlename}无广告,淘TO淘小说" />
+<meta name="description" content="《${article.articlename}》情节跌宕起伏、扣人心弦，是一本情节与文笔俱佳的<#if article.category!=0>${article.categoryStr}</#if>小说，淘TO淘小说，免费提供${article.articlename}最新的清爽干净的文字章节在线阅读!" />
 </#if>
     <!--360结构化-->
    <meta property="og:type" content="novel"/>
@@ -32,15 +32,15 @@
 <#macro content>
     <div id="info_ad_01"></div>
     <div class="mainnav"><div class="main-index"> 位置：  &nbsp; > &nbsp; 
-        <a href="${encodeURL("/articleList?category=${article.category}")}" class="c009900">
+        <a href="/articleList?category=${article.category}" class="c009900">
         ${article.categoryStr}</a> &nbsp; > &nbsp; 
         ${article.articlename}
     </div>
     <section class="main b-detail">
         <div class="detail">
             <#if article.fullflag><img src="${contextPath}/themes/${themeName}/pc/images/only.png" class="leftso png_bg" alt="完本图标"><#else><img src="${contextPath}/themes/${themeName}/pc/images/only2.png" class="leftso png_bg"  alt="连载中图标"></#if>
-            <a href="${article.url}"  class="l mr11">
-                 <img src="<#if article.imgUrl ?? >${article.imgUrl}</#if>" style="width: 120px; height: 150px" alt="${article.articlename}"/></a>
+            <a href="${contextPath}/${article.url}"  class="l mr11">
+                 <img src="<#if article.imgUrl ?? >${contextPath}${article.imgUrl}</#if>" style="width: 120px; height: 150px" alt="${article.articlename}"/></a>
         <div class="b-info">
           <h1>${article.articlename}</h1>
           <div class="infoDetail">
@@ -59,10 +59,10 @@
         <div class="clear"></div>
         <div class="author">
             <div class="bookDetail">
-                <dl><dt>类别：</dt><dd><a href="${encodeURL("/articleList?category=${article.category}&page=1")}"
+                <dl><dt>类别：</dt><dd><a href="${contextPath}/articleList?category=${article.category}&page=1""
                     target="_blank" title="<#if article.category!=0>${article.categoryStr}</#if>"><#if article.category!=0>${article.categoryStr}</#if></a></dd></dl>
                 <dl><dt>状态：</dt><dd><#if article.fullflag>完结<#else>连载中</#if></dd></dl>
-                <dl class="bookso"><dt>作      者：</dt><dd> <a href="${encodeURL("/articleList?author=${article.author}")}">
+                <dl class="bookso"><dt>作      者：</dt><dd> <a href="${contextPath}/articleList?author=${article.author}">
                     ${article.author}</a></dd></dl>
                 <dl><dt>全文长度：</dt><dd><#if article.size ??>${article.size}<#else>0</#if>字</dd></dl>
                 <dl><dt>总点击量：</dt><dd>${article.allvisit}</dd></dl>
@@ -71,7 +71,7 @@
                 <dl class="bookNew"><dt>最新章节：</dt>
                     <dd>
                     <a href="${article.lastChapterUrl}" target="_blank"><#if article.lastchapter?? >${article.lastchapter}</#if></a>
-                    <em>更新于:[${article.lastupdate?string("MM-dd HH:mm")}]</em><br />
+                    <em>更新于:[${article.lastupdate?string("yyyy-MM-dd HH:mm")}]</em><br />
                     </dd>
                 </dl>
                 <dl><dt>标签：</dt><dd><#list article.tagList as tag><a href="${tag.url}" target="_blank">${tag.tag}</a>&nbsp;&nbsp;</#list></dd></dl>
@@ -87,20 +87,20 @@
         <div class="commenthead">
             <div class="ti">
                 <h2>《${article.articlename}》的评论</h2>
-                <div class="par">共有评论<a target="blank" href="${encodeURL("/reviewList?subdir=${article.subdir?c}&articleno=${article.articleno?c}")}">${reviewCount?c}</a>条</div>
-                <div class="par2"><a target="_blank" href="${encodeURL("/reviewList?subdir=${article.subdir?c}&articleno=${article.articleno?c}")}">[全部评论]</a></div>
+                <div class="par">共有评论<a target="blank" href="/reviewList?subdir=${article.subdir?c}&articleno=${article.articleno?c}">${reviewCount?c}</a>条</div>
+                <div class="par2"><a target="_blank" href="/reviewList?subdir=${article.subdir?c}&articleno=${article.articleno?c}"">[全部评论]</a></div>
             </div>
         </div>
         <ul class="commentslist">
             <#list reviewList as review>
                 <li class="line">
                 <div class="has_avatar">
-                    <a target="_blank" class="a_avatar50" href="${encodeURL("/userInfo?userno=${review.userno?c}")}"><img width="50" height="50" alt="${review.loginid}" src="${contextPath}/themes/${themeName}/pc/images/90_avatar_middle.jpg"></a>
+                    <a target="_blank" class="a_avatar50" href="/userInfo?userno=${review.userno?c}"><img width="50" height="50" alt="${review.loginid}" src="${contextPath}/themes/${themeName}/pc/images/90_avatar_middle.jpg"></a>
                 </div>
                 <div class="replycontent">
                     <div class="t_t">
                         <div>
-                            <a target="_blank" title="${review.loginid}" class="commenter" href="${encodeURL("/userInfo?userno=${review.userno?c}")}">${review.loginid}</a>
+                            <a target="_blank" title="${review.loginid}" class="commenter" href="/userInfo?userno=${review.userno?c}">${review.loginid}</a>
                             <span class="time">评论于：${review.postdate?string("yyyy-MM-dd HH:mm")}</span>
                         </div>
                     </div>
@@ -142,24 +142,24 @@
           <ul>
             
             <h1>《${article.articlename}》最新章节</b>（提示：已启用缓存技术，最新章节可能会延时显示，登录书架即可实时查看。）</h1>
-                <#list chapterList?reverse as chapter><#if (chapter_index lt 9)><li><a href="${chapter.url}">${chapter.chaptername}</a></li></#if></#list>
+                <#list chapterList?reverse as chapter><#if (chapter_index lt 9)><li><a href="${contextPath}/${chapter.url}">${chapter.chaptername}</a></li></#if></#list>
             
-            <h1>《${article.articlename}》分卷阅读<#if !loginFlag>([<a href="${encodeURL("/login")}" rel="nofollow">登陆</a>]后开放)</#if></h1>
+            <h1>《${article.articlename}》分卷阅读<#if !loginFlag>([<a href="/login" rel="nofollow">登陆</a>]后开放)</#if></h1>
             <#list chapterList as chapter>
                 <#if chapter.chaptertype == 0>
 					<#if loginFlag>
 						<#if chapter_index % 30 == 0>
 							<li style="width:100%;background-color:#f2f9f1;margin-left:0;text-align:center;">
 								<#if (chapter_index + 30 lt chapterList?size)>
-									<a href="${encodeURL("/reader?subdir=${article.subdir?c}&articleno=${article.articleno?c}&chapterno=${chapterList[chapter_index].chapterno?c}&toChapterno=${chapterList[chapter_index+29].chapterno?c}")}">分段阅读</a>
+									<a href="/reader?subdir=${article.subdir?c}&articleno=${article.articleno?c}&chapterno=${chapterList[chapter_index].chapterno?c}&toChapterno=${chapterList[chapter_index+29].chapterno?c}">分段阅读</a>
 								<#else>
-									<a href="${encodeURL("/reader?subdir=${article.subdir?c}&articleno=${article.articleno?c}&chapterno=${chapterList[chapter_index].chapterno?c}&toChapterno=${chapterList[chapterList?size-1].chapterno?c}")}">分段阅读</a>
+									<a href="/reader?subdir=${article.subdir?c}&articleno=${article.articleno?c}&chapterno=${chapterList[chapter_index].chapterno?c}&toChapterno=${chapterList[chapterList?size-1].chapterno?c}">分段阅读</a>
 								</#if>
 							</li>
 						</#if>
 					</#if>
                     <li>
-                    <a href="${chapter.url}" title="${chapter.chaptername}">${chapter.chaptername}</a>
+                    <a href="${contextPath}/${chapter.url}" title="${chapter.chaptername}">${chapter.chaptername}</a>
                     </li>
                 </#if>
             </#list>
@@ -178,7 +178,7 @@
         <#if blocks.info_recommand_list ?? > 
         <ul id="content1">
             <#list blocks.info_recommand_list as article>
-            <li><a href="${article.url}" title="${article.articlename}"><img src="${article.imgUrl}" width="111px;" height="146px;" alt="${article.articlename}"></a>
+            <li><a href="${article.url}" title="${article.articlename}"><img src="${contextPath}${article.imgUrl}" width="111px;" height="146px;" alt="${article.articlename}"></a>
             <#if article.fullflag>
                 <img src="${contextPath}/themes/${themeName}/pc/images/only.png" class="topss png_bg" alt="完本图标">
             <#else>
@@ -191,7 +191,7 @@
         <#if blocks.info_random_recommand_list ?? > 
         <ul id="content2" style="display:none;">
             <#list blocks.info_random_recommand_list as article>
-           <li><a href="${article.url}" title="${article.articlename}"><img src="${article.imgUrl}" width="111px;" height="146px;" alt="${article.articlename}"></a>
+           <li><a href="${article.url}" title="${article.articlename}"><img src="${contextPath}${article.imgUrl}" width="111px;" height="146px;" alt="${article.articlename}"></a>
             <#if article.fullflag>
                 <img src="${contextPath}/themes/${themeName}/pc/images/only.png" class="topss png_bg" alt="完本图标">
             <#else>

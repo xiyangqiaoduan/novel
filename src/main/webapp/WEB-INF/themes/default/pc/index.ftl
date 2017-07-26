@@ -1,9 +1,9 @@
-<#include "common.ftl"/>
+<#include "${themeName}/pc/common.ftl"/>
 
 <#macro titleContent>  
-<title>${getText("label.system.title")}</title>
-<meta name="keywords" content="${getText("label.system.siteKeywords")}"/>
-<meta name="description" content="${getText("label.system.siteDescription")}" />
+<title>淘TO淘小说|免费小说网</title>
+<meta name="keywords" content="淘TO淘小说,免费小说网,无弹出广告小说网"/>
+<meta name="description" content="淘TO淘小说网是国内最大的小说网站之一。提供玄幻小说\,言情小说\,网游小说\,修真小说\,都市小说\,武侠小说\,网络小说等在线阅读\,我们是更新最快\,免费最多\,页面简洁且无弹出广告的小说网站!" />
 </#macro>  
 
 <#macro recommendblock articleList id style> 
@@ -31,8 +31,8 @@
     <ol>
         <#list articleList as article>
             <li>
-                <em class="r">${article.lastupdate?string("MM-dd HH:mm")}</em>
-                <a href="${encodeURL("/articleList?category=${article.category}&page=1")}" title = "<#if article.category!=0>${article.categoryStr}</#if>">[&nbsp;<#if article.category!=0>${article.categoryStr}</#if>&nbsp;]</a>
+                <em class="r">${article.lastupdate?string("yyyy-MM-dd HH:mm")}</em>
+                <a href="/articleList?category=${article.category}&page=1" title = "${article.categoryStr} ">[&nbsp;${article.categoryStr}&nbsp;]</a>
                 <a class="poptext" href="${article.url}"
                     title="${article.articlename}最新章节" class="f14">${article.articlename}</a>
                 <a class="poptext" href="${article.lastChapterUrl}" ><#if article.lastchapter?? >${article.lastchapter}</#if></a>
@@ -50,7 +50,7 @@
         <#list articleList as article>
         <li class="top3">
             <span class="order">${article_index+1}</span>
-            <span class="chapter"><a href="${encodeURL("/articleList?category=${article.category}")}" title="<#if article.category!=0>${article.categoryStr}</#if>" target="_blank">[<#if article.category!=0>${article.categoryStr}</#if>]</a></span>
+            <span class="chapter"><a href="/articleList?category=${article.category}" title="${article.categoryStr}>" target="_blank">[${article.categoryStr}]</a></span>
             <a target="_blank" href="${article.url}" title="${article.articlename}最新章节">${article.articlename}</a> 
             <span class="chapter"><a href="${article.lastChapterUrl}" title="${article.lastchapter}">${article.lastchapter}</a></span>
         </li>
@@ -99,6 +99,6 @@
     <div class="clear"></div>
     <p class="b-all-switch normal">友情链接:</p>
     <div class="mainLink">
-        ${blocks.friend_link}
+    <a href="http://www.baidu.com">百度</a>
     </div>
 </#macro>

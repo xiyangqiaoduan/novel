@@ -117,11 +117,12 @@
 
         </where>
 
-        <if test="pagination.sortColumn !=null and pagination.sortColumn !=''">
+        <if test="pagination!=null and pagination.sortColumn !=null and pagination.sortColumn !=''">
             ORDER BY ${pagination.sortColumn} ${pagination.sortOrder}
+            LIMIT  #{pagination.start},#{pagination.pageSize}
         </if>
 
-        LIMIT  #{pagination.start},#{pagination.pageSize}
+
 
     </select>
 

@@ -116,12 +116,13 @@
         <choose>
             <when test="pagination!=null and pagination.sortColumn!=null">
                 ORDER BY ${pagination.sortColumn} ${pagination.sortOrder}
+                LIMIT #{pagination.start},#{pagination.pageSize}
             </when>
             <otherwise>
                 ORDER BY articleno
             </otherwise>
         </choose>
-        LIMIT #{pagination.start},#{pagination.pageSize}
+
     </select>
 
 
@@ -387,15 +388,92 @@
         UPDATE
         <include refid="tbname"/>
         SET
-            lastchapterno=#{lastchapterno},
-            chapters=#{chapters},
-            size=#{size},
-            lastchapter=#{lastchapter},
-            lastupdate=#{lastupdate},
-            modifyuserno=#{modifyuserno},
-            modifytime=#{modifytime}
+        lastchapterno=#{lastchapterno},
+        chapters=#{chapters},
+        size=#{size},
+        lastchapter=#{lastchapter},
+        lastupdate=#{lastupdate},
+        modifyuserno=#{modifyuserno},
+        modifytime=#{modifytime}
         WHERE
-            articleno=#{articleno}
+        articleno=#{articleno}
+
+    </update>
+
+    <!--  随机推荐列表  -->
+    <select id="findRandomRecommendArticleList" resultMap="resultMap">
+
+        SELECT * FROM
+
+        <include refid="tbname"/>
+
+        ORDER BY ${pagination.sortColumn} ${pagination.sortOrder}
+
+        LIMIT #{pagination.pageSize}
+    </select>
+
+
+    <!-- -->
+
+    <select id="findRecommendArticleList" resultMap="resultMap">
+        SELECT * FROM
+        <include refid="tbname"/>
+
+        where articleno > #{articleno} and deleteflag = false
+
+        <if test="category!=0">
+            AND category = #{category}
+        </if>
+
+        AND lastupdate is not null
+
+        AND lastchapterno is not null
+        order by articleno
+        LIMIT 0,${limitnum}
+
+    </select>
+
+
+    <select id="findRelativeArticleList" resultMap="resultMap">
+
+        SELECT * FROM
+        <include refid="tbname"/>
+
+        WHERE 1==1 AND ${cond} order by ${sortCol}
+
+        <choose>
+            <when test="isAsc==true">
+                ASC
+            </when>
+            <otherwise>
+                DESC
+            </otherwise>
+        </choose>
+        limit #{limitnum}
+    </select>
+
+
+    <!-- 更新点击量-->
+
+    <update id="updateVisitStatistic">
+        UPDATE
+        <include refid="tbname"/>
+        SET
+        dayvisit = dayvisit +1,weekvisit= weekvisit +1,monthvisit =monthvisit+1 , allvisit = allvisit +1 WHERE
+        articleno =#{articleno}
+
+    </update>
+
+
+    <!--更新推荐量-->
+    <update id="updateVoteStatistic">
+        UPDATE
+        <include refid="tbname"/>
+        SET
+        dayvote=dayvote +1 , weekvote=weekvote +1 ,monthvote =monthvote+1 , allvote = allvote +1
+        WHERE
+        articleno = #{articleno}
+
 
     </update>
 
