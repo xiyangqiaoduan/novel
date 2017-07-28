@@ -270,4 +270,36 @@ public class User implements Serializable {
     public void setMailtoken(String mailtoken) {
         this.mailtoken = mailtoken;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userno=" + userno +
+                ", loginid='" + loginid + '\'' +
+                ", password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", regdate=" + regdate +
+                ", sex=" + sex +
+                ", qq='" + qq + '\'' +
+                ", lastlogin=" + lastlogin +
+                ", lineno='" + lineno + '\'' +
+                ", type=" + type +
+                ", votecount=" + votecount +
+                ", deleteflag=" + deleteflag +
+                ", realname='" + realname + '\'' +
+                ", id='" + id + '\'' +
+                ", mobileno='" + mobileno + '\'' +
+                ", branch='" + branch + '\'' +
+                ", bankno='" + bankno + '\'' +
+                ", alipayacount='" + alipayacount + '\'' +
+                ", category=" + category +
+                ", subcategory=" + subcategory +
+                ", modifyuserno=" + modifyuserno +
+                ", modifytime=" + modifytime +
+                ", openid='" + openid + '\'' +
+                ", activedflag=" + activedflag +
+                ", mailtoken='" + mailtoken + '\'' +
+                '}';
+    }
 }

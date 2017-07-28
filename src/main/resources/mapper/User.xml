@@ -132,22 +132,19 @@
         modifytime=#{modifytime}
         WHERE
           userno=#{userno}
-
-
     </update>
-
-
     <!-- 根据编号获取用户信息 -->
     <select id="getByNo" resultType="User">
         SELECT  * FROM <include refid="tbname" /> WHERE  userno=#{userno}
     </select>
-
-
     <update id="delByNo" parameterType="User">
-
         UPDATE  <include refid="tbname" /> SET deleteflag=1 WHERE  userno=#{userno}
-
     </update>
+
+
+    <select id="findByLoginInfo" resultType="User">
+        SELECT  * FROM <include refid="tbname" /> WHERE   loginid=#{loginid} AND password=#{password} AND deleteflag=0 LIMIT 1
+    </select>
 
 
 </mapper>

@@ -57,4 +57,14 @@ public interface UserService {
      * @param user
      */
     void delByNo(User user);
+    /**
+     * 根据帐号密码取得用户信息，如果取不到就返回NULL
+     *
+     * @param loginid
+     *            用户ID
+     * @param password
+     *            密码
+     * @return 用户信息
+     */
+    User findByLoginInfo(String loginid, String password);
 }

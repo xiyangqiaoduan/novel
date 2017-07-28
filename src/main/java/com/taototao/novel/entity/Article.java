@@ -3,6 +3,7 @@ package com.taototao.novel.entity;
 import com.taototao.novel.constant.TaoToTaoConfig;
 import com.taototao.novel.constant.TaoToTaoConstants;
 import com.taototao.novel.controller.ChapterFrontController;
+import com.taototao.novel.controller.ReaderController;
 import com.taototao.novel.controller.base.AbstractPublicBaseController;
 import com.taototao.novel.dto.TagDTO;
 import com.taototao.novel.utils.Utils;
@@ -677,13 +678,23 @@ public class Article implements Serializable {
      * @return 最新章节URL
      */
     public String getLastChapterUrl() {
-        StringBuffer sb = new StringBuffer(AbstractPublicBaseController.CHAPTER_NAMES);
-        sb.append("/").append(ChapterFrontController.DETAIL).append("/")
-                .append(getArticleno() / TaoToTaoConstants.SUB_DIR_ARTICLES)
+//        StringBuffer sb = new StringBuffer(AbstractPublicBaseController.CHAPTER_NAMES);
+//        sb.append("/").append(ChapterFrontController.DETAIL).append("/")
+//                .append(getArticleno() / TaoToTaoConstants.SUB_DIR_ARTICLES)
+//                .append("/")
+//                .append(getArticleno())
+//                .append("/")
+//                .append(getLastchapterno()).append("/").append(getPinyin().toLowerCase());
+        StringBuffer sb=new StringBuffer(AbstractPublicBaseController.READER_NAMES);
+        sb.append("/")
+                .append(ReaderController.CHAPTER_DETAIL)
                 .append("/")
-                .append(getArticleno())
+                .append(getSubdir())
                 .append("/")
-                .append(getLastchapterno()).append("/").append(getPinyin().toLowerCase());
+                .append( getArticleno())
+                .append("/")
+                .append(getLastchapterno());
+
         return sb.toString();
     }
 
@@ -756,7 +767,7 @@ public class Article implements Serializable {
                 categoryStr = "恐怖灵异";
                 break;
             case 9:
-                categoryStr = "散文诗词";
+                categoryStr = "文学著作";
                 break;
             case 10:
                 categoryStr = "其他类型";
@@ -794,7 +805,7 @@ public class Article implements Serializable {
         for (String tag : tags) {
             TagDTO tagdto = new TagDTO();
             tagdto.setTag(tag);
-            tagdto.setUrl("article/list?tag=" + tag);
+            tagdto.setUrl("info/articleList?tag=" + tag);
             tagList.add(tagdto);
         }
         return tagList;

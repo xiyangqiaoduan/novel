@@ -83,6 +83,11 @@
 		</property>
 		<property name="defaultEncoding" value="UTF-8"></property>
 	</bean>
-
+	<bean id="taskExecutor"
+		  class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5" />
+		<property name="maxPoolSize" value="10" />
+		<property name="WaitForTasksToCompleteOnShutdown" value="true" />
+	</bean>
 
 </beans>

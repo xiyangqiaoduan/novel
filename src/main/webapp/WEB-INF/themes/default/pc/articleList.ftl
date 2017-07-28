@@ -1,21 +1,21 @@
-<#include "common.ftl"/>
+<#include "${themeName}/pc/common.ftl"/>
 
 <#macro titleContent>  
 <#if category?? && category!=0 >
-<title>${categorymap[category?c]}小说|${getText("label.system.title")}</title>
-<meta name="keywords" content="${categorymap[category?c]},${categorymap[category?c]}小说,${getText("label.system.siteKeywords")}" />
+<title>${categoryStr}小说|淘TO淘小说网</title>
+<meta name="keywords" content="${categoryStr},${categoryStr}小说,淘TO淘小说网,就爱读书网,免费小说网,无弹出广告小说网,手打小说网" />
 <#elseif author?? >
-<title>${author?html}的小说|${getText("label.system.title")}</title>
-<meta name="keywords" content="${author?html}的小说,${getText("label.system.siteKeywords")}" />
-<meta name="description" content="${getText("label.system.siteDescription")}" />
+<title>${author?html}的小说|淘TO淘小说网</title>
+<meta name="keywords" content="${author?html}的小说,淘TO淘小说网,就爱读书网,免费小说网,无弹出广告小说网,手打小说网" />
+<meta name="description" content="淘TO淘小说网是国内最大的小说网站之一。提供玄幻小说,言情小说,网游小说,修真小说,都市小说,武侠小说,网络小说等在线阅读,我们是更新最快,免费最多,页面简洁且无弹出广告的小说网站!" />
 <#elseif tag?? >
-<title>标签：${tag?html}的小说|${getText("label.system.title")}</title>
-<meta name="keywords" content="标签：${tag?html}的小说,${getText("label.system.siteKeywords")}" />
-<meta name="description" content="${getText("label.system.siteDescription")}" />
+<title>标签：${tag?html}的小说|淘TO淘小说网</title>
+<meta name="keywords" content="标签：${tag?html}的小说,淘TO淘小说网,就爱读书网,免费小说网,无弹出广告小说网,手打小说网" />
+<meta name="description" content="淘TO淘小说网是国内最大的小说网站之一。提供玄幻小说,言情小说,网游小说,修真小说,都市小说,武侠小说,网络小说等在线阅读,我们是更新最快,免费最多,页面简洁且无弹出广告的小说网站!" />
 <#else>
-<title>完本小说|${getText("label.system.title")}</title>
-<meta name="keywords" content="完本小说,${getText("label.system.siteKeywords")}" />
-<meta name="description" content="${getText("label.system.siteDescription")}" />
+<title>完本小说|淘TO淘小说网</title>
+<meta name="keywords" content="完本小说,淘TO淘小说网,就爱读书网,免费小说网,无弹出广告小说网,手打小说网" />
+<meta name="description" content="淘TO淘小说网是国内最大的小说网站之一。提供玄幻小说,言情小说,网游小说,修真小说,都市小说,武侠小说,网络小说等在线阅读,我们是更新最快,免费最多,页面简洁且无弹出广告的小说网站!" />
 </#if>
 </#macro>
 
@@ -28,15 +28,15 @@
     <ul class="seeWell cf">
         <#list articleList as article>
         <li>
-           <a href="${article.url}"  title="${article.articlename}" class="l mr10">
-                <img src="${article.imgUrl}" style="width: 120px; height: 150px"/></a>
+           <a href="${contextPath}/${article.url}"  title="${article.articlename}" class="l mr10">
+                <img src="${contextPath}/${article.imgUrl}" style="width: 120px; height: 150px"/></a>
            <#if article.fullflag ><img src="${contextPath}/themes/${themeName}/pc/images/only.png"  alt="完本图标" class="topss png_bg"><#else><img src="${contextPath}/themes/${themeName}/pc/images/only2.png"  alt="连载中图标" class="topss png_bg"></#if>
            <span class="l">
-              <a href="${article.url}"  title="${article.articlename}" class="clearfix stitle">${article.articlename}</a>
-              作者：<a href="${encodeURL("/articleList?author=${article.author}")}">${article.author}</a>
+              <a href="${contextPath}/${article.url}"  title="${article.articlename}" class="clearfix stitle">${article.articlename}</a>
+              作者：<a href="${contextPath}/info/articleList?author=${article.author}")}">${article.author}</a>
               <em class="c999 clearfix">${article.introForHtml}</em>
-              更新：<a href="${article.lastChapterUrl}"  title="${article.lastchapter}">${article.lastchapterOmit}</a>
-              <a href="<#if !enableChapterIndexPage >${article.url}<#else>${article.chapterListUrl}</#if>" class="readTo"  title="${article.articlename}">马上阅读</a>
+              更新：<a href="${contextPath}/${article.lastChapterUrl}"  title="${article.lastchapter}">${article.lastchapterOmit}</a>
+              <a href="<#if !enableChapterIndexPage >${contextPath}/${article.url}<#else>${contextPath}/${article.chapterListUrl}</#if>" class="readTo"  title="${article.articlename}">马上阅读</a>
            </span>
         </li>
         </#list>
@@ -46,40 +46,40 @@
           <div class="pages">
               <div class="pagelink" id="pagelink">
                 <#if fullflag?? && fullflag>
-                    <#assign listurl = "/articleList?fullflag=true&page=" >
+                    <#assign listurl = "${contextPath}/info/articleList?fullflag=true&page=" >
                     <#assign listurlforjs = "${contextPath}/wanben/" >
                 <#elseif category?? && category !=0 >
-                    <#assign listurl = "/articleList?category=${category}&page=">
+                    <#assign listurl = "${contextPath}/info/articleList?category=${category}&page=">
                     <#assign listurlforjs = "${contextPath}/list/${category}/" >
                 <#elseif author??>
-                    <#assign listurl = "/articleList?author=${author?html}&page=">
+                    <#assign listurl = "${contextPath}/info/articleList?author=${author?html}&page=">
                     <#assign listurlforjs = "${contextPath}/list/${author?html}/" >
                 <#elseif tag??>
-                    <#assign listurl = "/articleList?tag=${tag?html}&page=">
+                    <#assign listurl = "${contextPath}/info/articleList?tag=${tag?html}&page=">
                     <#assign listurlforjs = "${contextPath}/list/${tag?html}/" >
                 <#else>
-                    <#assign listurl = "/articleList?page=">
+                    <#assign listurl = "${contextPath}/info/articleList?page=">
                     <#assign listurlforjs = "${contextPath}/list/" >
                 </#if>
                 <em id="pagestats">${pagination.pageNumber?c}/${pagination.totalPages?c}</em>
-                <a href="${encodeURL(listurl +"1")}" class="first">首页</a>
+                <a href="${listurl}1" class="first">首页</a>
                 <#list pagination.pageNumberList as pagenum >
                     <#if pagenum_index == 0 && (pagenum > 1 )>
-                        <a href="${encodeURL(listurl+ (pagenum-1)?c)}" class="prev">&lt;</a>
+                        <a href="${listurl}${((pagenum-1)?c)}" class="prev">&lt;</a>
                     </#if>
                     <#if pagenum == pagination.pageNumber>
                         <strong>${pagenum?c}</strong>
                     <#else>
-                        <a href="${encodeURL(listurl + pagenum?c)}"> ${pagenum?c} </a>
+                        <a href="${listurl}${((pagenum)?c)}"> ${pagenum?c} </a>
                     </#if>
                     <#assign mxpagenum = pagenum >
                 </#list>
                 <#if mxpagenum?? && (mxpagenum < pagination.totalPages)>
-                     <a href="${encodeURL(listurl + (mxpagenum+1)?c)}" class="next">&gt;</a>
+                     <a href="${listurl}${((mxpagenum+1)?c)}" class="next">&gt;</a>
                 </#if>
-                <a href="${encodeURL(listurl + pagination.totalPages?c)}">尾页</a>
-                <kbd>
-                    <input name="page" type="text" size="4" maxlength="6" onkeydown="if(event.keyCode==13){window.location='${listurlforjs}'+this.value+'.html'; return false;}" /></kbd>
+                <a href="${listurl}${(pagination.totalPages?c)}">尾页</a>
+               <#-- <kbd>
+                    <input name="page" type="text" size="4" maxlength="6" onkeydown="if(event.keyCode==13){window.location='${listurlforjs}'+this.value+'.html'; return false;}" /></kbd>-->
              </div>
         </div>
     </section>

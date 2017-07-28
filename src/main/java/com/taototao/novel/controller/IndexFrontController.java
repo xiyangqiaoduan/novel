@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class IndexFrontController extends AbstractPublicBaseController {
 
-    @RequestMapping("/index")
+    @RequestMapping(value = {"/index","/"})
     public String index(ModelMap map){
         loadBlock(map);
 

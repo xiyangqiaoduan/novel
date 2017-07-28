@@ -12,7 +12,7 @@
 <div class="mainnav">
         <div class="main-index" id="direct">
             <span class="r mr10">
-                <form action="${contextPath}/search" method="get" >
+                <form action="${contextPath}/info/search" method="post" >
                     搜小说：<input type="text" name="key" value="" />
                     <button type="submit" >搜</button>
                 </form>

@@ -63,9 +63,9 @@
 
         INSERT INTO
         <include refid="tbname"/>
-        (articleno,articlename,chaptertype,chaptername,size,isvip,postdate,publishtime,ispublish,lastchecktime,deleteflag,modifyuserno,modifytime)
+        (articleno,articlename,chaptertype,chaptername,size,isvip,postdate,publishtime,ispublish,lastchecktime,deleteflag,modifyuserno,modifytime,content)
         VALUES (
-        #{articleno},#{articlename},#{chaptertype},#{chaptername},#{size},#{isvip},#{postdate},#{publishtime},#{ispublish},#{lastchecktime},#{deleteflag},#{modifyuserno},#{modifytime}
+        #{articleno},#{articlename},#{chaptertype},#{chaptername},#{size},#{isvip},#{postdate},#{publishtime},#{ispublish},#{lastchecktime},#{deleteflag},#{modifyuserno},#{modifytime},#{content}
         )
 
     </insert>
@@ -85,6 +85,7 @@
         UPDATE
         <include refid="tbname"/>
         SET
+        content=#{content}
         articleno=#{articleno},articlename=#{articlename},chaptertype=#{chaptertype},chaptername=#{chaptername},size=#{size},isvip=#{isvip},
         postdate=#{postdate},publishtime=#{publishtime},lastchecktime=#{lastchecktime},deleteflag=#{deleteflag},modifyuserno=#{modifyuserno},modifytime=#{modifytime}
         WHERE chapterno=#{chapterno}

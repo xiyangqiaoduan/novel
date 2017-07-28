@@ -53,6 +53,10 @@ public class TaoToTaoConfig {
      * 图片文件路径
      */
     public static final String IMAGE_PATH = "iamgePath";
+    /**
+     * 系统根目录
+     */
+    public static final String SYSTEM_PATH="systempath";
 
     /**
      * 图片相对文件路径

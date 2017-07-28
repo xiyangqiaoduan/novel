@@ -5,6 +5,8 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * 
@@ -21,7 +23,10 @@ public class ArticleCountManager {
     /**
      * 小说件数MAP
      */
-    private static Map<String, Integer> articleCountMap;
+
+   private static ConcurrentMap<String, Integer> articleCountMap=new ConcurrentHashMap<String, Integer>();
+
+   //private static Map<String, Integer> articleCountMap;
 
     /**
      * 小说件数处理线程
@@ -43,6 +48,11 @@ public class ArticleCountManager {
         return 0;
     }
 
+    public static  void putArticleCount(String key,int count){
+        articleCountMap.put(key,count);
+    }
+
+
     /**
      * 初始化小说件数管理器
      */
@@ -50,7 +60,7 @@ public class ArticleCountManager {
 
         logger.info("going to init ArticleCountManager.");
 
-        articleCountMap = new HashMap<String, Integer>();
+ //       articleCountMap = new HashMap<String, Integer>();
 
 //        loadArticleCountThread = new Thread(new Runnable() {
 //

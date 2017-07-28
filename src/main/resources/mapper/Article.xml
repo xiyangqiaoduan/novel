@@ -57,7 +57,50 @@
     <select id="getCount" parameterType="com.taototao.novel.bean.ArticleSearchBean" resultType="java.lang.Integer">
         SELECT count(*) FROM
         <include refid="tbname"/>
-        where deleteflag = false
+        where deleteflag = 0
+
+        <if test="articleno!=0">
+            AND articleno=#{articleno}
+        </if>
+
+        <if test="articlename!=null and articlename!=''">
+            AND articlename=#{articlename}
+        </if>
+        <if test="pinyin!=null and pinyin!=''">
+            AND pinyin=#{pinyin}
+        </if>
+        <if test="fromArticleno!=0">
+            AND articleno <![CDATA[>]]> #{fromArticleno}
+        </if>
+        <if test="author!=null and author!=''">
+            AND author=#{author}
+        </if>
+
+        <if test="category!=0">
+            AND category=#{category}
+        </if>
+
+        <if test="fullflag ==true">
+            AND fullflag=#{fullflag}
+        </if>
+        <if test="articlenos!=null and articlenos!=''">
+            AND articleno in (${articlenos})
+        </if>
+        <if test="key!=null">
+            AND (LOWER(articlename) LIKE CONCAT ('%',#{key},'%') OR LOWER(author) LIKE CONCAT('%',#{key},'%'))
+        </if>
+
+        <if test="authorid >0">
+            AND authorid=#{authorid}
+        </if>
+
+        <if test="tag!=null">
+            AND articlename LIKE CONCAT('%',#{tag},'%')
+        </if>
+        <if test="pageType==1">
+            AND lastupdate is not null
+            AND lastchapterno is not null
+        </if>
     </select>
 
 
@@ -67,7 +110,7 @@
         <include refid="tbname"/>
 
         <where>
-            deleteflag = false
+            deleteflag = 0
 
             <if test="articleno!=0">
                 AND articleno=#{articleno}

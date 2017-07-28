@@ -50,10 +50,10 @@
           </div>
           <div class="b-oper">
               <a href="<#if !enableChapterIndexPage >#chapters<#else>${article.chapterListUrl}</#if>" class="reader" title="${article.articlename}免费阅读">开始阅读</a>
-              <a href="javascript:return false;" articleno="${article.articleno?c}"  id="addBookcaseButton" class="mehide" rel="nofollow" >加入书架</a>
-              <a href="javascript:return false;" articleno="${article.articleno?c}"  id="addSubscribeButton" class="subscribe" rel="nofollow" >订阅本书</a>
+<#--              <a href="javascript:return false;" articleno="${article.articleno?c}"  id="addBookcaseButton" class="mehide" rel="nofollow" >加入书架</a>
+              <a href="javascript:return false;" articleno="${article.articleno?c}"  id="addSubscribeButton" class="subscribe" rel="nofollow" >订阅本书</a>-->
               <a href="javascript:return false;" articleno="${article.articleno?c}"  id="voteButton"  class="toupiao" rel="nofollow">推荐本书</a>
-              <a href="/user/messageEdit?title=${article.articlename}-章节错误&content=举报原因如下：  "  class="error" target="_blank" rel="nofollow">内容报错</a>
+    <#--          <a href="/user/messageEdit?title=${article.articlename}-章节错误&content=举报原因如下：  "  class="error" target="_blank" rel="nofollow">内容报错</a>-->
           </div>
         </div>
         <div class="clear"></div>
@@ -62,7 +62,7 @@
                 <dl><dt>类别：</dt><dd><a href="${contextPath}/articleList?category=${article.category}&page=1""
                     target="_blank" title="<#if article.category!=0>${article.categoryStr}</#if>"><#if article.category!=0>${article.categoryStr}</#if></a></dd></dl>
                 <dl><dt>状态：</dt><dd><#if article.fullflag>完结<#else>连载中</#if></dd></dl>
-                <dl class="bookso"><dt>作      者：</dt><dd> <a href="${contextPath}/articleList?author=${article.author}">
+                <dl class="bookso"><dt>作      者：</dt><dd> <a href="${contextPath}/info/articleList?author=${article.author}">
                     ${article.author}</a></dd></dl>
                 <dl><dt>全文长度：</dt><dd><#if article.size ??>${article.size}<#else>0</#if>字</dd></dl>
                 <dl><dt>总点击量：</dt><dd>${article.allvisit}</dd></dl>
@@ -70,11 +70,11 @@
                 <dl><dt>TXT下载：</dt><dd id="downloadUrl"><font id="info_download"></font></dd></dl>
                 <dl class="bookNew"><dt>最新章节：</dt>
                     <dd>
-                    <a href="${article.lastChapterUrl}" target="_blank"><#if article.lastchapter?? >${article.lastchapter}</#if></a>
+                    <a href="${contextPath}/${article.lastChapterUrl}" target="_blank"><#if article.lastchapter?? >${article.lastchapter}</#if></a>
                     <em>更新于:[${article.lastupdate?string("yyyy-MM-dd HH:mm")}]</em><br />
                     </dd>
                 </dl>
-                <dl><dt>标签：</dt><dd><#list article.tagList as tag><a href="${tag.url}" target="_blank">${tag.tag}</a>&nbsp;&nbsp;</#list></dd></dl>
+                <dl><dt>标签：</dt><dd><#list article.tagList as tag><a href="${contextPath}/${tag.url}" target="_blank">${tag.tag}</a>&nbsp;&nbsp;</#list></dd></dl>
             </div>
             <div class="adv"><div id="info_ad_02"></div></div>
             <div class="clear"></div>
@@ -83,7 +83,7 @@
     </div>
     <div id="info_ad_03"></div>
     <div class="clear"></div>
-    <div class="comment_left">
+<#--    <div class="comment_left">
         <div class="commenthead">
             <div class="ti">
                 <h2>《${article.articlename}》的评论</h2>
@@ -113,7 +113,7 @@
             </#list>
         </ul>
         <div class="blank"></div>
-        <!-- 我的回复框 -->
+        <!-- 我的回复框 &ndash;&gt;
         <div id="commentbox" class="talker_form">
             <#if !loginFlag>
             <div class="logintip">您还未登录，请登录或注册后再发表回复</div>
@@ -133,7 +133,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <div id="info_ad_04"></div>
     <#if !enableChapterIndexPage >
     <div class="clear"></div>
@@ -141,13 +141,13 @@
         <a name="chapters"></a>
           <ul>
             
-            <h1>《${article.articlename}》最新章节</b>（提示：已启用缓存技术，最新章节可能会延时显示，登录书架即可实时查看。）</h1>
+            <h1>《${article.articlename}》最新章节</b><#--（提示：已启用缓存技术，最新章节可能会延时显示，登录书架即可实时查看。）--></h1>
                 <#list chapterList?reverse as chapter><#if (chapter_index lt 9)><li><a href="${contextPath}/${chapter.url}">${chapter.chaptername}</a></li></#if></#list>
             
-            <h1>《${article.articlename}》分卷阅读<#if !loginFlag>([<a href="/login" rel="nofollow">登陆</a>]后开放)</#if></h1>
+            <h1>《${article.articlename}》分卷阅读<#--<#if !loginFlag>([<a href="/login" rel="nofollow">登陆</a>]后开放)</#if>--></h1>
             <#list chapterList as chapter>
                 <#if chapter.chaptertype == 0>
-					<#if loginFlag>
+			<#--		<#if loginFlag>
 						<#if chapter_index % 30 == 0>
 							<li style="width:100%;background-color:#f2f9f1;margin-left:0;text-align:center;">
 								<#if (chapter_index + 30 lt chapterList?size)>
@@ -157,7 +157,7 @@
 								</#if>
 							</li>
 						</#if>
-					</#if>
+					</#if>-->
                     <li>
                     <a href="${contextPath}/${chapter.url}" title="${chapter.chaptername}">${chapter.chaptername}</a>
                     </li>

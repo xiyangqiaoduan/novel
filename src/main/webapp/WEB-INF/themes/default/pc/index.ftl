@@ -15,7 +15,7 @@
        <#if article.fullflag ><img src="${contextPath}/themes/${themeName}/pc/images/only.png" alt="完本图标" class="topss png_bg"><#else><img src="${contextPath}/themes/${themeName}/pc/images/only2.png" class="topss png_bg" alt="连载中图标"></#if>
        <span class="l">
           <a href="${article.url}"  title="${article.articlename}" class="clearfix stitle">${article.articlename}</a>
-          作者：<a href="${article.authorUrl}">${article.author}</a>
+          作者：<a href="${contextPath}/info/articleList?author=${article.author}">${article.author}</a>
           <em class="c999 clearfix">${article.introForHtml}</em>
           更新：<a href="${article.lastChapterUrl}"  title="${article.lastchapter}">${article.lastchapterOmit}</a>
           <a href="<#if !enableChapterIndexPage >${article.url}<#else>${article.chapterListUrl}</#if>" class="readTo"  title="${article.articlename}">马上阅读</a>
@@ -36,7 +36,7 @@
                 <a class="poptext" href="${article.url}"
                     title="${article.articlename}最新章节" class="f14">${article.articlename}</a>
                 <a class="poptext" href="${article.lastChapterUrl}" ><#if article.lastchapter?? >${article.lastchapter}</#if></a>
-                作者：<a class="poptext" href="${article.authorUrl}" title="${article.author}的小说" class="f14">${article.author}</a>
+                作者：<a class="poptext" href="${contextPath}/info/articleList?author=${article.author}" title="${article.author}的小说" class="f14">${article.author}</a>
             </li>
         </#list>
     </ol>

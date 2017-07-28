@@ -5,11 +5,11 @@
     <div>
       <nav class="site-navigation cf" style="width: 320px;">
       <a class="home" href="${contextPath}/">首页</a>
-      <a href="/siteMap">网站地图</a>
-      <a href="/articleList?fullflag=true">完本小说</a>
+      <a href="${contextPath}/info/siteMap">网站地图</a>
+      <a href="${contextPath}/info/articleList?fullflag=true">完本小说</a>
       <a href="/saveShortcut" rel="nofollow">创建桌面快捷</a>
       </nav>
-      <div class="hd-follow" style="width:630px;text-align:right;" >
+<#--      <div class="hd-follow" style="width:630px;text-align:right;" >
         <div class="myhide"><a href="#" class="hides">浏览记录</a>
           <div class="hideInfo">
             <ul id="readhistory">
@@ -20,10 +20,10 @@
         </div>
           <span id="checklogin">
             <#if enableQQLogin><a href="/gotoQQLogin" rel="nofollow"><img src="${contextPath}/themes/default/pc/images/qq_login.gif" class="vm" alt="QQ登录"></a></#if>
-            <a href="${contextPath}/login" style="color:#F0F0F0" rel="nofollow">访客登录</a>&nbsp;&nbsp;
-            <a href="${contextPath}/register" style="color:#F0F0F0" rel="nofollow">免费注册</a>&nbsp;&nbsp;
+            <a href="${contextPath}/user/loginPage" style="color:#F0F0F0" rel="nofollow">访客登录</a>&nbsp;&nbsp;
+            <a href="${contextPath}/user/registerPage" style="color:#F0F0F0" rel="nofollow">免费注册</a>&nbsp;&nbsp;
           </span>
-        </div>
+        </div>-->
     </div>
     <!--TODO haserror check-->
     <#if hasError || ( pageType?? && pageType!=4) >
@@ -32,9 +32,9 @@
         <img src="${contextPath}/themes/${themeName}/pc/images/logo.png" alt="淘TO淘小说|免费小说网 - logo"></a>
     </p>
     <div class="site-search">
-    <form action="${contextPath}/search" method="get" >
+    <form action="${contextPath}/info/search" method="post" >
        <input name="key" type="text" id="key" onFocus="this.classname='over';if (value =='这是一个神奇的搜索，请输入小说名或作者名'){value =''}" onBlur="this.classname='input'"  value="<#if key??>${key?html}<#else>这是一个神奇的搜索，请输入小说名或作者名</#if>" />
-       <input type="button" id="searchbuttom" value="" style="background:url('${contextPath}/themes/${themeName}/pc/images/search.jpg');border:0px solid;cursor:pointer;" />
+       <input type="submit" id="searchbuttom" value="" style="background:url('${contextPath}/themes/${themeName}/pc/images/search.jpg');border:0px solid;cursor:pointer;" />
     </form>
     </div>
     </#if>
@@ -48,17 +48,17 @@
         <ul class="channel-nav-list">
             <li <#if pageType ?? && pageType==1>class="current"</#if> ><a href="${contextPath}/" title="淘TO淘小说">淘TO淘小说</a></li>
 
-            <li <#if category??><#if 1==category?c>class="current"</#if></#if>><a href="/articleList?category=1">玄幻魔法</a></li>
-            <li <#if category??><#if 2==category?c>class="current"</#if></#if>><a href="/articleList?category=2">武侠修真</a></li>
-            <li <#if category??><#if 3==category?c>class="current"</#if></#if>><a href="/articleList?category=3">都市言情</a></li>
-            <li <#if category??><#if 4==category?c>class="current"</#if></#if>><a href="/articleList?category=4">历史军事</a></li>
-            <li <#if category??><#if 5==category?c>class="current"</#if></#if>><a href="/articleList?category=5">侦探推理</a></li>
-            <li <#if category??><#if 6==category?c>class="current"</#if></#if>><a href="/articleList?category=6">网游动漫</a></li>
-            <li <#if category??><#if 7==category?c>class="current"</#if></#if>><a href="/articleList?category=7">科幻小说</a></li>
-            <li <#if category??><#if 8==category?c>class="current"</#if></#if>><a href="/articleList?category=8">恐怖灵异</a></li>
-            <li <#if category??><#if 9==category?c>class="current"</#if></#if>><a href="/articleList?category=9">散文诗词</a></li>
-            <li <#if category??><#if 10==category?c>class="current"</#if></#if>><a href="/articleList?category=10">其他类型</a></li>
-            <li <#if pageType ?? && pageType==7>class="current"</#if>><a href="/top?sortColumn=lastupdate">排行榜</a></li>
+            <li <#if category??><#if 1==category?c>class="current"</#if></#if>><a href="${contextPath}/info/articleList?category=1">玄幻魔法</a></li>
+            <li <#if category??><#if 2==category?c>class="current"</#if></#if>><a href="${contextPath}/info/articleList?category=2">武侠修真</a></li>
+            <li <#if category??><#if 3==category?c>class="current"</#if></#if>><a href="${contextPath}/info/articleList?category=3">都市言情</a></li>
+            <li <#if category??><#if 4==category?c>class="current"</#if></#if>><a href="${contextPath}/info/articleList?category=4">历史军事</a></li>
+            <li <#if category??><#if 5==category?c>class="current"</#if></#if>><a href="${contextPath}/info/articleList?category=5">侦探推理</a></li>
+            <li <#if category??><#if 6==category?c>class="current"</#if></#if>><a href="${contextPath}/info/articleList?category=6">网游动漫</a></li>
+            <li <#if category??><#if 7==category?c>class="current"</#if></#if>><a href="${contextPath}/info/articleList?category=7">科幻小说</a></li>
+            <li <#if category??><#if 8==category?c>class="current"</#if></#if>><a href="${contextPath}/info/articleList?category=8">恐怖灵异</a></li>
+            <li <#if category??><#if 9==category?c>class="current"</#if></#if>><a href="${contextPath}/info/articleList?category=9">散文诗词</a></li>
+            <li <#if category??><#if 10==category?c>class="current"</#if></#if>><a href="${contextPath}/info/articleList?category=10">其他类型</a></li>
+            <li <#if pageType ?? && pageType==7>class="current"</#if>><a href="${contextPath}/info/top?sortColumn=lastupdate">排行榜</a></li>
         </ul>
       </nav>
     </div>

@@ -42,6 +42,8 @@ public class Chapter implements Serializable {
     private boolean ispublish;
     /**最后校验时间*/
     private Date lastchecktime;
+    /**章节内容**/
+    private String content;
 
 
     public int getChapterno() {
@@ -154,6 +156,14 @@ public class Chapter implements Serializable {
 
     public void setLastchecktime(Date lastchecktime) {
         this.lastchecktime = lastchecktime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override

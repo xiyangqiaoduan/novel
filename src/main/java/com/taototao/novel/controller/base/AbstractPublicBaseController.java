@@ -38,7 +38,6 @@ public abstract class AbstractPublicBaseController {
     @Autowired
     private ArticleService articleService;
 
-
     /**
      * 输出log
      */

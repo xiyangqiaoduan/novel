@@ -2,6 +2,7 @@ package com.taototao.novel.dao;
 
 import com.taototao.novel.bean.UserSearchBean;
 import com.taototao.novel.entity.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -55,4 +56,14 @@ public interface UserDao {
      * @param user
      */
     void delByNo(User user);
+    /**
+     * 根据帐号密码取得用户信息，如果取不到就返回NULL
+     *
+     * @param loginid
+     *            用户ID
+     * @param password
+     *            密码
+     * @return 用户信息
+     */
+    User findByLoginInfo(@Param("loginid") String loginid,@Param("password")String password);
 }

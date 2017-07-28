@@ -1,6 +1,8 @@
 package com.taototao.novel.utils;
 
+import com.taototao.novel.constant.TaoToTaoConstants;
 import com.taototao.novel.entity.User;
+import com.taototao.novel.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -10,6 +12,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 
 /**
  * 
@@ -43,53 +46,54 @@ public class CookieUtils {
      * @return Cookie信息
      */
 
-//    public static Cookie addUserCookie(User user) {
-//        try {
-//            Cookie cookie = new Cookie(USER_COOKIE, URLEncoder.encode(user.getLoginid(), YiDuConstants.ENCODING_UTF_8)
-//                    + "," + user.getPassword() + "," + user.getType() + "," + StringUtils.isNotBlank(user.getOpenid()));
-//            // 默认保持两年cookie保存两周
-//            cookie.setMaxAge(60 * 60 * 24 * 365);
-//            return cookie;
-//        } catch (UnsupportedEncodingException e) {
-//            logger.error(e);
-//        }
-//        return null;
-//    }
+    public static Cookie addUserCookie(User user) {
+        try {
+            Cookie cookie = new Cookie(USER_COOKIE, URLEncoder.encode(user.getLoginid(), TaoToTaoConstants.ENCODING_UTF_8)
+                    + "," + user.getPassword() + "," + user.getType() + "," + StringUtils.isNotBlank(user.getOpenid()));
+            // 默认保持两年cookie保存两周
+            cookie.setMaxAge(60 * 60 * 24 * 365);
+            return cookie;
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e);
+        }
+        return null;
+    }
 
-//    /**
-//     * 使用cookie信息登录
-//     *
-//     * @param request
-//     *            HttpServletRequest
-//     * @param userService
-//     *            用户服务
-//     */
-//    public static void getUserCookieAndLogoin(HttpServletRequest request, UserService userService) {
-//        Cookie[] cookies = request.getCookies();
-//        if (cookies != null) {
-//            // 遍历cookie查找用户信息
-//            for (Cookie cookie : cookies) {
-//                if (CookieUtils.USER_COOKIE.equals(cookie.getName())) {
-//                    // 使用cookie内的用户信息登录
-//                    String value = cookie.getValue();
-//                    if (StringUtils.isNotBlank(value)) {
-//                        String[] split = value.split(",");
-//                        if (split.length >= 2) {
-//                            TUser user = userService.findByLoginInfoByJDBC(split[0], split[1]);
-//                            if (user != null) {
-//                                LoginManager.doLogin(user);
-//                                // 更新用户最后登录时间
-//                                userService.updateLastLoginDate(user.getUserno(), new Date());
-//                            } else {
-//                                // 用户信息不存在的话，把用户cookie清掉
-//                                delUserCookie(request);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+    /**
+     * 使用cookie信息登录
+     *
+     * @param request
+     *            HttpServletRequest
+     * @param userService
+     *            用户服务
+     */
+    public static void getUserCookieAndLogoin(HttpServletRequest request, UserService userService) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            // 遍历cookie查找用户信息
+            for (Cookie cookie : cookies) {
+                if (CookieUtils.USER_COOKIE.equals(cookie.getName())) {
+                    // 使用cookie内的用户信息登录
+                    String value = cookie.getValue();
+                    if (StringUtils.isNotBlank(value)) {
+                        String[] split = value.split(",");
+                        if (split.length >= 2) {
+                            User user = userService.findByLoginInfo(split[0], split[1]);
+                            if (user != null) {
+                                LoginManager.doLogin(user);
+                                // 更新用户最后登录时间
+                                user.setLastlogin(new Date());
+                                userService.update(user);
+                            } else {
+                                // 用户信息不存在的话，把用户cookie清掉
+                                delUserCookie(request);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     /**
      * 删除cookie

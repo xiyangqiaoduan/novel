@@ -43,4 +43,8 @@ public class UserServiceImpl implements UserService {
     public void delByNo(User user) {
         userDao.delByNo(user);
     }
+
+    public User findByLoginInfo(String loginid, String password) {
+        return userDao.findByLoginInfo(loginid,password);
+    }
 }
