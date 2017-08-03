@@ -23,7 +23,7 @@
 <#macro content>
 <div id="list_ad_01"></div>
 <div class="mainnav" id="navList">
-<div class="main-index">位置：  &nbsp; > &nbsp; <a href="#"><#if fullflag ?? && fullflag>全本小说<#elseif category ?? && category!=0>${categorymap[category?c]}<#elseif tag ??>标签：${tag?html}的小说<#elseif author??>${author?html}的小说<#else>小说列表页</#if></a></div>
+<div class="main-index">位置：  &nbsp; > &nbsp; <a href="#"><#if fullflag ?? && fullflag>全本小说<#elseif category ?? && category!=0>${categoryStr}<#elseif tag ??>标签：${tag?html}的小说<#elseif author??>${author?html}的小说<#else>小说列表页</#if></a></div>
     <section class="section board-list board-list-collapse">
     <ul class="seeWell cf">
         <#list articleList as article>

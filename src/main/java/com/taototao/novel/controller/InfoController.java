@@ -19,14 +19,18 @@ import com.taototao.novel.utils.Pagination;
 import com.taototao.novel.utils.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -178,10 +182,10 @@ public class InfoController extends AbstractPublicBaseController {
         pagination.setSortOrder("DESC");
         int count = 0;
 
-        if(category!=null){
+        if (category != null) {
 
-            map.put("category",category);
-            map.put("categoryStr",getCategoryStr(category));
+            map.put("category", category);
+            map.put("categoryStr", getCategoryStr(category));
         }
 
         if (TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_CACHE_ARTICLE_COUNT, false)) {
@@ -207,7 +211,7 @@ public class InfoController extends AbstractPublicBaseController {
                     count = articleService.getCount(countSearchBean);
                     ArticleCountManager.putArticleCount(TaoToTaoConstants.CacheCountType.AUTHOR, count);
                 }
-                map.put("author",author);
+                map.put("author", author);
 
                 searchBean.setAuthor(author);
             } else if (fullflag != null && fullflag) {
@@ -219,7 +223,7 @@ public class InfoController extends AbstractPublicBaseController {
                     count = articleService.getCount(countSearchBean);
                     ArticleCountManager.putArticleCount(TaoToTaoConstants.CacheCountType.FULLFLAG, count);
                 }
-                map.put("fullflag",fullflag);
+                map.put("fullflag", fullflag);
                 searchBean.setFullflag(fullflag);
             } else if (Utils.isDefined(tag)) {
                 count = ArticleCountManager.getArticleCount(TaoToTaoConstants.CacheCountType.TAG);
@@ -229,7 +233,7 @@ public class InfoController extends AbstractPublicBaseController {
                     count = articleService.getCount(countSearchBean);
                     ArticleCountManager.putArticleCount(TaoToTaoConstants.CacheCountType.TAG, count);
                 }
-                map.put("tag",tag);
+                map.put("tag", tag);
                 searchBean.setTag(tag);
             } else {
                 count = ArticleCountManager.getArticleCount(TaoToTaoConstants.CacheCountType.ALL);
@@ -261,7 +265,7 @@ public class InfoController extends AbstractPublicBaseController {
         }
 
         if (Utils.isDefined(fullflag) && fullflag) {
-            List<Article>  lastPostFullArticleList = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_PREFIX
+            List<Article> lastPostFullArticleList = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_PREFIX
                     + fullflag, searchBean);
             if (!Utils.isDefined(lastPostFullArticleList)) {
                 searchBean.getPagination().setSortColumn("postdate");
@@ -270,25 +274,29 @@ public class InfoController extends AbstractPublicBaseController {
                         searchBean, lastPostFullArticleList);
             }
         }
-        map.put("articleList",articleList);
-        map.put("pagination",pagination);
+        map.put("articleList", articleList);
+        map.put("pagination", pagination);
+
+        if (fullflag != null) {
+            map.put("fullflag", fullflag);
+        }
         loadBlock(map);
-        map.put("pageType",TaoToTaoConstants.Pagetype.PAGE_ARTICLE_LIST);
+        map.put("pageType", TaoToTaoConstants.Pagetype.PAGE_ARTICLE_LIST);
         return ICommon.themes + "/pc/articleList";
 
     }
 
 
     @RequestMapping("siteMap")
-    public String siteMap(ModelMap map){
+    public String siteMap(ModelMap map) {
         loadBlock(map);
-        map.put("articleList",articleService.find(new ArticleSearchBean()));
-        map.put("pageType",0);
+        map.put("articleList", articleService.find(new ArticleSearchBean()));
+        map.put("pageType", 0);
         return ICommon.themes + "/pc/siteMap";
     }
 
     @RequestMapping("top")
-    public String top(String sortColumn,String sortOrder,@RequestParam(defaultValue = "1") int page,ModelMap map){
+    public String top(String sortColumn, String sortOrder, @RequestParam(defaultValue = "1") int page, ModelMap map) {
         if (!TaoToTaoConstants.TOP_NAME_MAP.containsKey(sortColumn)) {
             // 默认最近更新
             sortColumn = "lastupdate";
@@ -330,20 +338,58 @@ public class InfoController extends AbstractPublicBaseController {
             CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_TOP_LIST_PREFIX, searchBean,
                     articleList);
         }
-        map.put("articleList",articleList);
-        map.put("pagination",pagination);
-        map.put("pageType",TaoToTaoConstants.Pagetype.PAGE_TOP);
-        map.put("sortColumn",sortColumn);
-        map.put("topnamemap",TOP_NAME_MAP);
+        map.put("articleList", articleList);
+        map.put("pagination", pagination);
+        map.put("pageType", TaoToTaoConstants.Pagetype.PAGE_TOP);
+        map.put("sortColumn", sortColumn);
+        map.put("topnamemap", TOP_NAME_MAP);
         loadBlock(map);
         logger.debug("normally end.");
         return ICommon.themes + "/pc/top";
     }
 
+    @RequestMapping("/download/{articleno}")
+    public String downloadFile(@PathVariable  Integer articleno, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        if (articleno == null) {
+            return null;
+        }
+        Article article = articleService.getByNo(articleno);
+        if (article == null) {
+            return null;
+        }
+        String codedfilename=null;
+        String agent = request.getHeader("USER-AGENT");
+        if (null != agent && -1 != agent.indexOf("MSIE") || null != agent
+                && -1 != agent.indexOf("Trident")) {// ie
+            String name = java.net.URLEncoder.encode(article.getArticlename(), "UTF8");
+            codedfilename = name;
+        } else if (null != agent && -1 != agent.indexOf("Mozilla")) {// 火狐,chrome等
+            codedfilename = new String(article.getArticlename().getBytes("UTF-8"), "iso-8859-1");
+        }
+
+        response.setContentType("application/octet-stream;charset=UTF-8");// 设置强制下载不打开
+        response.addHeader("Content-Disposition", "attachment;filename=" + codedfilename + ".txt");// 设置文件名
+        //response.addHeader("Content-Length", "" + article.getSize());
+        ChapterSearchBean searchBean = new ChapterSearchBean();
+        searchBean.setArticleno(articleno);
+        List<Chapter> chapterList = chapterService.find(searchBean);
+        OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
+        for(Chapter chapter:chapterList){
+            outputStream.write((chapter.getChaptername()+"\n").getBytes());
+            byte[] data=chapter.getContent().getBytes();
+            outputStream.write(data);
+        }
+        outputStream.flush();
+        outputStream.close();
+
+        return null;
+    }
 
 
     public static final Map<String, String> TOP_NAME_MAP = new LinkedHashMap<String, String>() {
         private static final long serialVersionUID = -2355068040470822368L;
+
         {
             put("lastupdate", "最近更新");
             put("allvisit", "总点击榜");
@@ -402,7 +448,7 @@ public class InfoController extends AbstractPublicBaseController {
                 break;
 
         }
-        return  categoryStr;
+        return categoryStr;
     }
 
 }

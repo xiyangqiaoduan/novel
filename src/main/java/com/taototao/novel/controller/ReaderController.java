@@ -91,8 +91,8 @@ public class ReaderController extends AbstractPublicBaseController {
 
             }
 
-            chapter.setContent(Utils.getContext(chapter, true,
-                    TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_PSEUDO, false)));
+//            chapter.setContent(Utils.getContext(chapter, true,
+//                    TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_PSEUDO, false)));
 
         }
 

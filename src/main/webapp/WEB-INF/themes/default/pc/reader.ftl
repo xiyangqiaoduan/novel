@@ -27,12 +27,14 @@
                 <span class="r"></span>
                 <em class="l">《${chapter.articlename}》</em>
                 <strong class="l jieqi_title">${chapter.chaptername}</strong>
+<#--
                 <a href="javascript:return false;" articleno="${article.articleno?c}" chapterno="${chapter.chapterno?c}"  id="addBookcaseButton" title="加入书签" class="l" rel="nofollow">加入书签</a>
+-->
                 <a href="javascript:return false;" articleno="${article.articleno?c}"  id="voteButton"  title="推荐本书" class="l" rel="nofollow">推荐本书</a>
-                <a href="javascript:return false;" articleno="${article.articleno?c}"  id="addSubscribeButton" title="订阅本书" class="l" rel="nofollow">订阅本书</a>
+           <#--     <a href="javascript:return false;" articleno="${article.articleno?c}"  id="addSubscribeButton" title="订阅本书" class="l" rel="nofollow">订阅本书</a>
                 <a href="/user/messageEdit?title=${article.articlename}-章节错误&content= 关于《${article.articlename}》举报原因如下，错误章节： ${chapter.chaptername}  "  class="l" target="_blank" rel="nofollow">内容报错</a>
                 <a href="/user/messageEdit?title=${article.articlename}-更新太慢啦!&content=${article.articlename} 更新太慢了,请加快速度,别的网站都有最新章节了.(请您最好告诉我们现在有哪个网站更新速度比我们快，以便使我们知道进度落后的状况) 以下网站比${siteName}更新的快:  "  class="l" target="_blank" rel="nofollow">更新慢了</a>
-                <div class="clear"></div>
+-->                <div class="clear"></div>
             </h1>
             <div class="toolbar">
             <ul>
@@ -89,18 +91,16 @@
             <a href="${contextPath}/${chapter.preChapterUrl}" class="pre">上一章</a>
             <a href="<#if enableChapterIndexPage>${contextPath}/${article.chapterListUrl}<#else>${contextPath}/${article.url}</#if>" class="backfor">返回目录</a>
             <a href="${contextPath}/${chapter.nextChapterUrl}" class="next">下一章</a>
-            <p>小提示： 按←键返回上一页，按→键进入上一页,您还可以
-                 <a href="/user/bookcase!add?articleno=${chapter.articleno?c}&chapterno=${chapter.chapterno?c}" title="加入书签"  target="_blank">加入书签</a>
-            </p></div>
+        </div>
         <div id="reader_ad_03"></div>
         </div>
        </section>
-       <div class="attention">
+<#--       <div class="attention">
             <em>阅读提示：</em><br/>
             1、本站会员登录后，将免费体会到最顺畅的阅读方式[<em>最少广告</em>]。<br/>
             2、<em>注册本站会员</em>，将《<a href="${article.url}" class="article_title"><em>${chapter.articlename}</em></a>》加入书架，可以通过书架更快的了解更新信息。<br/>
             3、免费小说《<a href="${article.url}" class="article_title"><em>${chapter.articlename}</em></a>》 ${chapter.chaptername}所描述的内容只是作者个人观点，与本站的立场无关，本站只为广大用户提供阅读平台。
-        </div>
+        </div>-->
         
      <div class="navTab">
         <ul>

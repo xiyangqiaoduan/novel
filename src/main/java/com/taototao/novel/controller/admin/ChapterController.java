@@ -66,11 +66,11 @@ public class ChapterController extends AbstractAdminBaseController {
         chapter.setIspublish(true);
         chapter.setLastchecktime(new Date());
         chapterService.save(chapter);
-        try {
-            Utils.saveContext(chapter.getArticleno(), chapter.getChapterno(), content);
-        } catch (Exception e) {
-            logger.debug("save content error -------------->", e);
-        }
+//        try {
+//            Utils.saveContext(chapter.getArticleno(), chapter.getChapterno(), content);
+//        } catch (Exception e) {
+//            logger.debug("save content error -------------->", e);
+//        }
         logger.debug("-------------------->更新最新章节信息");
         // 最新章节等信息
         Article article = new Article();
@@ -110,11 +110,11 @@ public class ChapterController extends AbstractAdminBaseController {
         chapter1.setModifyuserno(0);
         chapter1.setChaptername(chapter.getChaptername());
         chapter1.setIsvip(chapter.isIsvip());
-        try {
-            Utils.saveContext(chapter1.getArticleno(), chapter1.getChapterno(), content);
-        } catch (Exception e) {
-            logger.error(" update chapter content error------------->", e);
-        }
+//        try {
+//            Utils.saveContext(chapter1.getArticleno(), chapter1.getChapterno(), content);
+//        } catch (Exception e) {
+//            logger.error(" update chapter content error------------->", e);
+//        }
 
         chapterService.update(chapter1);
 

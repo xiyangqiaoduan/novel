@@ -154,7 +154,7 @@
                 AND chapterno > #{chapterno}  AND chaptertype = 0 ORDER BY  chapterno ASC LIMIT 1
             </when>
             <otherwise>
-                AND chapterno  <![CDATA[ < ]]> #{chapterno}  AND chaptertype = 0 ORDER BY  chapterno ASC LIMIT 1
+                AND chapterno  <![CDATA[ < ]]> #{chapterno}  AND chaptertype = 0 ORDER BY  chapterno DESC LIMIT 1
             </otherwise>
         </choose>
     </select>

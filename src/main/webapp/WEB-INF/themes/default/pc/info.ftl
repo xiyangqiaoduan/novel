@@ -67,7 +67,7 @@
                 <dl><dt>全文长度：</dt><dd><#if article.size ??>${article.size}<#else>0</#if>字</dd></dl>
                 <dl><dt>总点击量：</dt><dd>${article.allvisit}</dd></dl>
                 <dl><dt>总推荐量：</dt><dd>${article.allvote}</dd></dl>
-                <dl><dt>TXT下载：</dt><dd id="downloadUrl"><font id="info_download"></font></dd></dl>
+                <dl><dt>TXT下载：</dt><dd><font><a href="${contextPath}/info/download/${article.articleno}" title="${article.articlename}txt全集下载" rel="nofollow">全文下载</a></font></dd></dl>
                 <dl class="bookNew"><dt>最新章节：</dt>
                     <dd>
                     <a href="${contextPath}/${article.lastChapterUrl}" target="_blank"><#if article.lastchapter?? >${article.lastchapter}</#if></a>
@@ -141,9 +141,9 @@
         <a name="chapters"></a>
           <ul>
             
-            <h1>《${article.articlename}》最新章节</b><#--（提示：已启用缓存技术，最新章节可能会延时显示，登录书架即可实时查看。）--></h1>
+        <#--    <h1>《${article.articlename}》最新章节</b>&lt;#&ndash;（提示：已启用缓存技术，最新章节可能会延时显示，登录书架即可实时查看。）&ndash;&gt;</h1>
                 <#list chapterList?reverse as chapter><#if (chapter_index lt 9)><li><a href="${contextPath}/${chapter.url}">${chapter.chaptername}</a></li></#if></#list>
-            
+          -->
             <h1>《${article.articlename}》分卷阅读<#--<#if !loginFlag>([<a href="/login" rel="nofollow">登陆</a>]后开放)</#if>--></h1>
             <#list chapterList as chapter>
                 <#if chapter.chaptertype == 0>
