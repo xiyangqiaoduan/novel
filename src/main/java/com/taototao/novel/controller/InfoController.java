@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,62 +58,46 @@ public class InfoController extends AbstractPublicBaseController {
 
         logger.debug("load data --------------->sybdir={},articleno={},pinyin=", subdir, articleno, pinyin);
 
-        Article article = null;
+        Article article = ehcacheManagerUtils.get(ICommon.CACHE_NAME, String.valueOf(articleno), Article.class);
 
-        if (TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_PINYINURL, false)) {
-            article = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_PREFIX, pinyin);
-            if (!Utils.isDefined(article)) {
-                ArticleSearchBean searchBean = new ArticleSearchBean();
-                searchBean.setPinyin(pinyin.toUpperCase());
-                List<Article> articleList = articleService.find(searchBean);
-                if (Utils.isDefined(articleList)) {
-                    article = articleList.get(0);
-                    CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_PREFIX, pinyin, article);
-                }
-            }
+        if (!Utils.isDefined(article)) {
+            article = articleService.getByNo(articleno);
+            ehcacheManagerUtils.put(ICommon.CACHE_NAME, String.valueOf(articleno), article);
         } else {
-            article = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_PREFIX, articleno);
-
-            if (!Utils.isDefined(article)) {
-                article = articleService.getByNo(articleno);
-                CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_PREFIX, articleno, article);
-            }
-
+            article.setAllvisit(article.getAllvisit() + 1);
+            article.setDayvisit(article.getDayvisit() + 1);
+            article.setWeekvisit(article.getWeekvisit() + 1);
+            ehcacheManagerUtils.put(ICommon.CACHE_NAME, String.valueOf(articleno), article);
         }
 
 
         if (article != null) {
-//            if (!YiDuConstants.yiduConf.getBoolean(YiDuConfig.ENABLE_CHAPTER_INDEX_PAGE, false)
-//                    || (YiDuConstants.singleBookFlag.get() != null && YiDuConstants.singleBookFlag.get())) {
             // 获取章节信息
             ChapterSearchBean searchBean = new ChapterSearchBean();
             searchBean.setArticleno(article.getArticleno());
-            List<Chapter> chapterList = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_CHAPTER_LIST_PREFIX,
-                    searchBean);
+            List<Chapter> chapterList = ehcacheManagerUtils.get(ICommon.CACHE_NAME, String.format(ICommon.CHAPTER_CACHE_KEY, articleno), ArrayList.class);
             if (!Utils.isDefined(chapterList)) {
                 chapterList = chapterService.findWithPinyin(searchBean);
                 if (Utils.isDefined(chapterList)) {
-                    CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_CHAPTER_LIST_PREFIX, searchBean,
-                            chapterList);
+                    ehcacheManagerUtils.put(ICommon.CACHE_NAME, String.format(ICommon.CHAPTER_CACHE_KEY, articleno), chapterList);
                 }
             }
 
             map.put("chapterList", chapterList);
 
-
-            // 获取评论信息
-            ReviewSearchBean reviewSearchBean = new ReviewSearchBean();
-            reviewSearchBean.setArticleno(article.getArticleno());
-            // 获取评论件数
-            int reviewCount = reviewService.getCount(reviewSearchBean);
-            map.put("reviewCount", reviewCount);
-            // 获取评论
-            Pagination pagination = new Pagination(TaoToTaoConstants.taoToTaoConf.getInt(TaoToTaoConfig.REVIEW_NUM, 5), 1);
-            pagination.setSortColumn("postdate");
-            pagination.setSortOrder("DESC");
-            reviewSearchBean.setPagination(pagination);
-            List<Review> reviewList = reviewService.find(reviewSearchBean);
-            map.put("reviewList", reviewList);
+//            // 获取评论信息
+//            ReviewSearchBean reviewSearchBean = new ReviewSearchBean();
+//            reviewSearchBean.setArticleno(article.getArticleno());
+//            // 获取评论件数
+//            int reviewCount = reviewService.getCount(reviewSearchBean);
+//            map.put("reviewCount", reviewCount);
+//            // 获取评论
+//            Pagination pagination = new Pagination(TaoToTaoConstants.taoToTaoConf.getInt(TaoToTaoConfig.REVIEW_NUM, 5), 1);
+//            pagination.setSortColumn("postdate");
+//            pagination.setSortOrder("DESC");
+//            reviewSearchBean.setPagination(pagination);
+//            List<Review> reviewList = reviewService.find(reviewSearchBean);
+//            map.put("reviewList", reviewList);
             // 更新统计信息
             articleService.updateVisitStatistic(article.getArticleno());
 
@@ -349,7 +333,7 @@ public class InfoController extends AbstractPublicBaseController {
     }
 
     @RequestMapping("/download/{articleno}")
-    public String downloadFile(@PathVariable  Integer articleno, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String downloadFile(@PathVariable Integer articleno, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         if (articleno == null) {
             return null;
@@ -358,7 +342,7 @@ public class InfoController extends AbstractPublicBaseController {
         if (article == null) {
             return null;
         }
-        String codedfilename=null;
+        String codedfilename = null;
         String agent = request.getHeader("USER-AGENT");
         if (null != agent && -1 != agent.indexOf("MSIE") || null != agent
                 && -1 != agent.indexOf("Trident")) {// ie
@@ -375,9 +359,9 @@ public class InfoController extends AbstractPublicBaseController {
         searchBean.setArticleno(articleno);
         List<Chapter> chapterList = chapterService.find(searchBean);
         OutputStream outputStream = new BufferedOutputStream(response.getOutputStream());
-        for(Chapter chapter:chapterList){
-            outputStream.write((chapter.getChaptername()+"\n").getBytes());
-            byte[] data=chapter.getContent().getBytes();
+        for (Chapter chapter : chapterList) {
+            outputStream.write((chapter.getChaptername() + "\n").getBytes());
+            byte[] data = chapter.getContent().getBytes();
             outputStream.write(data);
         }
         outputStream.flush();

@@ -36,13 +36,11 @@
                 <div class="right">
                     <p class="no-top">推荐您通过以下链接继续访问本站：</p>
                     <ul class="links">
-                        <li><a href="/">» 网站首页</a></li>
+                        <li><a href="${contextPath}">» 网站首页</a></li>
                     </ul>
                     <div class="clearfix"></div>
                 </div>
                 <div class="clearfix"></div>
-                <div align="center"><span class="STYLE1">你找不到的只是网页，他们找不到的却是家和亲人！爱心公益，需要你我... </span></div>
-                <script type="text/javascript" src="http://www.qq.com/404/search_children.js?edition=small" charset="utf-8"></script>
             </div>
         </div>
     </div>

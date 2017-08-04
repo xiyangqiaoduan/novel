@@ -2,7 +2,7 @@
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	     http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          metadata-complete="true">
 
 
@@ -26,7 +26,7 @@
         <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
         <init-param>
             <param-name>exclusions</param-name>
-            <param-value>/resources/*,*.jsp</param-value>
+            <param-value>/resources/*,*.jsp,/cover/*,/themes/*,/druid/*</param-value>
         </init-param>
         <init-param>
             <param-name>principalSessionName</param-name>
@@ -94,6 +94,9 @@
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
-
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error</location>
+    </error-page>
 
 </web-app>

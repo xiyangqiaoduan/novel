@@ -10,6 +10,7 @@ import com.taototao.novel.entity.Article;
 import com.taototao.novel.entity.SystemBlock;
 import com.taototao.novel.service.ArticleService;
 import com.taototao.novel.service.SystemBlockService;
+import com.taototao.novel.utils.EhcacheManagerUtils;
 import com.taototao.novel.utils.Pagination;
 import com.taototao.novel.utils.Utils;
 import org.apache.commons.lang3.StringUtils;
@@ -38,6 +39,9 @@ public abstract class AbstractPublicBaseController {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    protected EhcacheManagerUtils ehcacheManagerUtils;
+
     /**
      * 输出log
      */
@@ -47,17 +51,17 @@ public abstract class AbstractPublicBaseController {
     /**
      * 章节
      */
-    public final static  String CHAPTER_NAMES="chapter";
+    public final static String CHAPTER_NAMES = "chapter";
     /**
      * 小说信息
      */
-    public final static  String INFO_NAMES="info";
+    public final static String INFO_NAMES = "info";
 
 
     /**
      * reader
      */
-    public final static  String READER_NAMES="reader";
+    public final static String READER_NAMES = "reader";
 
     /**
      * 初始化区块信息
@@ -67,16 +71,10 @@ public abstract class AbstractPublicBaseController {
         logger.debug("loadBlock start.");
 
         // 从缓存中把首页用的区块信息取出
-        Map<String, Object> blocks=null;
-
-        if(!logger.isDebugEnabled()){
-            blocks = CacheManager.getObject(getBlockKey(), null);
-        }
-
-        if (!TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.CACHE_EFFECTIVE) || !Utils.isDefined(blocks)) {
-
+        //  Map<String, Object> blocks= CacheManager.getObject(getBlockKey(), null);
+        Map<String, Object> blocks = ehcacheManagerUtils.get(ICommon.CACHE_NAME, ICommon.BLOCKS_CACHE_KEY, HashMap.class);
+        if (blocks == null) {
             blocks = new HashMap<String, Object>();
-
             // 没有取到的话从数据库里取出
             // block数据取得
             List<SystemBlock> blockList = new ArrayList<SystemBlock>();
@@ -98,19 +96,19 @@ public abstract class AbstractPublicBaseController {
                     pagination.setSortColumn(systemBlock.getSortcol());
                     pagination.setSortOrder(systemBlock.isIsasc() ? "ASC" : "DESC");
                     articleSearchBean.setPagination(pagination);
-                    List<Article> articleList=articleService.find(articleSearchBean);
-                    blocks.put(systemBlock.getBlockid(),articleList);
+                    List<Article> articleList = articleService.find(articleSearchBean);
+                    blocks.put(systemBlock.getBlockid(), articleList);
 
-                }else if(systemBlock.getType()==TaoToTaoConstants.BlockType.RANDOM_LIST){
+                } else if (systemBlock.getType() == TaoToTaoConstants.BlockType.RANDOM_LIST) {
                     // 随机推荐区块
-                    List<Article> articleList=articleService.findRandomRecommendArticleList(limitnum);
-                    blocks.put(systemBlock.getBlockid(),articleList);
-                }else if(systemBlock.getType()==TaoToTaoConstants.BlockType.RECOMMEND_LIST){
+                    List<Article> articleList = articleService.findRandomRecommendArticleList(limitnum);
+                    blocks.put(systemBlock.getBlockid(), articleList);
+                } else if (systemBlock.getType() == TaoToTaoConstants.BlockType.RECOMMEND_LIST) {
                     // 按小说分类和编号推荐区块
                     List<Article> articleList = articleService.findRecommendArticleList(getRecommondCategory(),
                             getRecommondArticleno(), limitnum);
                     blocks.put(systemBlock.getBlockid(), articleList);
-                }else if (systemBlock.getType() == TaoToTaoConstants.BlockType.CUSTONIZE_ARTICLE_LIST){
+                } else if (systemBlock.getType() == TaoToTaoConstants.BlockType.CUSTONIZE_ARTICLE_LIST) {
                     // 自定义小说列表
                     ArticleSearchBean articleSearchBean = new ArticleSearchBean();
                     articleSearchBean.setArticlenos(systemBlock.getContent());
@@ -128,13 +126,11 @@ public abstract class AbstractPublicBaseController {
                             }
                         }
                     }
-
                     blocks.put(systemBlock.getBlockid(), newArticleList);
-
                 } else if (systemBlock.getType() == TaoToTaoConstants.BlockType.HTML) {
                     // HTML区块
                     blocks.put(systemBlock.getBlockid(), systemBlock.getContent());
-                }else if (systemBlock.getType() == TaoToTaoConstants.BlockType.RELATIVE_LIST) {
+                } else if (systemBlock.getType() == TaoToTaoConstants.BlockType.RELATIVE_LIST) {
                     // 相关小说区块（名字匹配）
                     String articleName = getRelativeArticleName();
                     if (StringUtils.isBlank(articleName)) {
@@ -147,7 +143,7 @@ public abstract class AbstractPublicBaseController {
                             systemBlock.getSortcol(), systemBlock.isIsasc(), systemBlock.getLimitnum());
 
                     blocks.put(systemBlock.getBlockid(), articleList);
-                }else if (systemBlock.getType() == TaoToTaoConstants.BlockType.SAME_AUTHOR_LIST) {
+                } else if (systemBlock.getType() == TaoToTaoConstants.BlockType.SAME_AUTHOR_LIST) {
                     // 同作者区块
                     String author = getAuthor();
                     if (StringUtils.isBlank(author)) {
@@ -164,27 +160,16 @@ public abstract class AbstractPublicBaseController {
                     blocks.put(systemBlock.getBlockid(), articleList);
                 }
             }
-            if(!logger.isDebugEnabled()) {
-                CacheManager.putObject(getBlockKey(), null, blocks);
-            }
+            ehcacheManagerUtils.put(ICommon.CACHE_NAME, ICommon.BLOCKS_CACHE_KEY, blocks);
         }
-
-
-        map.put("blocks",blocks);
-        map.put("contextPath","/novel");
+        map.put("blocks", blocks);
+        map.put("contextPath", "/novel");
         map.put("themeName", ICommon.themes);
-        map.put("enableQQLogin",TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_QQLOGIN,false));
-
-        map.put("enableChapterIndexPage",TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_CHAPTER_INDEX_PAGE, false));
-
-
+        map.put("enableQQLogin", TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_QQLOGIN, false));
+        map.put("enableChapterIndexPage", TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_CHAPTER_INDEX_PAGE, false));
         logger.debug("loadBlock normally end.");
     }
 
-
-    public String getBlockKey() {
-        return CacheManager.CacheKeyPrefix.CACHE_KEY_GLOBAL_BLOCK;
-    }
 
     public Short getBlockTarget() {
         return TaoToTaoConstants.BlockTarget.ALL_SITE;
