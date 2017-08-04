@@ -293,35 +293,35 @@ public class InfoController extends AbstractPublicBaseController {
         pagination.setSortColumn(sortColumn);
         pagination.setSortOrder(StringUtils.equalsIgnoreCase("ASC", sortOrder) ? sortOrder : "DESC");
 
-        int count = 0;
-        if (TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_CACHE_ARTICLE_COUNT, false)) {
-            // 开启缓存件数的话
-            count = ArticleCountManager.getArticleCount(sortColumn);
-
-            if (count == 0) {
-                count = articleService.getCount(searchBean);
-                ArticleCountManager.putArticleCount(sortColumn, count);
-            }
-
-        } else {
-            Integer countCache = CacheManager.getObject(
-                    CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_TOP_LIST_COUNT_PREFIX, null);
-            if (countCache == null || countCache == 0) {
-                count = articleService.getCount(searchBean);
-            } else {
-                count = countCache;
-            }
-        }
+        int count = articleService.getCount(searchBean);
+//        if (TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_CACHE_ARTICLE_COUNT, false)) {
+//            // 开启缓存件数的话
+//            count = ArticleCountManager.getArticleCount(sortColumn);
+//
+//            if (count == 0) {
+//                count = articleService.getCount(searchBean);
+//                ArticleCountManager.putArticleCount(sortColumn, count);
+//            }
+//
+//        } else {
+//            Integer countCache = CacheManager.getObject(
+//                    CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_TOP_LIST_COUNT_PREFIX, null);
+//            if (countCache == null || countCache == 0) {
+//                count = articleService.getCount(searchBean);
+//            } else {
+//                count = countCache;
+//            }
+//        }
         // 总件数设置
         pagination.setPreperties(count);
         searchBean.setPagination(pagination);
-
-        List<Article> articleList = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_TOP_LIST_PREFIX, searchBean);
-        if (articleList == null || articleList.size() == 0) {
-            articleList = articleService.find(searchBean);
-            CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_TOP_LIST_PREFIX, searchBean,
-                    articleList);
-        }
+        List<Article>  articleList = articleService.find(searchBean);
+//        List<Article> articleList = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_TOP_LIST_PREFIX, searchBean);
+//        if (articleList == null || articleList.size() == 0) {
+//            articleList = articleService.find(searchBean);
+//            CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_TOP_LIST_PREFIX, searchBean,
+//                    articleList);
+//        }
         map.put("articleList", articleList);
         map.put("pagination", pagination);
         map.put("pageType", TaoToTaoConstants.Pagetype.PAGE_TOP);
@@ -338,9 +338,13 @@ public class InfoController extends AbstractPublicBaseController {
         if (articleno == null) {
             return null;
         }
-        Article article = articleService.getByNo(articleno);
+        Article article = ehcacheManagerUtils.get(ICommon.CACHE_NAME, String.valueOf(articleno), Article.class);
         if (article == null) {
-            return null;
+            article = articleService.getByNo(articleno);
+            if(article==null){
+                return null;
+            }
+            ehcacheManagerUtils.put(ICommon.CACHE_NAME, String.valueOf(articleno),article);
         }
         String codedfilename = null;
         String agent = request.getHeader("USER-AGENT");
