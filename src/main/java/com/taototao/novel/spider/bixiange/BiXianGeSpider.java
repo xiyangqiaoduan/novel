@@ -101,7 +101,17 @@ public class BiXianGeSpider {
                                 article.setPinyin(pinyin);
                                 article.setCreateuserno(0);
                                 article.setCreatetime(new Date());
-                                article.setImgflag(TaoToTaoConstants.ImageType.JPG);
+
+                                String img=img_url.substring(img_url.lastIndexOf(".")+1);
+                                short imageType=TaoToTaoConstants.ImageType.JPG;
+                                if(img.equalsIgnoreCase("jpg")){
+                                    imageType=TaoToTaoConstants.ImageType.JPG;
+                                }else if(img.equalsIgnoreCase("gif")){
+                                    imageType=TaoToTaoConstants.ImageType.GIF;
+                                }else if(img.equalsIgnoreCase("png")){
+                                    imageType=TaoToTaoConstants.ImageType.PNG;
+                                }
+                                article.setImgflag(imageType);
                                 articleService.save(article);
                                 int articleno = article.getArticleno();
                                 logger.debug("小说ID:{}", articleno);
@@ -201,9 +211,16 @@ public class BiXianGeSpider {
             //获取数据流
             InputStream is = uri.getInputStream();
             String path = TaoToTaoConstants.taoToTaoConf.getString(TaoToTaoConfig.SYSTEM_PATH) + TaoToTaoConstants.taoToTaoConf.getString(TaoToTaoConfig.RELATIVE_IAMGE_PATH);
+
+           String img= StringUtils.substringAfterLast(imageName, ".");
+
+            if(img.equalsIgnoreCase("jpg")&&img.equalsIgnoreCase("gif")&&img.equalsIgnoreCase("png")){
+                img="jpg";
+            }
+
             path = path + "/" + articleno
                     / TaoToTaoConstants.SUB_DIR_ARTICLES + "/" + articleno + "/" + articleno + "s."
-                    + StringUtils.substringAfterLast(imageName, ".");
+                    + img;
             File savefile = new File(path);
             if (!savefile.getParentFile().exists()) {
                 savefile.getParentFile().mkdirs();

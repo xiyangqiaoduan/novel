@@ -2,16 +2,12 @@ package com.taototao.novel.controller;
 
 import com.taototao.novel.bean.ArticleSearchBean;
 import com.taototao.novel.bean.ChapterSearchBean;
-import com.taototao.novel.bean.ReviewSearchBean;
-import com.taototao.novel.cache.ArticleCountManager;
-import com.taototao.novel.cache.CacheManager;
 import com.taototao.novel.constant.ICommon;
 import com.taototao.novel.constant.TaoToTaoConfig;
 import com.taototao.novel.constant.TaoToTaoConstants;
 import com.taototao.novel.controller.base.AbstractPublicBaseController;
 import com.taototao.novel.entity.Article;
 import com.taototao.novel.entity.Chapter;
-import com.taototao.novel.entity.Review;
 import com.taototao.novel.service.ArticleService;
 import com.taototao.novel.service.ChapterService;
 import com.taototao.novel.service.ReviewService;
@@ -128,23 +124,31 @@ public class InfoController extends AbstractPublicBaseController {
         pagination.setSortColumn("lastupdate");
         pagination.setSortOrder("ASC");
 
-        Object countInfo = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_COUNT_PREFIX, searchBean);
-        int count = 0;
-        if (countInfo == null) {
-            count = articleService.getCount(searchBean);
-            CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_COUNT_PREFIX, searchBean, count);
-        } else {
-            count = Integer.parseInt(countInfo.toString());
-        }
+//        Object countInfo = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_COUNT_PREFIX, searchBean);
+//        int count = 0;
+//        if (countInfo == null) {
+//            count = articleService.getCount(searchBean);
+//            CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_COUNT_PREFIX, searchBean, count);
+//        } else {
+//            count = Integer.parseInt(countInfo.toString());
+//        }
+
+        int count = articleService.getCount(searchBean);
+
+
         // 总件数设置
         pagination.setPreperties(count);
         searchBean.setPagination(pagination);
 
-        List<Article> articleList = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_PREFIX, searchBean);
-        if (articleList == null || articleList.size() == 0) {
-            articleList = articleService.find(searchBean);
-            CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_PREFIX, searchBean, articleList);
-        }
+//        List<Article> articleList = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_PREFIX, searchBean);
+//        if (articleList == null || articleList.size() == 0) {
+//            articleList = articleService.find(searchBean);
+//            CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_PREFIX, searchBean, articleList);
+//        }
+
+        List<Article> articleList = articleService.find(searchBean);
+
+
         map.put("articleList", articleList);
         map.put("pagination", pagination);
         map.put("pageType", TaoToTaoConstants.Pagetype.PAGE_SEARCH);
@@ -176,88 +180,41 @@ public class InfoController extends AbstractPublicBaseController {
             // 开启缓存件数的话
             if (Utils.isDefined(category)) {
                 // 分类
-                count = ArticleCountManager.getArticleCount(String.valueOf(category));
-
-                if (count == 0) {
-                    ArticleSearchBean countSearchBean = new ArticleSearchBean();
-                    countSearchBean.setCategory(category);
-                    count = articleService.getCount(countSearchBean);
-                    ArticleCountManager.putArticleCount(String.valueOf(category), count);
-                }
+                ArticleSearchBean countSearchBean = new ArticleSearchBean();
+                countSearchBean.setCategory(category);
+                count = articleService.getCount(countSearchBean);
                 searchBean.setCategory(category);
 
             } else if (Utils.isDefined(author)) {
-                count = ArticleCountManager.getArticleCount(TaoToTaoConstants.CacheCountType.AUTHOR);
-
-                if (count == 0) {
-                    ArticleSearchBean countSearchBean = new ArticleSearchBean();
-                    countSearchBean.setAuthor(author);
-                    count = articleService.getCount(countSearchBean);
-                    ArticleCountManager.putArticleCount(TaoToTaoConstants.CacheCountType.AUTHOR, count);
-                }
+                ArticleSearchBean countSearchBean = new ArticleSearchBean();
+                countSearchBean.setAuthor(author);
+                count = articleService.getCount(countSearchBean);
                 map.put("author", author);
-
                 searchBean.setAuthor(author);
             } else if (fullflag != null && fullflag) {
-                count = ArticleCountManager.getArticleCount(TaoToTaoConstants.CacheCountType.FULLFLAG);
-
-                if (count == 0) {
-                    ArticleSearchBean countSearchBean = new ArticleSearchBean();
-                    countSearchBean.setFullflag(fullflag);
-                    count = articleService.getCount(countSearchBean);
-                    ArticleCountManager.putArticleCount(TaoToTaoConstants.CacheCountType.FULLFLAG, count);
-                }
+                ArticleSearchBean countSearchBean = new ArticleSearchBean();
+                countSearchBean.setFullflag(fullflag);
+                count = articleService.getCount(countSearchBean);
                 map.put("fullflag", fullflag);
                 searchBean.setFullflag(fullflag);
             } else if (Utils.isDefined(tag)) {
-                count = ArticleCountManager.getArticleCount(TaoToTaoConstants.CacheCountType.TAG);
-                if (count == 0) {
-                    ArticleSearchBean countSearchBean = new ArticleSearchBean();
-                    countSearchBean.setTag(tag);
-                    count = articleService.getCount(countSearchBean);
-                    ArticleCountManager.putArticleCount(TaoToTaoConstants.CacheCountType.TAG, count);
-                }
+                ArticleSearchBean countSearchBean = new ArticleSearchBean();
+                countSearchBean.setTag(tag);
+                count = articleService.getCount(countSearchBean);
                 map.put("tag", tag);
                 searchBean.setTag(tag);
             } else {
-                count = ArticleCountManager.getArticleCount(TaoToTaoConstants.CacheCountType.ALL);
-                if (count == 0) {
-                    ArticleSearchBean countSearchBean = new ArticleSearchBean();
-                    count = articleService.getCount(countSearchBean);
-                    ArticleCountManager.putArticleCount(TaoToTaoConstants.CacheCountType.ALL, count);
-                }
+                ArticleSearchBean countSearchBean = new ArticleSearchBean();
+                count = articleService.getCount(countSearchBean);
             }
         } else {
-            Object countInfo = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_COUNT_PREFIX,
-                    searchBean);
-            if (countInfo == null) {
-                count = articleService.getCount(searchBean);
-                CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_COUNT_PREFIX, searchBean,
-                        count);
-            } else {
-                count = Integer.parseInt(countInfo.toString());
-            }
+            count = articleService.getCount(searchBean);
         }
         // 总件数设置
         pagination.setPreperties(count);
         searchBean.setPagination(pagination);
+        List<Article> articleList = articleService.find(searchBean);
 
-        List<Article> articleList = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_PREFIX, searchBean);
-        if (!Utils.isDefined(articleList)) {
-            articleList = articleService.find(searchBean);
-            CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_PREFIX, searchBean, articleList);
-        }
-
-        if (Utils.isDefined(fullflag) && fullflag) {
-            List<Article> lastPostFullArticleList = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_PREFIX
-                    + fullflag, searchBean);
-            if (!Utils.isDefined(lastPostFullArticleList)) {
-                searchBean.getPagination().setSortColumn("postdate");
-                lastPostFullArticleList = articleService.find(searchBean);
-                CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_LIST_PREFIX + fullflag,
-                        searchBean, lastPostFullArticleList);
-            }
-        }
         map.put("articleList", articleList);
         map.put("pagination", pagination);
 
@@ -315,7 +272,7 @@ public class InfoController extends AbstractPublicBaseController {
         // 总件数设置
         pagination.setPreperties(count);
         searchBean.setPagination(pagination);
-        List<Article>  articleList = articleService.find(searchBean);
+        List<Article> articleList = articleService.find(searchBean);
 //        List<Article> articleList = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_TOP_LIST_PREFIX, searchBean);
 //        if (articleList == null || articleList.size() == 0) {
 //            articleList = articleService.find(searchBean);
@@ -341,10 +298,10 @@ public class InfoController extends AbstractPublicBaseController {
         Article article = ehcacheManagerUtils.get(ICommon.CACHE_NAME, String.valueOf(articleno), Article.class);
         if (article == null) {
             article = articleService.getByNo(articleno);
-            if(article==null){
+            if (article == null) {
                 return null;
             }
-            ehcacheManagerUtils.put(ICommon.CACHE_NAME, String.valueOf(articleno),article);
+            ehcacheManagerUtils.put(ICommon.CACHE_NAME, String.valueOf(articleno), article);
         }
         String codedfilename = null;
         String agent = request.getHeader("USER-AGENT");

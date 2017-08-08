@@ -2,7 +2,6 @@ package com.taototao.novel.controller.base;
 
 import com.taototao.novel.bean.ArticleSearchBean;
 import com.taototao.novel.bean.SystemBlockSearchBean;
-import com.taototao.novel.cache.CacheManager;
 import com.taototao.novel.constant.ICommon;
 import com.taototao.novel.constant.TaoToTaoConfig;
 import com.taototao.novel.constant.TaoToTaoConstants;
@@ -17,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 import java.util.List;

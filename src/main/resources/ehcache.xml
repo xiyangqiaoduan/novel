@@ -21,7 +21,7 @@
 
 
     <!-- 磁盘缓存位置 -->
-    <diskStore path="D:/cache"/>
+    <diskStore path="java.io.tmpdir"/>
 
     <!-- 默认缓存 -->
     <defaultCache maxElementsInMemory="10000" eternal="false"

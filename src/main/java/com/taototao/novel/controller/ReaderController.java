@@ -1,6 +1,5 @@
 package com.taototao.novel.controller;
 
-import com.taototao.novel.cache.CacheManager;
 import com.taototao.novel.constant.ICommon;
 import com.taototao.novel.constant.TaoToTaoConfig;
 import com.taototao.novel.constant.TaoToTaoConstants;
@@ -40,12 +39,12 @@ public class ReaderController extends AbstractPublicBaseController {
     private ArticleService articleService;
 
     @RequestMapping(CHAPTER_DETAIL + "/{subdir}/{articleno}/{chapterno}")
-    public String chapterDetail(@PathVariable int subdir, @PathVariable int articleno, @PathVariable int chapterno,Integer toChapterno, ModelMap map) {
+    public String chapterDetail(@PathVariable int subdir, @PathVariable int articleno, @PathVariable int chapterno, Integer toChapterno, ModelMap map) {
 
         logger.debug("chapter detail ---------->subdir={},articleno={},chapterno={}，toChapterno={}", subdir, articleno, chapterno, toChapterno);
 
-        ChapterDTO chapter=null;
-        if (toChapterno!=null && toChapterno != 0 && toChapterno.intValue() > chapterno) {
+        ChapterDTO chapter = null;
+        if (toChapterno != null && toChapterno != 0 && toChapterno.intValue() > chapterno) {
             List<ChapterDTO> fullReadChapterList = new ArrayList<ChapterDTO>();
             List<Chapter> segChapterList = chapterService.getChapterInSegement(articleno, chapterno, toChapterno);
             if (segChapterList == null || segChapterList.isEmpty()) {
@@ -61,7 +60,7 @@ public class ReaderController extends AbstractPublicBaseController {
 
                     fullReadChapterList.add(chapterDto);
                 }
-                 chapter = new ChapterDTO();
+                chapter = new ChapterDTO();
                 BeanUtils.copyProperties(segChapterList.get(0), chapter);
                 chapter.setChaptername(chapter.getChaptername() + " - "
                         + segChapterList.get(segChapterList.size() - 1).getChaptername());
@@ -69,27 +68,21 @@ public class ReaderController extends AbstractPublicBaseController {
 
             }
 
-        }else{
-            chapter = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_CHAPTER_PREFIX, chapterno);
+        } else {
 
-            if (chapter == null || chapter.getChapterno() == 0) {
-                Chapter tchapter = chapterService.getByNo(chapterno);
-                Chapter nextchapter = chapterService.getNextChapter(tchapter.getArticleno(), chapterno, true);
-                Chapter prechapter = chapterService.getNextChapter(tchapter.getArticleno(), chapterno, false);
+            Chapter tchapter = chapterService.getByNo(chapterno);
+            Chapter nextchapter = chapterService.getNextChapter(tchapter.getArticleno(), chapterno, true);
+            Chapter prechapter = chapterService.getNextChapter(tchapter.getArticleno(), chapterno, false);
 
-                chapter = new ChapterDTO();
-                BeanUtils.copyProperties(tchapter, chapter);
-                if (nextchapter != null) {
-                    chapter.setNextChapterno(nextchapter.getChapterno());
-                }
-                if (prechapter != null) {
-                    chapter.setPreChapterno(prechapter.getChapterno());
-                }
-                CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_CHAPTER_PREFIX, chapterno, chapter);
-
-            }else{
-
+            chapter = new ChapterDTO();
+            BeanUtils.copyProperties(tchapter, chapter);
+            if (nextchapter != null) {
+                chapter.setNextChapterno(nextchapter.getChapterno());
             }
+            if (prechapter != null) {
+                chapter.setPreChapterno(prechapter.getChapterno());
+            }
+
 
 //            chapter.setContent(Utils.getContext(chapter, true,
 //                    TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_PSEUDO, false)));
@@ -98,23 +91,16 @@ public class ReaderController extends AbstractPublicBaseController {
 
         // 更新统计信息
         if (chapter != null && chapter.getArticleno() != 0) {
-         Article article = CacheManager.getObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_PREFIX,
-                    chapter.getArticleno());
-            if (article == null || article.getArticleno() == 0) {
-                article = articleService.getByNo(chapter.getArticleno());
-                CacheManager.putObject(CacheManager.CacheKeyPrefix.CACHE_KEY_ARTICEL_PREFIX, articleno, article);
-            }
-            if (article == null || article.getArticleno() == 0) {
+            Article article = articleService.getByNo(chapter.getArticleno());
 
-            }
             articleService.updateVisitStatistic(chapter.getArticleno());
             // 设置拼音信息
             chapter.setPinyin(article.getPinyin());
-            map.put("article",article);
+            map.put("article", article);
         }
 
-        map.put("chapter",chapter);
-        map.put("pageType",TaoToTaoConstants.Pagetype.PAGE_READER);
+        map.put("chapter", chapter);
+        map.put("pageType", TaoToTaoConstants.Pagetype.PAGE_READER);
         loadBlock(map);
         return ICommon.themes + "/pc/reader";
 

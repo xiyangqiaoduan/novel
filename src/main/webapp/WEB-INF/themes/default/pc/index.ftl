@@ -3,8 +3,9 @@
 <#macro titleContent>  
 <title>淘TO淘小说|免费小说网</title>
 <meta name="keywords" content="淘TO淘小说,免费小说网,无弹出广告小说网"/>
-<meta name="description" content="淘TO淘小说网是国内最大的小说网站之一。提供玄幻小说\,言情小说\,网游小说\,修真小说\,都市小说\,武侠小说\,网络小说等在线阅读\,我们是更新最快\,免费最多\,页面简洁且无弹出广告的小说网站!" />
-</#macro>  
+<meta name="description" content="淘TO淘小说网是国内最大的小说网站之一。提供玄幻小说,言情小说,网游小说,修真小说,都市小说,武侠小说,网络小说等在线阅读,我们是更新最快,免费最多,页面简洁且无弹出广告的小说网站!" />
+<meta name="baidu-site-verification" content="sZdplDZWkz" />
+</#macro>
 
 <#macro recommendblock articleList id style> 
 <ul class="seeWell cf" id="${id}" style="${style}">

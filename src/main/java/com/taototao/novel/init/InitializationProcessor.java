@@ -1,10 +1,5 @@
 package com.taototao.novel.init;
 
-import com.taototao.novel.cache.ArticleCountManager;
-import com.taototao.novel.cache.CacheManager;
-import com.taototao.novel.cache.CategoryCacheManager;
-import com.taototao.novel.cache.SingleBookManager;
-import com.taototao.novel.constant.TaoToTaoConfig;
 import com.taototao.novel.constant.TaoToTaoConstants;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
@@ -43,19 +38,6 @@ public class InitializationProcessor implements ApplicationListener<ContextRefre
             // 加载伪原创设置
             TaoToTaoConstants.pseudoConf = new PropertiesConfiguration("pseudo.properties");
             TaoToTaoConstants.pseudoConf.setReloadingStrategy(reloadStrategy);
-
-            // 初始化缓存
-            CacheManager.initCacheManager();
-
-
-            if (TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_CACHE_ARTICLE_COUNT)) {
-                // 初始化小说件数MAP
-                ArticleCountManager.initArticleCountManager();
-            }
-            if (TaoToTaoConstants.taoToTaoConf.getBoolean(TaoToTaoConfig.ENABLE_SINGLE_BOOK, false)) {
-                // 初始化小说拼音和编号映射件数MAP
-                SingleBookManager.initSingleBookManager();
-            }
 
             // 初始化分类信息MAP
             // CategoryCacheManager.initCategoryCacheManager();

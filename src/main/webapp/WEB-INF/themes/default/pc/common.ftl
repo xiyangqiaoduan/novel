@@ -65,12 +65,23 @@
 </#macro>
 
 <#macro footer>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b1613c516edd6ba04d9559a355794b2a";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"2","bdPos":"right","bdTop":"100"},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 <div class="clear"></div>
 <footer id="global-foot">
     <p>
     本小说站所有小说、评论均为网友更新！仅代表发布者个人行为，与本小说站(www.taototao.com)立场无关！<br/>
     本站所有小说的版权为原作者所有！如无意中侵犯到您的权益，或是含有非法内容，请及时与我们联系，我们将在第一时间做出回应！谢谢！<br/>
-        Copyright ? 2013-2015 taototao.com All Rights Reserved. 京A00000 6748900
+        Copyright©2017-2018 taototao.com All Rights Reserved.鲁ICP备14010434号
         <#if pageType?? && pageType==1>
             <br>
             Powered by <a href="http://www.taototao.com">淘TO淘小说小说系统  V1.0.0 Beta</a>
