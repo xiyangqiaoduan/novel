@@ -33,7 +33,7 @@
         <#list articleList as article>
             <li>
                 <em class="r">${article.lastupdate?string("yyyy-MM-dd HH:mm")}</em>
-                <a href="/articleList?category=${article.category}&page=1" title = "${article.categoryStr} ">[&nbsp;${article.categoryStr}&nbsp;]</a>
+                <a href="${contextPath}/info/articleList?category=${article.category}&page=1" title = "${article.categoryStr} ">[&nbsp;${article.categoryStr}&nbsp;]</a>
                 <a class="poptext" href="${article.url}"
                     title="${article.articlename}最新章节" class="f14">${article.articlename}</a>
                 <a class="poptext" href="${article.lastChapterUrl}" ><#if article.lastchapter?? >${article.lastchapter}</#if></a>
@@ -51,7 +51,7 @@
         <#list articleList as article>
         <li class="top3">
             <span class="order">${article_index+1}</span>
-            <span class="chapter"><a href="/articleList?category=${article.category}" title="${article.categoryStr}>" target="_blank">[${article.categoryStr}]</a></span>
+            <span class="chapter"><a href="${contextPath}/info/articleList?category=${article.category}" title="${article.categoryStr}>" target="_blank">[${article.categoryStr}]</a></span>
             <a target="_blank" href="${article.url}" title="${article.articlename}最新章节">${article.articlename}</a> 
             <span class="chapter"><a href="${article.lastChapterUrl}" title="${article.lastchapter}">${article.lastchapter}</a></span>
         </li>

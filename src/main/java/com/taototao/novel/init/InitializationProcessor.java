@@ -35,10 +35,6 @@ public class InitializationProcessor implements ApplicationListener<ContextRefre
             TaoToTaoConstants.pseudoConf.setReloadingStrategy(reloadStrategy);
 
 
-            // 加载伪原创设置
-            TaoToTaoConstants.pseudoConf = new PropertiesConfiguration("pseudo.properties");
-            TaoToTaoConstants.pseudoConf.setReloadingStrategy(reloadStrategy);
-
             // 初始化分类信息MAP
             // CategoryCacheManager.initCategoryCacheManager();
 

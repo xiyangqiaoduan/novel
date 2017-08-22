@@ -41,6 +41,7 @@ public class BiXianGeSpider {
 
     private Logger logger = LoggerFactory.getLogger(BiXianGeSpider.class);
 
+    private static final int TIMEOUT = 10000;
 
     @Autowired
     private ThreadPoolTaskExecutor taskExecutor;
@@ -65,7 +66,7 @@ public class BiXianGeSpider {
 
                 String pageUrl = URL + "/" + key + "/" + "index.html";
                 logger.debug("当前页：{}", pageUrl);
-                Document articleDocument = Jsoup.connect(pageUrl).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36").get();
+                Document articleDocument = Jsoup.connect(pageUrl).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36").timeout(TIMEOUT).get();
                 Elements elements = articleDocument.select("li div div.title strong a");
                 for (final Element articleElement : elements) {
                     taskExecutor.execute(new Runnable() {
@@ -76,12 +77,12 @@ public class BiXianGeSpider {
                                 if (!StringUtils.contains(article_url, URL)) {
                                     article_url = URL + article_url;
                                 }
-                                Document contentDocument = Jsoup.connect(article_url).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36").get();
+                                Document contentDocument = Jsoup.connect(article_url).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36").timeout(TIMEOUT).get();
                                 String img_url = contentDocument.select("div div.info-left div img").last().attr("src");
                                 logger.debug("封面地址：{}", img_url);
                                 String title = contentDocument.select("div div.info-right div.desc h1").text();
                                 logger.debug("小说名称：{}", title);
-                                String author = contentDocument.select("div div.info-right div.descTip p span").get(2).text().replace("作者：","");
+                                String author = contentDocument.select("div div.info-right div.descTip p span").get(2).text().replace("作者：", "");
                                 logger.debug("小说作者：{}", author);
                                 String intro = contentDocument.select("div div.info-right div.descInfo p").text();
                                 logger.debug("小说简介：{}", intro);
@@ -102,14 +103,14 @@ public class BiXianGeSpider {
                                 article.setCreateuserno(0);
                                 article.setCreatetime(new Date());
 
-                                String img=img_url.substring(img_url.lastIndexOf(".")+1);
-                                short imageType=TaoToTaoConstants.ImageType.JPG;
-                                if(img.equalsIgnoreCase("jpg")){
-                                    imageType=TaoToTaoConstants.ImageType.JPG;
-                                }else if(img.equalsIgnoreCase("gif")){
-                                    imageType=TaoToTaoConstants.ImageType.GIF;
-                                }else if(img.equalsIgnoreCase("png")){
-                                    imageType=TaoToTaoConstants.ImageType.PNG;
+                                String img = img_url.substring(img_url.lastIndexOf(".") + 1);
+                                short imageType = TaoToTaoConstants.ImageType.JPG;
+                                if (img.equalsIgnoreCase("jpg")) {
+                                    imageType = TaoToTaoConstants.ImageType.JPG;
+                                } else if (img.equalsIgnoreCase("gif")) {
+                                    imageType = TaoToTaoConstants.ImageType.GIF;
+                                } else if (img.equalsIgnoreCase("png")) {
+                                    imageType = TaoToTaoConstants.ImageType.PNG;
                                 }
                                 article.setImgflag(imageType);
                                 articleService.save(article);
@@ -131,7 +132,7 @@ public class BiXianGeSpider {
                                     if (!StringUtils.contains(chapterUrl, URL)) {
                                         chapterUrl = URL + chapterUrl;
                                     }
-                                    Document chapterContentDocument = Jsoup.connect(chapterUrl).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36").timeout(5000).get();
+                                    Document chapterContentDocument = Jsoup.connect(chapterUrl).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.86 Safari/537.36").timeout(TIMEOUT).get();
 
                                     Elements contentElements = chapterContentDocument.select("div#mycontent");
                                     String content = contentElements.text();
@@ -212,10 +213,10 @@ public class BiXianGeSpider {
             InputStream is = uri.getInputStream();
             String path = TaoToTaoConstants.taoToTaoConf.getString(TaoToTaoConfig.SYSTEM_PATH) + TaoToTaoConstants.taoToTaoConf.getString(TaoToTaoConfig.RELATIVE_IAMGE_PATH);
 
-           String img= StringUtils.substringAfterLast(imageName, ".");
+            String img = StringUtils.substringAfterLast(imageName, ".");
 
-            if(img.equalsIgnoreCase("jpg")&&img.equalsIgnoreCase("gif")&&img.equalsIgnoreCase("png")){
-                img="jpg";
+            if (img.equalsIgnoreCase("jpg") && img.equalsIgnoreCase("gif") && img.equalsIgnoreCase("png")) {
+                img = "jpg";
             }
 
             path = path + "/" + articleno

@@ -111,8 +111,8 @@
     </bean>
     <bean id="taskExecutor"
           class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-        <property name="corePoolSize" value="5"/>
-        <property name="maxPoolSize" value="10"/>
+        <property name="corePoolSize" value="10"/>
+        <property name="maxPoolSize" value="15"/>
         <property name="WaitForTasksToCompleteOnShutdown" value="true"/>
     </bean>
 
